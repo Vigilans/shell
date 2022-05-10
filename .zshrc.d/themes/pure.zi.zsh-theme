@@ -49,7 +49,7 @@ prompt_pure_preprompt_render() {
     preprompt_parts+=("[${(j. .)preprompt_time_part}]")
     [[ ${#preprompt_user_part} -gt 0 ]] && preprompt_parts+=("[${(j. .)preprompt_user_part}]")
     preprompt_parts+=("[${(j. .)preprompt_path_part}]")
-    [[ ${#preprompt_git_part}  -gt 0 ]] && preprompt_parts+=("|${(j. .)preprompt_git_part}|")
+    [[ ${#preprompt_git_part}  -gt 0 ]] && preprompt_parts+=("[${(j. .)preprompt_git_part}]")
     [[ ${#preprompt_misc_part} -gt 0 ]] && preprompt_parts+=("${(j. .)preprompt_misc_part}")
 
     # Extract the prompt part at second line
