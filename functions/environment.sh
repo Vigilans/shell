@@ -11,10 +11,8 @@
 #       This file contains the environment for the process.  The entries
 #       are separated by null bytes ('\0'), and there may be a null byte
 #       at  the  end.
-procenv() {
-    pid=$1
-    xargs -0 -L1 -a /proc/$pid/environ
-    unset pid
+envcat() {
+    xargs -0 -L1 -a $@
 }
 
 pathadd() {
