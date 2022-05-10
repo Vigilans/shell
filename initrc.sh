@@ -30,7 +30,7 @@ elif [ -n "$ZSH_VERSION" ] && [ -d $SHELL_CONFIG_HOME/.zshrc.d ]; then
 fi
 
 # Interactive mode setup
-if ([ -n "$BASH_VERSION" ] || [ -n "$ZSH_VERSION" ]) && [[ $- == *i* ]]; then
+if ([ -n "$BASH_VERSION" ] || [ -n "$ZSH_VERSION" ]) && ([[ $- == *i* ]] || [ -n "$_INITRC_SH_FORCE_LOAD" ]); then
     # General setup
     if [ -d $SHELL_CONFIG_HOME/.initrc.d ]; then
         for rc in $SHELL_CONFIG_HOME/.initrc.d/*.sh; do

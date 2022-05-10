@@ -6,6 +6,8 @@ case $- in
       *) return;;
 esac
 
+export SHELL_THEME="pure"
+
 # Load initrc scripts
 if [ -f "$SHELL_CONFIG_HOME/initrc.sh" ]; then
 	  . "$SHELL_CONFIG_HOME/initrc.sh"
