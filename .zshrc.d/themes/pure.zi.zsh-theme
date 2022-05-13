@@ -9,6 +9,20 @@ zstyle ':prompt:pure:git:branch' color '214'
 zstyle ':prompt:pure:suspended_jobs' color '105'
 zstyle ':prompt:pure:execution_time' color 'cyan'
 
+# Adaptation for tty low-color display
+if [[ "$TERM" = "linux" ]] || [[ "$(tput colors)" = "8" ]]; then
+    PURE_PROMPT_SYMBOL=">"
+    PURE_PROMPT_VICMD_SYMBOL="<"
+    PURE_GIT_DOWN_ARROW="↓"
+    PURE_GIT_UP_ARROW="↑"
+    PURE_SUSPEND_JOB_SYMBOL="♦"
+    zstyle ':prompt:pure:prompt:success' color 'green'
+    zstyle ':prompt:pure:user' color 'green'
+    zstyle ':prompt:pure:host' color 'green'
+    zstyle ':prompt:pure:git:branch' color 'yellow'
+    zstyle ':prompt:pure:suspended_jobs' color 'magenta'
+fi
+
 # Enable only certain async tasks of small cost
 prompt_pure_async_refresh() {
     async_job "prompt_pure" prompt_pure_async_git_arrows
@@ -41,7 +55,7 @@ prompt_pure_preprompt_render() {
 	[[ -n $prompt_pure_git_stash ]]  && preprompt_git_part+=('%F{$prompt_pure_colors[git:stash]}${PURE_GIT_STASH_SYMBOL:-≡}%f') # Git stash symbol (if opted in).
 
     local -a preprompt_misc_part
-    ((${(M)#jobstates:#suspended:*} != 0)) && preprompt_misc_part+=('%F{$prompt_pure_colors[suspended_jobs]}✦%f') # Suspended jobs in background.
+    ((${(M)#jobstates:#suspended:*} != 0)) && preprompt_misc_part+=('%F{$prompt_pure_colors[suspended_jobs]}${PURE_SUSPEND_JOB_SYMBOL:-✦}%f') # Suspended jobs in background.
     [[ -n $prompt_pure_cmd_exec_time ]] && preprompt_misc_part+=('(%F{$prompt_pure_colors[execution_time]}${prompt_pure_cmd_exec_time}%f)') # Execution time.
 
 	# Combine all preprompt parts.
