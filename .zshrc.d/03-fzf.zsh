@@ -41,6 +41,9 @@ zstyle ':fzf-tab:complete:(ls|cat):*' fzf-preview '[ -d $realpath ] && exa -1 --
 # [cd] Preview with exa
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --git -lh --no-time --color=always --icons $realpath'
 
+# [du] Preview with file / directory sizes
+zstyle ':fzf-tab:complete:du:*' fzf-preview 'du -h -d 1 $realpath'
+
 # [man/run-help]
 zstyle ':fzf-tab:complete:(\\|)run-help:*' fzf-preview 'run-help $word'
 zstyle ':fzf-tab:complete:(\\|*/|)man:*' fzf-preview 'man $word'

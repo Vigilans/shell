@@ -11,3 +11,6 @@ alias free='free -h'
 # Interactive
 alias cp='cp -i'
 # alias rm='rm -i'
+
+# Gadgets
+alias du1='du -h -d 1'
