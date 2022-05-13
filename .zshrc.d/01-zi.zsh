@@ -70,12 +70,18 @@ zi light agkozak/zsh-z
 zi ice wait lucid
 zi light reegnz/jq-zsh-plugin
 
-zi ice atload'export PATH=$FORGIT_INSTALL_DIR/bin:$PATH'
+zi ice atload'export PATH=$PATH:$FORGIT_INSTALL_DIR/bin'
 FORGIT_NO_ALIASES=1 zi light wfxr/forgit
 
 # Completions
 zi ice wait lucid as'completion' blockf
 zi light zsh-users/zsh-completions
+
+zi ice wait lucid as'completion' blockf
+zi light esc/conda-zsh-completion
+
+zi ice wait lucid as'completion' blockf
+zi snippet https://github.com/bazelbuild/bazel/blob/master/scripts/zsh_completion/_bazel
 
 # Snippets
 zi ice wait lucid
