@@ -6,5 +6,5 @@ if [ -z "$GOROOT" ] || [ -z "$GOPATH" ]; then
 fi
 
 if [ -n "$GOPATH" ]; then
-    export PATH=$PATH:$GOPATH/bin
+    export PATH=$GOPATH/bin:$PATH
 fi
