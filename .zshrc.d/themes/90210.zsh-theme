@@ -56,9 +56,9 @@ function prompt_command() {
 
     # Check for virtual env
 	if [[ -n $CONDA_DEFAULT_ENV ]]; then
-		PS1+="%F{black}(${CONDA_DEFAULT_ENV//[$'\t\r\n']})%f "
+		PS1+="%B%F{black}(${CONDA_DEFAULT_ENV//[$'\t\r\n']})%f%b "
     elif [[ -n $VIRTUAL_ENV ]]; then
-        PS1+="%F{black}(${VIRTUAL_ENV:t})%f"
+        PS1+="%B%F{black}(${VIRTUAL_ENV:t})%f%b "
     fi
 
     # Prompt symbol colored according to exit code
