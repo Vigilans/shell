@@ -11,6 +11,7 @@ zstyle ':prompt:pure:execution_time' color 'cyan'
 
 # Adaptation for tty low-color display
 if [[ "$TERM" = "linux" ]] || [[ "$(tput colors)" = "8" ]]; then
+    SHELL_LOW_COLOR=1
     PURE_PROMPT_SYMBOL=">"
     PURE_PROMPT_VICMD_SYMBOL="<"
     PURE_GIT_DOWN_ARROW="↓"
@@ -93,7 +94,7 @@ precmd_pipestatus() {
     local exitcodes="${(j.|.)pipestatus}"
     if [[ "$exitcodes" != "0" ]]; then
         RPROMPT="%F{$prompt_pure_colors[prompt:error]}[$exitcodes]%f"
-    else
+    elif [[ -z "$SHELL_LOW_COLOR" ]]; then
         RPROMPT="$(printf %b '\u200b')" # Use zero width space to prevent a weird backspace bug in VSCode Remote SSH Terminal
     fi
 }

@@ -3,6 +3,11 @@ promptinit
 
 setopt prompt_subst
 
+# Adaptation for tty low-color display
+if [[ "$TERM" = "linux" ]] || [[ "$(tput colors)" = "8" ]]; then
+    SHELL_LOW_COLOR=1
+fi
+
 # Nicely formatted terminal prompt
 function prompt_command() {
     # Preprompt
@@ -70,7 +75,7 @@ function rprompt_command() {
     local exitcodes="${(j.|.)pipestatus}"
     if [[ "$exitcodes" != "0" ]]; then
         RPROMPT="%F{red}[$exitcodes]%f"
-    else
+    elif [[ -z "$SHELL_LOW_COLOR" ]]; then
         RPROMPT="$(printf %b '\u200b')" # Use zero width space to prevent a weird backspace bug in VSCode Remote SSH Terminal
     fi
 }
