@@ -6,7 +6,14 @@ case $- in
       *) return;;
 esac
 
-export SHELL_THEME="90210"
+if command -v pacman &> /dev/null; then
+    export SHELL_THEME="pure"  # Use pure theme for archlinux based distros
+elif command -v dpkg &> /dev/null; then
+    export SHELL_THEME="90210" # Use 90210 theme for debian based distros
+else
+    export SHELL_THEME="90210" # Use 90210 theme for any other distros
+fi
+
 
 # Load initrc scripts
 if [ -f "$SHELL_CONFIG_HOME/initrc.sh" ]; then
