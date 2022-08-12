@@ -7,6 +7,15 @@ else
     SHELL_PROFILE_HOME=$(pwd)
 fi
 
+# Ensure initial system binary paths exist
+for entry in /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin; do
+    case $PATH in
+        *:"$entry":*) ;;
+        *) PATH=$PATH:$entry
+    esac
+    unset entry
+done
+
 # Load local machine's profile directory (for setting home variables, etc.)
 if [ -z "$_SHELL_PROFILE_LOCAL_LOADED" ]; then
     if [ -d $SHELL_PROFILE_HOME/local ]; then
@@ -47,15 +56,15 @@ fi
 if [ -n "$_REMOVE_DUPLICATE_PATH" ] && [ -n "$PATH" ]; then
     old_PATH=$PATH:; PATH=
     while [ -n "$old_PATH" ]; do
-        x=${old_PATH%%:*}        # the first remaining entry
+        entry=${old_PATH%%:*}        # the first remaining entry
         case $PATH: in
-            *:"$x":*) ;;         # already there
-            *) PATH=$PATH:$x;;   # not there yet
+            *:"$entry":*) ;;         # already there
+            *) PATH=$PATH:$entry;;   # not there yet
         esac
         old_PATH=${old_PATH#*:}
     done
     PATH=${PATH#:}
-    unset old_PATH x _REMOVE_DUPLICATE_PATH
+    unset entry old_PATH _REMOVE_DUPLICATE_PATH
 fi
 
 # Export final PATH variable
