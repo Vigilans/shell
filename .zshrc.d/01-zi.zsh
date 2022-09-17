@@ -32,7 +32,7 @@ if ! command -v exa &> /dev/null; then
 fi
 
 if ! command -v delta &> /dev/null; then
-    zi ice from'gh-r' as'program' mv'delta* release' atclone'
+    zi ice from'gh-r' as'program' bpick"*$(uname -m)*" mv'delta* release' atclone'
         ln -svf $PWD/release/delta $ZPFX/bin
         wget https://raw.githubusercontent.com/dandavison/delta/master/etc/completion/completion.zsh -O _delta' && \
     zi light dandavison/delta
@@ -47,7 +47,7 @@ if ! command -v fd &> /dev/null; then
 fi
 
 if ! command -v navi &> /dev/null; then
-    zi ice from"gh-r" as'program' has'fzf' atclone'
+    zi ice from"gh-r" as'program' bpick"*$(uname -m)-unknown*" has'fzf' atclone'
         ln -svf $PWD/navi $ZPFX/bin'
     zi light denisidoro/navi
 fi
