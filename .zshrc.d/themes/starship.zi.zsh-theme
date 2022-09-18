@@ -3,7 +3,7 @@ zi ice as"command" from"gh-r" \
   atpull"%atclone" src"init.zsh"
 zi light starship/starship
 
-zi ice from"gh-r" as'program' mv'vivid*/vivid vivid'
+zi ice from"gh-r" as'program' bpick"*$(uname -m)*" mv'vivid*/vivid vivid'
 zi load @sharkdp/vivid
 export LS_COLORS="$(vivid generate one-dark)"
 zi unload -q sharkdp/vivid

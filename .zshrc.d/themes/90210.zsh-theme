@@ -84,6 +84,6 @@ add-zsh-hook precmd prompt_command
 add-zsh-hook precmd rprompt_command
 
 # Setup LS_COLORS
-zi ice from"gh-r" as'program' mv'vivid*/vivid vivid' atload'export LS_COLORS="$(vivid generate one-dark)"'
+zi ice from"gh-r" as'program' bpick"*$(uname -m)*" mv'vivid*/vivid vivid' atload'export LS_COLORS="$(vivid generate one-dark)"'
 zi load @sharkdp/vivid
 zi unload -q sharkdp/vivid
