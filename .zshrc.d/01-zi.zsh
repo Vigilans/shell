@@ -15,7 +15,7 @@ if ! command -v fzf &> /dev/null; then
 fi
 
 if ! command -v bat &> /dev/null; then
-    zi ice from'gh-r' as'program' mv'bat* release' atclone'
+    zi ice from'gh-r' as'program' bpick"*$(uname -m)*"  mv'bat* release' atclone'
         ln -svf $PWD/release/bat $ZPFX/bin
         ln -svf $PWD/release/bat.1 $ZPFX/man/man1
         ln -svf $PWD/release/autocomplete/bat.zsh _bat'
@@ -39,7 +39,7 @@ if ! command -v delta &> /dev/null; then
 fi
 
 if ! command -v fd &> /dev/null; then
-    zi ice from'gh-r' as'program' mv'fd* release' atclone'
+    zi ice from'gh-r' as'program' bpick"*$(uname -m)*" mv'fd* release' atclone'
         ln -svf $PWD/release/fd $ZPFX/bin
         ln -svf $PWD/release/fd.1 $ZPFX/man/man1
         ln -svf $PWD/autocomplete/_fd _fd'
