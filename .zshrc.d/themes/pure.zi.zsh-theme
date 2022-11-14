@@ -101,6 +101,4 @@ precmd_pipestatus() {
 add-zsh-hook precmd precmd_pipestatus
 
 # Setup LS_COLORS
-zi ice from"gh-r" as'program' bpick"*$(host_triplet)*" mv'vivid*/vivid vivid' atload'export LS_COLORS="$(vivid generate molokai)"'
-zi load @sharkdp/vivid
-zi unload -q sharkdp/vivid
+export LS_COLORS="$(command vivid generate one-dark)"

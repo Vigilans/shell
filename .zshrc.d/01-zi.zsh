@@ -52,6 +52,12 @@ if ! command -v navi &> /dev/null; then
     zi light denisidoro/navi
 fi
 
+if ! command -v vivid &> /dev/null; then
+    zi ice from"gh-r" as'program' bpick"*$(host_triplet)*" mv'vivid*/vivid vivid' atclone'
+        ln -svf $PWD/vivid $ZPFX/bin'
+    zi load @sharkdp/vivid
+fi
+
 # Plugins
 zi light zsh-users/zsh-history-substring-search
 
