@@ -8,6 +8,8 @@ if command -v pacman &> /dev/null; then
 elif command -v apt-get &> /dev/null; then
     sudo apt-get update
     sudo apt-get install wget git tar unzip
+elif command -v apk &> /dev/null; then
+    sudo apk add wget git tar unzip coreutils file zsh-vcs ncurses findutils
 else
     echo "Package manager not supported for now"
     return 1
