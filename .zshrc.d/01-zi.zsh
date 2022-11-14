@@ -83,6 +83,9 @@ zi light esc/conda-zsh-completion
 zi ice wait lucid as'completion' blockf
 zi snippet https://github.com/bazelbuild/bazel/blob/master/scripts/zsh_completion/_bazel
 
+zi ice wait lucid as'completion' blockf
+zi snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
+
 # Snippets
 zi ice wait lucid
 zi snippet OMZ::plugins/colored-man-pages/colored-man-pages.plugin.zsh

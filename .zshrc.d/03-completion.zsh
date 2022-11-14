@@ -7,3 +7,5 @@ zstyle ':completion:*' rehash true                              # automatically 
 zstyle ':completion:*' accept-exact '*(N)'                      # Speed up completions
 zstyle ':completion:*' use-cache on                             # Speed up completions
 zstyle ':completion:*' cache-path ~/.zsh/cache                  # Speed up completions
+zstyle ':completion:*:*:docker:*'   option-stacking yes         # Enable docker completion on options like -it
+zstyle ':completion:*:*:docker-*:*' option-stacking yes         # Enable docker completion on options like -it
