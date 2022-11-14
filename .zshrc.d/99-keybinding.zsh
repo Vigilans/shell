@@ -17,8 +17,17 @@ bindkey '^[Oc'    forward-word                                  # Ctrl + Right
 bindkey '^[Od'    backward-word                                 # Ctrl + Left
 bindkey '^[[1;5C' forward-word                                  # Ctrl + Right
 bindkey '^[[1;5D' backward-word                                 # Ctrl + Left
-bindkey '^H'      backward-kill-word                            # Ctrl + Backspace: delete previous word
+bindkey '^[^H'    backward-kill-word                            # Ctrl + Backspace: delete previous word
 bindkey '^[[Z'    undo                                          # Shift + TAB: undo last action
+
+# Clipboard binding
+if command -v xclip &> /dev/null && [ -n "$DISPLAY" ]; then
+    function paste-from-clipboard() { RBUFFER="$(xclip -o -selection clipboard)$RBUFFER" }
+    zle -N paste-from-clipboard
+    bindkey '^V' paste-from-clipboard # Ctrl + V: paste from clipboard grabbed from xclip
+else
+    bindkey -r "^V" # Unbind Ctrl + V, so not to trigger ^[[200~ ~ (bracketed paste mode)
+fi
 
 # Fzf binding
 if command -v fzf &> /dev/null; then
