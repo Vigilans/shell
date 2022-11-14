@@ -41,16 +41,14 @@ fi
 if ! command -v fd &> /dev/null; then
     zi ice from'gh-r' as'program' bpick"*$(host_triplet)*" mv'fd* release' atclone'
         ln -svf $PWD/release/fd $ZPFX/bin
-        ln -svf $PWD/release/fd.1 $ZPFX/man/man1
-        ln -svf $PWD/autocomplete/_fd _fd'
+        ln -svf $PWD/release/fd.1 $ZPFX/man/man1'
     zi light @sharkdp/fd
 fi
 
 if ! command -v rg &> /dev/null; then
     zi ice from'gh-r' as'program' bpick"ripgrep-*" mv'ripgrep* release' atclone'
         ln -svf $PWD/release/rg $ZPFX/bin
-        ln -svf $PWD/release/doc/rg.1 $ZPFX/man/man1
-        ln -svf $PWD/release/complete/_rg _ripgrep'
+        ln -svf $PWD/release/doc/rg.1 $ZPFX/man/man1'
     zi light @BurntSushi/ripgrep
 fi
 
