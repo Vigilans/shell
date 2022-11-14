@@ -92,7 +92,7 @@ prompt_pure_preprompt_render() {
 # Show red exit code on right prompt
 precmd_pipestatus() {
     local exitcodes="${(j.|.)pipestatus}"
-    if [[ "$exitcodes" != "0" ]]; then
+    if ! [[ "$exitcodes" =~ ^[0\|]+$ ]]; then
         RPROMPT="%F{$prompt_pure_colors[prompt:error]}[$exitcodes]%f"
     elif [[ -z "$SHELL_LOW_COLOR" ]]; then
         RPROMPT="$(printf %b '\u200b')" # Use zero width space to prevent a weird backspace bug in VSCode Remote SSH Terminal

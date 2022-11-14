@@ -73,7 +73,7 @@ function prompt_command() {
 function rprompt_command() {
     # Right prompt
     local exitcodes="${(j.|.)pipestatus}"
-    if [[ "$exitcodes" != "0" ]]; then
+    if ! [[ "$exitcodes" =~ ^[0\|]+$ ]]; then
         RPROMPT="%F{red}[$exitcodes]%f"
     elif [[ -z "$SHELL_LOW_COLOR" ]]; then
         RPROMPT="$(printf %b '\u200b')" # Use zero width space to prevent a weird backspace bug in VSCode Remote SSH Terminal
