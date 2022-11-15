@@ -1,5 +1,5 @@
 # [ctrl-t/alt-c] Preview with exa and tree
-export FZF_CTRL_T_OPTS="--preview '[ -d {} ] && exa -1 --git -lh --no-time --color=always --icons {} || bat --style=numbers --color=always --line-range :500 {}'"
+export FZF_CTRL_T_OPTS="--preview '[ -d {} ] && exa -1 -lh --group --no-time --color=always --icons {} || bat --style=numbers --color=always --line-range :500 {}'"
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 
 # [fzf-tab] Use Space key to accept
@@ -36,10 +36,10 @@ fi
 '
 
 # [file] Preview with different strategies (e.g. bat (file) or exa (directory))
-zstyle ':fzf-tab:complete:(ls|cat):*' fzf-preview '[ -d $realpath ] && exa -1 --git -lh --no-time --color=always --icons $realpath || bat --style=numbers --color=always --line-range :500 $realpath'
+zstyle ':fzf-tab:complete:(ls|cat):*' fzf-preview '[ -d $realpath ] && exa -1 -lh --group --no-time --color=always --icons $realpath || bat --style=numbers --color=always --line-range :500 $realpath'
 
 # [cd] Preview with exa
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --git -lh --no-time --color=always --icons $realpath'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 -lh --group --no-time --color=always --icons $realpath'
 
 # [du] Preview with file / directory sizes
 zstyle ':fzf-tab:complete:du:*' fzf-preview 'du -h -d 1 $realpath'
