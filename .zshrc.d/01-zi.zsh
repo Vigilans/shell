@@ -1,5 +1,8 @@
 if [[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/zi/init.zsh" ]]; then
     source "${XDG_CONFIG_HOME:-$HOME/.config}/zi/init.zsh" && zzinit
+    export MANPATH=":$MANPATH" # Fix MANPATH ignoring system default by prefix a colon
+else
+    return 0
 fi
 
 # Programs
