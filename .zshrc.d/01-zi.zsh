@@ -67,6 +67,13 @@ if ! command -v vivid &> /dev/null; then
     zi load @sharkdp/vivid
 fi
 
+if ! command -v bat-modules &> /dev/null; then
+    zi ice from"gh-r" as'program' has'bat' atclone'
+        for sh in $PWD/bin/*; do ln -svf $sh $ZPFX/bin; done
+        for sh in $PWD/man/*; do ln -svf $sh $ZPFX/man/man1; done'
+    zi light eth-p/bat-extras
+fi
+
 # Plugins
 zi light zsh-users/zsh-history-substring-search
 
@@ -100,6 +107,14 @@ zi snippet https://github.com/bazelbuild/bazel/blob/master/scripts/zsh_completio
 
 zi ice wait lucid as'completion' blockf
 zi snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
+
+zi ice wait lucid as'program' has'bat' atload'
+    compdef _man batman
+    compdef _rg ripgrep batgrep
+    compdef _delta batdiff
+    compdef _lesspipe batpipe
+    zi unload -q eth-p/bat-extras'
+zi light eth-p/bat-extras
 
 # Snippets
 zi ice wait lucid
