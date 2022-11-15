@@ -55,6 +55,13 @@ if ! command -v rg &> /dev/null; then
     zi light @BurntSushi/ripgrep
 fi
 
+if ! command -v micro &> /dev/null; then
+    zi ice from"gh-r" as'program' mv'micro* release' atclone'
+        ln -svf $PWD/release/micro $ZPFX/bin
+        ln -svf $PWD/release/micro.1 $ZPFX/man/man1'
+    zi light @zyedidia/micro
+fi
+
 if ! command -v navi &> /dev/null; then
     zi ice from"gh-r" as'program' bpick"*$(host_triplet_trivial)*" has'fzf' atclone'
         ln -svf $PWD/navi $ZPFX/bin'
