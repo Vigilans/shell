@@ -9,7 +9,8 @@ alias ll="exa -l $EXA_OPTIONS $EXA_TABLE_OPTIONS"
 alias lla="exa -l -a $EXA_OPTIONS $EXA_TABLE_OPTIONS"
 alias lll="exa -l $EXA_OPTIONS $EXA_TABLE_OPTIONS $EXA_FULL_TABLE_OPTIONS"
 alias llla="exa -l -a $EXA_OPTIONS $EXA_TABLE_OPTIONS $EXA_FULL_TABLE_OPTIONS"
-alias tree="exa --tree $EXA_OPTIONS"
+alias lt="exa --tree $EXA_OPTIONS $EXA_TABLE_OPTIONS"
+alias lta="exa --tree -a $EXA_OPTIONS $EXA_TABLE_OPTIONS"
 
 unset EXA_OPTIONS EXA_TABLE_OPTIONS EXA_FULL_TABLE_OPTIONS
 
