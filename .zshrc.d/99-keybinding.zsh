@@ -20,6 +20,10 @@ bindkey '^[[1;5D' backward-word                                 # Ctrl + Left
 bindkey '^[^H'    backward-kill-word                            # Ctrl + Backspace: delete previous word
 bindkey '^[[Z'    undo                                          # Shift + TAB: undo last action
 
+# Miscellaneous
+bindkey '^Xh' _complete_help                                    # Ctrl + X, H: Show completion contexts and tags
+bindkey '^X?' _complete_debug                                   # Ctrl + X, ?: Debug completion
+
 # Clipboard binding
 if command -v xclip &> /dev/null && [ -n "$DISPLAY" ]; then
     function paste-from-clipboard() { RBUFFER="$(xclip -o -selection clipboard)$RBUFFER" }

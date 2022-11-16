@@ -1,13 +1,17 @@
 # [ctrl-t/alt-c] Preview with exa and tree
-export FZF_CTRL_T_OPTS="--preview '[ -d {} ] && exa -1 -lh --group --no-time --color=always --icons {} || bat --style=numbers --color=always --line-range :500 {}'"
-export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+export FZF_CTRL_T_OPTS="--preview '[ -d {} ] && exa -1 -lh --group --no-time --color=always --icons {} || bat --style=numbers --color=always {}'"
+export FZF_ALT_C_OPTS="--preview 'exa --tree {} | head -200'"
 
-# [fzf-tab] Use Space key to accept
-zstyle ':fzf-tab:*' fzf-bindings 'space:accept'
+# [fzf-tab] Use Space key to accept, Shift-Left/Right to scroll preview by page, Home/End to scroll preview to top/end
+zstyle ':fzf-tab:*' fzf-bindings 'space:accept' \
+	'shift-left:preview-page-up,shift-right:preview-page-down' \
+	'home:preview-top,end:preview-bottom'
+
+# switch group using `,` and `.`
 zstyle ':fzf-tab:*' switch-group ',' '.'
 
 # [environment variable and functions] Preview variable content
-zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-preview \
+zstyle ':fzf-tab:complete:(-parameter-|-brace-parameter-|export|unset|expand):*' fzf-preview \
 'if [[ -v $word ]]; then
 	word_is_variable=1
 else
@@ -35,18 +39,40 @@ if [[ -n "$word_is_variable" ]]; then
 fi
 '
 
-# [file] Preview with different strategies (e.g. bat (file) or exa (directory))
-zstyle ':fzf-tab:complete:(ls|cat):*' fzf-preview '[ -d $realpath ] && exa -1 -lh --group --no-time --color=always --icons $realpath || bat --style=numbers --color=always --line-range :500 $realpath'
+# [file and directory] Preview with different strategies (e.g. bat (text file) or exa (directory))
+zstyle ':fzf-tab:complete:*:*' fzf-preview '
+exa() { command exa -1 -l --group --no-time --color=always --icons $@ }
+bat() { command bat --style=numbers --color=always $@ }
+if [[ "$group" =~ ^\\[.*(file|directory|path).*\\]$ ]] && [[ -r "$realpath" ]]; then
+	filetype=$(file -L -b "$realpath")
+	case "$realpath" in
+		*.tar | *.tar.*)               tar -tvf     "$realpath" | bat --language nix ;;
+		*) case "$filetype" in
+			"Zip archive data"*)       unzip -q -l "$realpath" | bat --language nix --line-range 3: ;;
+			"7-zip archive data"*)     7z l  -bso0 "$realpath" | bat --language nix --line-range 15: ;;
+			"Debian binary package"*)  dpkg  -f    "$realpath" | bat --language yml; print; dpkg -c "$realpath" | bat --language nix;;
+			"ISO-8859 text"*)          printf "%s:\n%s" "$word" "Unsupported encoding." ;;
+			*"text"* | "JSON data")    bat         "$realpath" ;;
+			"directory")               exa         "$realpath" ;;
+			*)                         printf "%s:\n%s" "$word" "$(echo "$filetype" | xargs -L 1 -d , | sed "s/^ /- /g" | bat --plain --language yaml)" ;;
+		esac ;;
+	esac
+fi'
 
-# [cd] Preview with exa
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 -lh --group --no-time --color=always --icons $realpath'
+# [options/argument-1] Disable preview for command options and subcommands
+zstyle ':fzf-tab:complete:*:options' fzf-preview
+zstyle ':fzf-tab:complete:*:argument-1' fzf-preview
+
+# [tree] Preview with directory tree
+zstyle ':fzf-tab:complete:tree:*' fzf-preview 'exa --tree -a $realpath'
 
 # [du] Preview with file / directory sizes
 zstyle ':fzf-tab:complete:du:*' fzf-preview 'du -h -d 1 $realpath'
 
 # [man/run-help]
-zstyle ':fzf-tab:complete:(\\|)run-help:*' fzf-preview 'run-help $word'
-zstyle ':fzf-tab:complete:(\\|*/|)man:*' fzf-preview 'man $word'
+zstyle ':fzf-tab:complete:(\\|*/|)run-help:*' fzf-preview ' run-help $word | bat --style=plain --color=always --language man'
+zstyle ':fzf-tab:complete:(\\|*/|)man:*' fzf-preview '   command man $word | bat --style=plain --color=always --language man'
+zstyle ':fzf-tab:complete:(\\|*/|)batman:*' fzf-preview 'command man $word | bat --style=plain --color=always --language man'
 
 # [kill/ps] Preview of full commandline arguments
 zstyle ':completion:*:*:*:*:processes' command "ps -ef"

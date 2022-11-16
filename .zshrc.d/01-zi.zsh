@@ -119,7 +119,6 @@ zi ice wait lucid as'program' has'bat' atload'
     compdef _man batman
     compdef _rg ripgrep batgrep
     compdef _delta batdiff
-    compdef _lesspipe batpipe
     zi unload -q eth-p/bat-extras'
 zi light eth-p/bat-extras
 
