@@ -69,6 +69,10 @@ zstyle ':fzf-tab:complete:tree:*' fzf-preview 'exa --tree -a $realpath'
 # [du] Preview with file / directory sizes
 zstyle ':fzf-tab:complete:du:*' fzf-preview 'du -h -d 1 $realpath'
 
+# [hexdump] Preivew with hexyl
+zstyle ':fzf-tab:complete:hexdump:*' fzf-preview '[[ ! -d $realpath ]] && $hexyl $realpath'
+zstyle ':fzf-tab:complete:hexyl:*' fzf-preview '[[ ! -d $realpath ]] && hexyl $realpath'
+
 # [man/run-help]
 zstyle ':fzf-tab:complete:(\\|*/|)run-help:*' fzf-preview ' run-help $word | bat --style=plain --color=always --language man'
 zstyle ':fzf-tab:complete:(\\|*/|)man:*' fzf-preview '   command man $word | bat --style=plain --color=always --language man'

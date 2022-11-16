@@ -62,6 +62,13 @@ if ! command -v micro &> /dev/null; then
     zi light @zyedidia/micro
 fi
 
+if ! command -v hexyl &> /dev/null; then
+    zi ice from'gh-r' as'program' bpick"*$(host_triplet)*" mv'hexyl* release' atclone'
+        ln -svf $PWD/release/hexyl $ZPFX/bin
+        ln -svf $PWD/release/hexyl.1 $ZPFX/man/man1'
+    zi light @sharkdp/hexyl
+fi
+
 if ! command -v navi &> /dev/null; then
     zi ice from"gh-r" as'program' bpick"*$(host_triplet_trivial)*" has'fzf' atclone'
         ln -svf $PWD/navi $ZPFX/bin'
