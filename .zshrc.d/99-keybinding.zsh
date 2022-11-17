@@ -26,7 +26,7 @@ bindkey '^X?' _complete_debug                                   # Ctrl + X, ?: D
 
 # Clipboard binding
 if command -v xclip &> /dev/null && [ -n "$DISPLAY" ]; then
-    function paste-from-clipboard() { RBUFFER="$(xclip -o -selection clipboard)$RBUFFER" }
+    function paste-from-clipboard() { LBUFFER="$LBUFFER$(xclip -o -selection clipboard)" }
     zle -N paste-from-clipboard
     bindkey '^V' paste-from-clipboard # Ctrl + V: paste from clipboard grabbed from xclip
 else
