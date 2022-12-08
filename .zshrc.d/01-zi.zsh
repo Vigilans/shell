@@ -75,6 +75,12 @@ if ! command -v dust &> /dev/null; then
     zi light @bootandy/dust
 fi
 
+if ! command -v procs &> /dev/null; then
+    zi ice from'gh-r' as'program' atclone'
+        ln -svf $PWD/release/procs $ZPFX/bin'
+    zi light @dalance/procs
+fi
+
 if ! command -v navi &> /dev/null; then
     zi ice from"gh-r" as'program' bpick"*$(host_triplet_trivial)*" has'fzf' atclone'
         ln -svf $PWD/navi $ZPFX/bin'
