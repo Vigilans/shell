@@ -69,6 +69,12 @@ if ! command -v hexyl &> /dev/null; then
     zi light @sharkdp/hexyl
 fi
 
+if ! command -v dust &> /dev/null; then
+    zi ice from'gh-r' as'program' bpick"*$(host_triplet)*" mv'dust* release' atclone'
+        ln -svf $PWD/release/dust $ZPFX/bin'
+    zi light @bootandy/dust
+fi
+
 if ! command -v navi &> /dev/null; then
     zi ice from"gh-r" as'program' bpick"*$(host_triplet_trivial)*" has'fzf' atclone'
         ln -svf $PWD/navi $ZPFX/bin'
