@@ -81,6 +81,13 @@ if ! command -v procs &> /dev/null; then
     zi light @dalance/procs
 fi
 
+if ! command -v bottom &> /dev/null; then
+    zi ice from'gh-r' as'program' bpick"*$(host_triplet)*" atclone'
+        ln -svf $PWD/btm $ZPFX/bin
+        ln -svf $PWD/completion/_btm _btm'
+    zi light @ClementTsang/bottom
+fi
+
 if ! command -v navi &> /dev/null; then
     zi ice from"gh-r" as'program' bpick"*$(host_triplet_trivial)*" has'fzf' atclone'
         ln -svf $PWD/navi $ZPFX/bin'
