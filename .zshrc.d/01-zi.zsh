@@ -1,13 +1,13 @@
 if [[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/zi/init.zsh" ]]; then
     source "${XDG_CONFIG_HOME:-$HOME/.config}/zi/init.zsh" && zzinit
-    export MANPATH=":$MANPATH" # Fix MANPATH ignoring system default by prefix a colon
+    export MANPATH=":$MANPATH" # Fix MANPATH ignoring system default by prefixing a colon
 else
     return 0
 fi
 
 # Programs
 if ! command -v fzf &> /dev/null; then
-    zi ice from'gh-r' as'program' atclone'
+    zi ice from'gh-r' as'program' atpull'%atclone' atclone'
         ln -svf $PWD/fzf $ZPFX/bin
         wget https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh
         wget https://raw.githubusercontent.com/junegunn/fzf/master/man/man1/fzf.1
@@ -35,9 +35,9 @@ if ! command -v exa &> /dev/null; then
 fi
 
 if ! command -v delta &> /dev/null; then
-    zi ice from'gh-r' as'program' bpick"*$(host_triplet)*" mv'delta* release' atclone'
+    zi ice from'gh-r' as'program' bpick"*$(host_triplet)*" mv'delta* release' atpull'%atclone' atclone'
         ln -svf $PWD/release/delta $ZPFX/bin
-        wget https://raw.githubusercontent.com/dandavison/delta/master/etc/completion/completion.zsh -O _delta' && \
+        wget https://raw.githubusercontent.com/dandavison/delta/master/etc/completion/completion.zsh -O _delta'
     zi light dandavison/delta
 fi
 
@@ -130,5 +130,5 @@ zi ice wait lucid as'program' has'bat' atload'
 zi light eth-p/bat-extras
 
 # Snippets
-zi ice wait lucid
-zi snippet OMZ::plugins/colored-man-pages/colored-man-pages.plugin.zsh
+# zi ice wait lucid
+# zi snippet OMZ::plugins/colored-man-pages/colored-man-pages.plugin.zsh
