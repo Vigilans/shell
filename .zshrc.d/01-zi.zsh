@@ -132,3 +132,18 @@ zi light eth-p/bat-extras
 # Snippets
 # zi ice wait lucid
 # zi snippet OMZ::plugins/colored-man-pages/colored-man-pages.plugin.zsh
+
+# External program shell integration
+if command -v alacritty &> /dev/null; then
+    zi ice wait lucid as'completion' blockf atpull'%atclone' atclone'
+        wget https://github.com/alacritty/alacritty/releases/latest/download/alacritty.1.gz
+        wget https://github.com/alacritty/alacritty/releases/latest/download/alacritty-msg.1.gz
+        wget https://github.com/alacritty/alacritty/releases/latest/download/Alacritty.desktop
+        wget https://github.com/alacritty/alacritty/releases/latest/download/Alacritty.svg
+        mkdir -p $HOME/.local/share/applications $HOME/.local/share/icons/hicolor/scalable/apps
+        ln -svf $PWD/alacritty.1.gz $ZPFX/man/man1
+        ln -svf $PWD/alacritty-message.1.gz $ZPFX/man/man1
+        ln -svf $PWD/Alacritty.desktop $HOME/.local/share/applications
+        ln -svf $PWD/Alacritty.svg $HOME/.local/share/icons/hicolor/scalable/apps'
+    zi snippet https://github.com/alacritty/alacritty/blob/master/extra/completions/_alacritty
+fi
