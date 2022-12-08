@@ -39,8 +39,8 @@ function prompt_command() {
         PS1+="%B%F{black}-[%b"
         PS1+="%F{yellow}${vcs_info_msg_0_//\%/%%}" # Branch info
 		local ref=$(command git symbolic-ref -q HEAD)
-		local remote=($(command git for-each-ref --format='%(upstream:remotename) %(refname)' $ref)) # Set remote to only fetch information for the current branch.
-		if [[ -n $remote[1] ]]; then # Remote exists
+		local remote=$(command git for-each-ref --format='%(upstream:remotename)' $ref) # Set remote to only fetch information for the current branch.
+		if [[ -n $remote ]]; then # Remote exists
             command git rev-list --left-right --count HEAD...@'{u}' | read left right
             if (( right > 0 )); then
                 PS1+=" %F{cyan}↓" # Pull info
