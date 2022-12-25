@@ -75,9 +75,9 @@ if ! command -v dust &> /dev/null; then
     zi light @bootandy/dust
 fi
 
-if ! command -v procs &> /dev/null; then
+if ! command -v procs &> /dev/null && [[ "$(uname -m)" = "x86_64" ]]; then
     zi ice from'gh-r' as'program' atclone'
-        ln -svf $PWD/release/procs $ZPFX/bin'
+        ln -svf $PWD/procs $ZPFX/bin'
     zi light @dalance/procs
 fi
 
