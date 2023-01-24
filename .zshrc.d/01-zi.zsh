@@ -55,6 +55,12 @@ if ! command -v rg &> /dev/null; then
     zi light @BurntSushi/ripgrep
 fi
 
+if ! command -v yq &> /dev/null; then
+    zi ice from'gh-r' as'program' mv'yq* yq' atclone'
+        ln -svf $PWD/yq $ZPFX/bin'
+    zi light mikefarah/yq
+fi
+
 if ! command -v micro &> /dev/null; then
     zi ice from"gh-r" as'program' mv'micro* release' atclone'
         ln -svf $PWD/release/micro $ZPFX/bin
