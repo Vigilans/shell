@@ -90,4 +90,6 @@ add-zsh-hook precmd prompt_command
 add-zsh-hook precmd rprompt_command
 
 # Setup LS_COLORS
-export LS_COLORS="$(command vivid generate one-dark)"
+if command vivid generate one-dark 1>/dev/null 2>&1; then
+    export LS_COLORS="$(command vivid generate one-dark)"
+fi

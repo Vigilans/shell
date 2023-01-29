@@ -101,4 +101,6 @@ precmd_pipestatus() {
 add-zsh-hook precmd precmd_pipestatus
 
 # Setup LS_COLORS
-export LS_COLORS="$(command vivid generate one-dark)"
+if command vivid generate one-dark 1>/dev/null 2>&1; then
+    export LS_COLORS="$(command vivid generate one-dark)"
+fi
