@@ -19,7 +19,3 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
-
-# Gadgets
-alias du1='du -h -d 1'
-alias dirstack='dirs -v | head -10'
