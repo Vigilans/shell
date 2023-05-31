@@ -46,15 +46,15 @@ bat() { command bat --style=numbers --color=always $@ }
 if [[ "$group" =~ ^\\[.*(file|directory|path).*\\]$ ]] && [[ -r "$realpath" ]]; then
 	filetype=$(file -L -b "$realpath")
 	case "$realpath" in
-		*.tar | *.tar.*)               tar -tvf     "$realpath" | bat --language nix ;;
+		*.tar | *.tar.* | *.tgz | *.txz) tar -tvf     "$realpath" | bat --language nix ;;
 		*) case "$filetype" in
-			"Zip archive data"*)       unzip -q -l "$realpath" | bat --language nix --line-range 3: ;;
-			"7-zip archive data"*)     7z l  -bso0 "$realpath" | bat --language nix --line-range 15: ;;
-			"Debian binary package"*)  dpkg  -f    "$realpath" | bat --language yml; print; dpkg -c "$realpath" | bat --language nix;;
-			"ISO-8859 text"*)          printf "%s:\n%s" "$word" "Unsupported encoding." ;;
-			*"text"* | "JSON data")    bat         "$realpath" ;;
-			"directory")               exa         "$realpath" ;;
-			*)                         printf "%s:\n%s" "$word" "$(echo "$filetype" | xargs -L 1 -d , | sed "s/^ /- /g" | bat --plain --language yaml)" ;;
+			"Zip archive data"*)         unzip -q -l "$realpath" | bat --language nix --line-range 3: ;;
+			"7-zip archive data"*)       7z l  -bso0 "$realpath" | bat --language nix --line-range 15: ;;
+			"Debian binary package"*)    dpkg  -f    "$realpath" | bat --language yml; print; dpkg -c "$realpath" | bat --language nix;;
+			"ISO-8859 text"*)            printf "%s:\n%s" "$word" "Unsupported encoding." ;;
+			*"text"* | "JSON data")      bat         "$realpath" ;;
+			"directory")                 exa         "$realpath" ;;
+			*)                           printf "%s:\n%s" "$word" "$(echo "$filetype" | xargs -L 1 -d , | sed "s/^ /- /g" | bat --plain --language yaml)" ;;
 		esac ;;
 	esac
 fi'
