@@ -46,7 +46,7 @@ bat() { command bat --style=numbers --color=always $@ }
 if [[ "$group" =~ ^\\[.*(file|directory|path).*\\]$ ]] && [[ -r "$realpath" ]]; then
 	filetype=$(file -L -b "$realpath")
 	case "$realpath" in
-		*.tar | *.tar.* | *.tgz | *.txz) tar -tvf     "$realpath" | bat --language nix ;;
+		*.tar | *.tar.* | *.tgz | *.txz) tar -tvf    "$realpath" | bat --language nix ;;
 		*) case "$filetype" in
 			"Zip archive data"*)         unzip -q -l "$realpath" | bat --language nix --line-range 3: ;;
 			"7-zip archive data"*)       7z l  -bso0 "$realpath" | bat --language nix --line-range 15: ;;
@@ -54,6 +54,7 @@ if [[ "$group" =~ ^\\[.*(file|directory|path).*\\]$ ]] && [[ -r "$realpath" ]]; 
 			"ISO-8859 text"*)            printf "%s:\n%s" "$word" "Unsupported encoding." ;;
 			*"text"* | "JSON data")      bat         "$realpath" ;;
 			"directory")                 exa         "$realpath" ;;
+			"empty")                     bat         "$realpath" ;;
 			*)                           printf "%s:\n%s" "$word" "$(echo "$filetype" | xargs -L 1 -d , | sed "s/^ /- /g" | bat --plain --language yaml)" ;;
 		esac ;;
 	esac
