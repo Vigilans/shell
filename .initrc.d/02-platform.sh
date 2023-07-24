@@ -25,7 +25,7 @@ host_libc_using_musl() {
 
 # Get libc library used by host (e.g. gnu or musl)
 host_libc() {
-    if [ -n "$(host_libc_using_musl)" ]; then
+    if [ -n "$HOST_LIBC_PREFER_MUSL" ] || [ -n "$(host_libc_using_musl)" ]; then
         echo "musl"
     else
         case $(uname -s) in

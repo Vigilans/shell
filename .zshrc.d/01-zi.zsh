@@ -35,7 +35,7 @@ if ! command -v exa &> /dev/null; then
 fi
 
 if ! command -v delta &> /dev/null; then
-    zi ice from'gh-r' as'program' bpick"*$(host_triplet)*" mv'delta* release' atpull'%atclone' atclone'
+    zi ice from'gh-r' as'program' bpick"*$(HOST_LIBC_PREFER_MUSL=1 host_triplet)*" mv'delta* release' atpull'%atclone' atclone'
         ln -svf $PWD/release/delta $ZPFX/bin
         wget https://raw.githubusercontent.com/dandavison/delta/master/etc/completion/completion.zsh -O _delta'
     zi light dandavison/delta
