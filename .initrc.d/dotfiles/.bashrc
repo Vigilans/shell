@@ -8,7 +8,9 @@ case $- in
       *) return;;
 esac
 
-export SHELL_THEME="90210"
+if [ -n "$SHELL_THEME" ]; then
+    export SHELL_THEME="90210"
+fi
 
 source ~/.profile
 
