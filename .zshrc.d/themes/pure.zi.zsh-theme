@@ -24,6 +24,14 @@ if [[ "$TERM" = "linux" ]] || [[ "$(tput colors)" = "8" ]]; then
     zstyle ':prompt:pure:suspended_jobs' color 'magenta'
 fi
 
+# If domain name non empty and not local/localdomain, show its full FQDN
+SHELL_DOMAIN_NAME=$(hostname -d)
+case "$(hostname -d)" in
+    local)       ;&
+    localdomain) ;&
+    "")          unset SHELL_DOMAIN_NAME ;;
+esac
+
 # Enable only certain async tasks of small cost
 prompt_pure_async_refresh() {
     async_job "prompt_pure" prompt_pure_async_git_arrows
@@ -43,6 +51,7 @@ prompt_pure_preprompt_render() {
     preprompt_time_part+=('%F{$prompt_pure_colors[execution_time]}%*%f') # Reuse the execution_time color.
 
     local -a preprompt_user_part
+    [[ -n $SHELL_DOMAIN_NAME ]] && prompt_pure_state[username]="${prompt_pure_state[username]/\%m\%f/%m.$SHELL_DOMAIN_NAME%f}"
     [[ -n $prompt_pure_state[username] ]] && preprompt_user_part+=($prompt_pure_state[username]) # Username and machine, if applicable.
 
     local -a preprompt_path_part

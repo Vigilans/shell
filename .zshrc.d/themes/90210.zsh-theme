@@ -8,6 +8,14 @@ if [[ "$TERM" = "linux" ]] || [[ "$(tput colors)" = "8" ]]; then
     SHELL_LOW_COLOR=1
 fi
 
+# If domain name non empty and not local/localdomain, show its full FQDN
+SHELL_DOMAIN_NAME=$(hostname -d)
+case "$(hostname -d)" in
+    local)       ;&
+    localdomain) ;&
+    "")          unset SHELL_DOMAIN_NAME ;;
+esac
+
 # Nicely formatted terminal prompt
 function prompt_command() {
     # Preprompt
@@ -21,6 +29,7 @@ function prompt_command() {
     # User and host
     PS1+="%B%F{black}-[%b"
     PS1+="%F{green}%n%F{yellow}@%F{green}%m"
+    [ -n "$SHELL_DOMAIN_NAME" ] && PS1+=".$SHELL_DOMAIN_NAME"
     PS1+="%B%F{black}]%b"
 
     # Working directory path
