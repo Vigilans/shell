@@ -8,3 +8,8 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+for completion in $SHELL_RC_HOME/vendors/completions/*.sh; do
+    test -r "$completion" && . "$completion"
+done
+unset completion

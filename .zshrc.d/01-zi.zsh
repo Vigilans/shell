@@ -154,6 +154,11 @@ zi ice wait lucid as'program' has'bat' atload'
     zi unload -q eth-p/bat-extras'
 zi light eth-p/bat-extras
 
+if [ -r "$HOME/.local/lib/kw/_kw" ]; then
+    zi ice wait lucid as'completion' blockf
+    zi snippet "$HOME/.local/lib/kw/_kw"
+fi
+
 # Snippets
 # zi ice wait lucid
 # zi snippet OMZ::plugins/colored-man-pages/colored-man-pages.plugin.zsh
