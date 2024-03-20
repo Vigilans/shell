@@ -18,7 +18,7 @@ else
 fi
 
 # Setup ZI
-[ ! -s ~/.config/zi ] && mkdir -p ~/.zi && git clone git@github.com:z-shell/zi.git ~/.zi/bin
+[ ! -s ~/.config/zi ] && mkdir -p ~/.zi && git clone https://github.com/z-shell/zi.git ~/.zi/bin
 
 # Setup Zsh ZI's loader
 [ ! -s ~/.config/zi/init.zsh ] && mkdir -p ~/.config/zi && wget https://raw.githubusercontent.com/z-shell/zi-src/main/lib/zsh/init.zsh -O ~/.config/zi/init.zsh
