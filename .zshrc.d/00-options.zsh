@@ -19,6 +19,8 @@ setopt pushdtohome                                              # Have pushd wit
 
 # Globbing
 setopt numericglobsort                                          # Sort filenames numerically when it makes sense
+setopt +o nomatch                                               # Will leave globbing expressions which don't match anything as-is
+# setopt nullglob                                                 # Will delete patterns which don’t match anything (so they will be effectively ignored)
 # setopt extendedglob                                             # Extended globbing. Allows using regular expressions with *
 # setopt nocaseglob                                               # Case insensitive globbing
 
