@@ -159,6 +159,13 @@ if [ -r "$HOME/.local/lib/kw/_kw" ]; then
     zi snippet "$HOME/.local/lib/kw/_kw"
 fi
 
+for completion in $SHELL_RC_HOME/vendors/completions/_*; do
+    if [ -r "$completion" ]; then
+        zi ice wait lucid as'completion' blockf
+        zi snippet "$completion"
+    fi
+done
+
 # Snippets
 # zi ice wait lucid
 # zi snippet OMZ::plugins/colored-man-pages/colored-man-pages.plugin.zsh
