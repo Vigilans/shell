@@ -4,7 +4,7 @@ export SHELL_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && p
 
 # Setup necessary packages
 if command -v pacman &> /dev/null; then
-    sudo pacman --noconfirm -S wget git tar unzip
+    sudo pacman --noconfirm -S wget git tar unzip inetutils
 elif command -v apt-get &> /dev/null; then
     sudo apt-get -y update
     sudo apt-get -y install wget git tar unzip
