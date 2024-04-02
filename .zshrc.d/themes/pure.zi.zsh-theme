@@ -10,7 +10,7 @@ zstyle ':prompt:pure:suspended_jobs' color '105'
 zstyle ':prompt:pure:execution_time' color 'cyan'
 
 # Adaptation for tty low-color display
-if [[ "$TERM" = "linux" ]] || [[ "$(tput colors)" = "8" ]]; then
+if [[ "$TERM" = "linux" ]] || [[ "$TERM" != "xterm-kitty" ]] && [[ "$(tput colors)" = "8" ]]; then
     SHELL_LOW_COLOR=1
     PURE_PROMPT_SYMBOL=">"
     PURE_PROMPT_VICMD_SYMBOL="<"

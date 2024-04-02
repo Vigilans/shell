@@ -4,7 +4,7 @@ promptinit
 setopt prompt_subst
 
 # Adaptation for tty low-color display
-if [[ "$TERM" = "linux" ]] || [[ "$(tput colors)" = "8" ]]; then
+if [[ "$TERM" = "linux" ]] || [[ "$TERM" != "xterm-kitty" ]] && [[ "$(tput colors)" = "8" ]]; then
     SHELL_LOW_COLOR=1
 fi
 

@@ -15,3 +15,7 @@ if [ -z "$PDFVIEWER" ]; then
         export PDFVIEWER="code --reuse-window"
     fi
 fi
+
+if [[ "$TERM" = "xterm-kitty" ]]; then
+    export TERM="xterm-256color"
+fi
