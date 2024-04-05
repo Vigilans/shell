@@ -144,15 +144,19 @@ zi light esc/conda-zsh-completion
 zi ice wait lucid as'completion' blockf
 zi snippet https://github.com/bazelbuild/bazel/blob/master/scripts/zsh_completion/_bazel
 
-zi ice wait lucid as'completion' blockf
-zi snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
-
 zi ice wait lucid as'program' has'bat' atload'
     compdef _man batman
     compdef _rg ripgrep batgrep
     compdef _delta batdiff
     zi unload -q eth-p/bat-extras'
 zi light eth-p/bat-extras
+
+if command -v docker &> /dev/null; then
+    if ! docker completion zsh 2>/dev/null | zi_snippet_completion_from_stdin docker; then
+        zi ice wait lucid as'completion' blockf
+        zi snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
+    fi
+fi
 
 if [ -r "$HOME/.local/lib/kw/_kw" ]; then
     zi ice wait lucid as'completion' blockf
@@ -165,6 +169,7 @@ for completion in $SHELL_RC_HOME/vendors/completions/_*; do
         zi snippet "$completion"
     fi
 done
+unset completion
 
 # Snippets
 # zi ice wait lucid
