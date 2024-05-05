@@ -11,12 +11,23 @@ host_triplet_trivial() {
         CYGWIN*) vendor="pc"; os="windows";;
         MINGW*)  vendor="pc"; os="windows";;
     esac
+    if [ "$os" = "darwin" ] && [ "$machine" = "arm64" ]; then
+        if [ -n "$HOST_TRIPLET_APPLE_USE_INTEL" ]; then # Some repositories may not have apple m1 arm64 binaries
+            machine="x86_64"
+        else
+            machine="aarch64"
+        fi
+    fi
     echo "$machine-$vendor-$os"
 }
 
 # Get whether host is using musl for c libraries
 host_libc_using_musl() {
-    if command ldd /bin/ls | grep -qs "musl"; then
+    if command -v ldd >/dev/null && command ldd /bin/ls| grep -qs "musl"; then
+        echo "musl"
+    elif command -v otool >/dev/null && command otool -L /bin/ls | grep -qs "musl"; then
+        echo "musl"
+    elif [ -n "$HOST_LIBC_PREFER_MUSL" ] && [ "$(uname -s)" = "Linux" ]; then
         echo "musl"
     else
         echo ""
@@ -25,7 +36,7 @@ host_libc_using_musl() {
 
 # Get libc library used by host (e.g. gnu or musl)
 host_libc() {
-    if [ -n "$HOST_LIBC_PREFER_MUSL" ] || [ -n "$(host_libc_using_musl)" ]; then
+    if [ -n "$(host_libc_using_musl)" ]; then
         echo "musl"
     else
         case $(uname -s) in

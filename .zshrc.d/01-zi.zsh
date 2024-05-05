@@ -18,7 +18,7 @@ if ! command -v fzf &> /dev/null; then
 fi
 
 if ! command -v bat &> /dev/null; then
-    zi ice from'gh-r' as'program' bpick"*$(host_triplet)*"  mv'bat* release' atclone'
+    zi ice from'gh-r' as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*"  mv'bat* release' atclone'
         ln -svf $PWD/release/bat $ZPFX/bin
         ln -svf $PWD/release/bat.1 $ZPFX/man/man1
         ln -svf $PWD/release/autocomplete/bat.zsh _bat'
@@ -26,7 +26,7 @@ if ! command -v bat &> /dev/null; then
 fi
 
 if ! command -v exa &> /dev/null; then
-    zi ice from'gh-r' as'program' bpick"*$(host_libc_using_musl)*" atclone'
+    zi ice from'gh-r' as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_libc_using_musl)*" atclone'
         ln -svf $PWD/bin/exa $ZPFX/bin
         ln -svf $PWD/man/exa.1 $ZPFX/man/man1
         ln -svf $PWD/man/exa_colors.5 $ZPFX/man/man5
@@ -42,7 +42,7 @@ if ! command -v delta &> /dev/null; then
 fi
 
 if ! command -v fd &> /dev/null; then
-    zi ice from'gh-r' as'program' bpick"*$(host_triplet)*" mv'fd* release' atclone'
+    zi ice from'gh-r' as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'fd* release' atclone'
         ln -svf $PWD/release/fd $ZPFX/bin
         ln -svf $PWD/release/fd.1 $ZPFX/man/man1'
     zi light @sharkdp/fd
@@ -69,14 +69,14 @@ if ! command -v micro &> /dev/null; then
 fi
 
 if ! command -v hexyl &> /dev/null; then
-    zi ice from'gh-r' as'program' bpick"*$(host_triplet)*" mv'hexyl* release' atclone'
+    zi ice from'gh-r' as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'hexyl* release' atclone'
         ln -svf $PWD/release/hexyl $ZPFX/bin
         ln -svf $PWD/release/hexyl.1 $ZPFX/man/man1'
     zi light @sharkdp/hexyl
 fi
 
 if ! command -v dust &> /dev/null; then
-    zi ice from'gh-r' as'program' bpick"*$(host_triplet)*" mv'dust* release' atclone'
+    zi ice from'gh-r' as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'dust* release' atclone'
         ln -svf $PWD/release/dust $ZPFX/bin'
     zi light @bootandy/dust
 fi
@@ -101,7 +101,7 @@ if ! command -v navi &> /dev/null; then
 fi
 
 if ! command -v vivid &> /dev/null; then
-    zi ice from"gh-r" as'program' bpick"*$(host_triplet)*" mv'vivid*/vivid vivid' atclone'
+    zi ice from"gh-r" as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'vivid*/vivid vivid' atclone'
         ln -svf $PWD/vivid $ZPFX/bin'
     zi load @sharkdp/vivid
 fi

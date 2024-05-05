@@ -10,6 +10,8 @@ esac
 if [ -z "$SHELL_THEME" ]; then
     if command -v pacman &> /dev/null; then
         export SHELL_THEME="pure"  # Use pure theme for archlinux based distros
+    elif command -v brew &> /dev/null; then
+        export SHELL_THEME="pure"  # Use pure theme for macos
     elif command -v dpkg &> /dev/null; then
         export SHELL_THEME="90210" # Use 90210 theme for debian based distros
     else
