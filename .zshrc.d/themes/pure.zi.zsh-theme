@@ -26,9 +26,10 @@ fi
 
 # If domain name non empty and not local/localdomain, show its full FQDN
 SHELL_DOMAIN_NAME=$(hostname -d)
-case "$(hostname -d)" in
+case "$SHELL_DOMAIN_NAME" in
     local)       ;&
     localdomain) ;&
+    "(none)")    unset SHELL_DOMAIN_NAME ;;
     "")          unset SHELL_DOMAIN_NAME ;;
 esac
 
