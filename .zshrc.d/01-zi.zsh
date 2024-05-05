@@ -163,6 +163,11 @@ if command -v docker-compose &> /dev/null; then
     zi snippet https://github.com/docker/compose/blob/1.29.2/contrib/completion/zsh/_docker-compose # Last version that has the completion script
 fi
 
+if command -v brew &> /dev/null; then
+    zi ice wait lucid as'completion' blockf
+    zi snippet $(brew --prefix)/share/zsh/site-functions/_brew
+fi
+
 if [ -r "$HOME/.local/lib/kw/_kw" ]; then
     zi ice wait lucid as'completion' blockf
     zi snippet "$HOME/.local/lib/kw/_kw"
