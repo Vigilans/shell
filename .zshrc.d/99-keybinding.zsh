@@ -1,7 +1,7 @@
 # Speical keys
 bindkey '^[[C'  forward-char                                    # Right key
 bindkey '^[[D'  backward-char                                   # Left key
-bindkey '^[[A'  history-substring-search-up			            # Up key, depends on zsh-history-substring-search
+bindkey '^[[A'  history-substring-search-up                     # Up key, depends on zsh-history-substring-search
 bindkey '^[[B'  history-substring-search-down                   # Down key, depends on zsh-history-substring-search
 bindkey '^[[5~' history-beginning-search-backward               # Page up key
 bindkey '^[[6~' history-beginning-search-forward                # Page down key
