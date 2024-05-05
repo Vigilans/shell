@@ -28,6 +28,6 @@ fi
 
 # Setup Shell
 mkdir -p ~/.config && ln -snf $(realpath --relative-to="$HOME/.config" "$SHELL_HOME")  "$HOME/.config/shell"
-for dotfile in $(/bin/ls -A "$SHELL_HOME/.initrc.d/dotfiles"); do
-    ln -snf $(realpath --relative-to="$HOME" "$SHELL_HOME/.initrc.d/dotfiles/$dotfile") "$HOME/$dotfile"
+for dotfile in $(/bin/ls -A "$SHELL_HOME/dotfiles"); do
+    ln -snf $(realpath --relative-to="$HOME" "$SHELL_HOME/dotfiles/$dotfile") "$HOME/$dotfile"
 done
