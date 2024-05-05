@@ -12,9 +12,12 @@ elif command -v yum &> /dev/null; then
     sudo yum -y install wget git tar unzip
 elif command -v apk &> /dev/null; then
     sudo apk add -q wget git tar unzip coreutils file zsh-vcs ncurses findutils
+elif command -v brew &> /dev/null; then
+    brew install wget coreutils # git tar unzip installed by xcode CLI tools
+    export PATH="$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH"
 else
     echo "Package manager not supported for now"
-    return 1
+    exit 1
 fi
 
 # Setup ZI
