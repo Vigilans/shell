@@ -20,8 +20,3 @@ export SHELL_CONFIG_HOME=$XDG_CONFIG_HOME/shell
 
 # Leave globbing expressions which don't match anything as-is
 setopt +o nomatch
-
-# Load profile scripts
-if [ -r "$SHELL_CONFIG_HOME/profile.sh" ]; then
-    . $SHELL_CONFIG_HOME/profile.sh
-fi
