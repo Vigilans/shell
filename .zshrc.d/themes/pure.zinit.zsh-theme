@@ -1,5 +1,5 @@
 # Load pure theme through zi
-zi light-mode for compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh' sindresorhus/pure
+zinit light-mode for compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh' sindresorhus/pure
 
 # Configure options
 zstyle ':prompt:pure:prompt:success' color '36'

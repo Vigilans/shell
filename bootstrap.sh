@@ -20,11 +20,10 @@ else
     exit 1
 fi
 
-# Setup ZI
-[ ! -s ~/.config/zi ] && mkdir -p ~/.zi && git clone https://github.com/z-shell/zi.git ~/.zi/bin
-
-# Setup Zsh ZI's loader
-[ ! -s ~/.config/zi/init.zsh ] && mkdir -p ~/.config/zi && wget https://raw.githubusercontent.com/z-shell/zi-src/main/lib/zsh/init.zsh -O ~/.config/zi/init.zsh
+# Setup Zinit
+ZINIT_HOME="${XDG_DATA_HOME:-"$HOME/.local/share"}/zinit/zinit.git"
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 
 # Setup Shell
 mkdir -p ~/.config && ln -snf $(realpath --relative-to="$HOME/.config" "$SHELL_HOME")  "$HOME/.config/shell"

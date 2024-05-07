@@ -37,8 +37,8 @@ fi
 if command -v fzf &> /dev/null; then
     if [ -r /usr/share/fzf/key-bindings.zsh ]; then
         source /usr/share/fzf/key-bindings.zsh
-    elif type zi &> /dev/null; then
-        fzf_keybindings=$(zi run junegunn/fzf realpath key-bindings.zsh)
+    elif type zinit &> /dev/null; then
+        fzf_keybindings=$(zinit run junegunn/fzf realpath key-bindings.zsh)
         [ -r $fzf_keybindings ] && source $fzf_keybindings
         unset fzf_keybindings
     fi
