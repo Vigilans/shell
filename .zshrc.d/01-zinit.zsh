@@ -61,13 +61,6 @@ if ! command -v yq &> /dev/null; then
     zinit light mikefarah/yq
 fi
 
-if ! command -v micro &> /dev/null; then
-    zinit ice from"gh-r" as'program' mv'micro* release' atclone'
-        ln -svf $PWD/release/micro $ZPFX/bin
-        ln -svf $PWD/release/micro.1 $ZPFX/man/man1'
-    zinit light @zyedidia/micro
-fi
-
 if ! command -v hexyl &> /dev/null; then
     zinit ice from'gh-r' as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'hexyl* release' atclone'
         ln -svf $PWD/release/hexyl $ZPFX/bin
