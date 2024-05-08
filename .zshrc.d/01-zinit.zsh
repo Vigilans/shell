@@ -107,6 +107,16 @@ if ! command -v bat-modules &> /dev/null; then
 fi
 
 # Completions
+zinit ice wait lucid as'completion' blockf
+zinit light zsh-users/zsh-completions
+
+zinit ice wait lucid as'null' atload'
+    compdef _man batman
+    compdef _rg ripgrep batgrep
+    compdef _delta batdiff'
+zinit light eth-p/bat-extras
+
+# Completion snippets
 function zinit_snippet_completion_from_stdin() {
     local command=$1
     local completion
@@ -123,22 +133,6 @@ function zinit_snippet_completion_from_stdin() {
     zinit ice wait lucid as'completion' blockf
     zinit snippet "$ZSH_CACHE_DIR/completions/_$command"
 }
-
-zinit ice wait lucid as'completion' blockf
-zinit light zsh-users/zsh-completions
-
-zinit ice wait lucid as'completion' blockf
-zinit light esc/conda-zsh-completion
-
-zinit ice wait lucid as'completion' blockf
-zinit snippet https://github.com/bazelbuild/bazel/blob/master/scripts/zsh_completion/_bazel
-
-zinit ice wait lucid as'program' has'bat' atload'
-    compdef _man batman
-    compdef _rg ripgrep batgrep
-    compdef _delta batdiff
-    zinit unload -q eth-p/bat-extras'
-zinit light eth-p/bat-extras
 
 if command -v docker &> /dev/null; then
     if ! docker completion zsh 2>/dev/null | zinit_snippet_completion_from_stdin docker; then
@@ -157,13 +151,23 @@ if command -v brew &> /dev/null; then
     zinit snippet $(brew --prefix)/share/zsh/site-functions/_brew
 fi
 
+if command -v conda &> /dev/null; then
+    zinit ice wait lucid as'completion' blockf
+    zinit light esc/conda-zsh-completion
+fi
+
+if command -v bazel &> /dev/null; then
+    zinit ice wait lucid as'completion' blockf
+    zinit snippet https://github.com/bazelbuild/bazel/blob/master/scripts/zsh_completion/_bazel
+fi
+
 if [ -r "$HOME/.local/lib/kw/_kw" ]; then
     zinit ice wait lucid as'completion' blockf
     zinit snippet "$HOME/.local/lib/kw/_kw"
 fi
 
 for completion in $SHELL_RC_HOME/vendors/completions/_*; do
-    if [ -r "$completion" ]; then
+    if [ -r "$completion" ] && command -v ${${completion:t}#_} &> /dev/null; then
         zinit ice wait lucid as'completion' blockf
         zinit snippet "$completion"
     fi
@@ -185,7 +189,7 @@ if command -v alacritty &> /dev/null; then
     zinit snippet https://github.com/alacritty/alacritty/blob/master/extra/completions/_alacritty
 fi
 
-# Snippets
+# Plugin Snippets
 # zinit ice wait lucid
 # zinit snippet OMZ::plugins/colored-man-pages/colored-man-pages.plugin.zsh
 
