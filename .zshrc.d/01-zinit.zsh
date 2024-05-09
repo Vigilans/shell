@@ -150,6 +150,11 @@ if command -v docker-compose &> /dev/null; then
     zinit snippet https://github.com/docker/compose/blob/1.29.2/contrib/completion/zsh/_docker-compose # Last version that has the completion script
 fi
 
+for command in kubectl helm kind; do
+    command -v $command &> /dev/null && zinit_snippet_completion_from_stdin $command "$command completion zsh"
+done
+unset command
+
 if command -v brew &> /dev/null; then
     zinit ice wait lucid as'completion' blockf
     zinit snippet $(brew --prefix)/share/zsh/site-functions/_brew
