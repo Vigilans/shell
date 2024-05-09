@@ -3,7 +3,9 @@ export ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 source "$ZINIT_HOME/zinit.zsh" || return 0
 export PATH="$ZPFX/bin:$PATH" # Export zinit's prefix to PATH
 export MANPATH=":$MANPATH" # Fix MANPATH ignoring system default by prefixing a colon
-mkdir -p "$ZPFX"/{bin,man}
+[ -e "$ZPFX/bin" ] || mkdir -p "$ZPFX/bin"
+[ -e "$ZPFX/man" ] || mkdir -p "$ZPFX/man"/man{1..9}
+[ -e "$ZSH_CACHE_DIR/completions" ] || mkdir -p "$ZSH_CACHE_DIR/completions"
 
 # Programs
 if ! command -v fzf &> /dev/null; then
@@ -119,15 +121,17 @@ zinit light eth-p/bat-extras
 # Completion snippets
 function zinit_snippet_completion_from_stdin() {
     local command=$1
-    local completion
-    read completion
-    if [ -z "$completion" ]; then
-        return 1
-    fi
-    if ! [ -d "$ZSH_CACHE_DIR/completions" ]; then
-        mkdir -p "$ZSH_CACHE_DIR/completions"
-    fi
+    local completion_cmdline=$2
     if ! [ -r "$ZSH_CACHE_DIR/completions/_$command" ]; then
+        local completion
+        if [ -n "$completion_cmdline" ]; then
+            completion=$(${(z)completion_cmdline})
+        else
+            read -d '' -r completion
+        fi
+        if [ -z "$completion" ]; then
+            return 1
+        fi
         echo "$completion" > "$ZSH_CACHE_DIR/completions/_$command"
     fi
     zinit ice wait lucid as'completion' blockf
@@ -135,7 +139,7 @@ function zinit_snippet_completion_from_stdin() {
 }
 
 if command -v docker &> /dev/null; then
-    if ! docker completion zsh 2>/dev/null | zinit_snippet_completion_from_stdin docker; then
+    if ! zinit_snippet_completion_from_stdin docker 'docker completion zsh'; then
         zinit ice wait lucid as'completion' blockf
         zinit snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
     fi
