@@ -1,8 +1,6 @@
 # Load zinit
 export ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 source "$ZINIT_HOME/zinit.zsh" || return 0
-export PATH="$ZPFX/bin:$PATH" # Export zinit's prefix to PATH
-export MANPATH=":$MANPATH" # Fix MANPATH ignoring system default by prefixing a colon
 [ -e "$ZPFX/bin" ] || mkdir -p "$ZPFX/bin"
 [ -e "$ZPFX/man" ] || mkdir -p "$ZPFX/man"/man{1..9}
 [ -e "$ZSH_CACHE_DIR/completions" ] || mkdir -p "$ZSH_CACHE_DIR/completions"

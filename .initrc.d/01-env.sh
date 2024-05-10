@@ -19,3 +19,7 @@ fi
 if [[ "$TERM" = "xterm-kitty" ]]; then
     export TERM="xterm-256color"
 fi
+
+if [ "${MANPATH:0:1}" != ":" ]; then
+    export MANPATH=":$MANPATH" # Fix MANPATH ignoring system default by prefixing a colon
+fi
