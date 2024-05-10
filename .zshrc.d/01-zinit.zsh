@@ -209,7 +209,7 @@ zinit ice wait lucid atload"!_zsh_autosuggest_start"
 zinit light zsh-users/zsh-autosuggestions
 
 zinit ice wait lucid
-zinit light zsh-users/zsh-syntax-highlighting
+zinit light zdharma/fast-syntax-highlighting
 
 zinit ice wait lucid
 zinit light agkozak/zsh-z
