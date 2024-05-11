@@ -106,6 +106,12 @@ if ! command -v bat-modules &> /dev/null; then
     zinit light eth-p/bat-extras
 fi
 
+if ! command -v lazygit &> /dev/null; then
+    zinit ice from"gh-r" as'program' atpull'%atclone' atclone'
+        ln -svf $PWD/lazygit $ZPFX/bin'
+    zinit light jesseduffield/lazygit
+fi
+
 # Completions
 zinit ice wait lucid as'completion' blockf
 zinit light zsh-users/zsh-completions
@@ -215,8 +221,17 @@ zinit light agkozak/zsh-z
 zinit ice wait lucid
 zinit light reegnz/jq-zsh-plugin
 
-zinit ice atload'export PATH=$PATH:$FORGIT_INSTALL_DIR/bin'
-FORGIT_NO_ALIASES=1 zinit light wfxr/forgit\
+zinit ice wait lucid atinit'export FORGIT_NO_ALIASES=1' atpull'%atclone' atclone'ln -svf $PWD/bin/git-forgit $ZPFX/bin'
+zinit light wfxr/forgit
+
+zinit ice wait lucid as'null' atload'zi run tj/git-extras source etc/git-extras-completion.zsh' atpull'%atclone' atclone'make -C $PWD PREFIX=$ZPFX'
+zinit light tj/git-extras
+
+zinit ice wait lucid
+zinit light paulirish/git-open
+
+zinit ice wait lucid as'null' atpull'%atclone' atclone'ln -svf $PWD/git-recall $ZPFX/bin'
+zinit light Fakerr/git-recall
 
 zinit ice wait lucid atload"zpcompinit; zpcdreplay" # Put compinit at last lazy load completion plugin
 zinit light Aloxaf/fzf-tab
