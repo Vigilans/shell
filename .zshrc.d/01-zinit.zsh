@@ -56,10 +56,22 @@ if ! command -v rg &> /dev/null; then # `grep` alternative
     zinit light BurntSushi/ripgrep
 fi
 
+if ! command -v jq &> /dev/null; then
+    zinit ice from'gh-r' id-as as'program' mv'jq* jq' atclone'
+        ln -svf $PWD/jq $ZPFX/bin'
+    zinit light jqlang/jq
+fi
+
 if ! command -v yq &> /dev/null; then
     zinit ice from'gh-r' id-as as'program' mv'yq* yq' atclone'
         ln -svf $PWD/yq $ZPFX/bin'
     zinit light mikefarah/yq
+fi
+
+if ! command -v fx &> /dev/null; then # json tui viewer
+    zinit ice from'gh-r' id-as as'program' mv'**/fx* fx' atclone'
+        ln -svf $PWD/fx $ZPFX/bin'
+    zinit light antonmedv/fx
 fi
 
 if ! command -v hexyl &> /dev/null; then # `xxd` and `hexdump` alternative
