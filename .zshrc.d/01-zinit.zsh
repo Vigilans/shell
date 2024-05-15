@@ -118,6 +118,20 @@ if ! command -v lazygit &> /dev/null; then # `git` tui
     zinit light jesseduffield/lazygit
 fi
 
+# Python programs
+if command -v python &> /dev/null || command -v python3 &> /dev/null; then
+    # Python venv manager
+    zinit ice from'gh-r' id-as as'program' mv'uv* release' atclone'
+        ln -svf $PWD/release/uv $ZPFX/bin'
+    zinit light astral-sh/uv
+
+    # Zinit wide venv at "$ZINIT_HOME/python"
+    if ! [ -d "$ZINIT_HOME/python" ]; then
+        uv venv "$ZINIT_HOME/python"
+        zinit run uv ln -svf "$ZINIT_HOME/python" .venv
+    fi
+fi
+
 # Completions
 zinit ice wait lucid as'completion' blockf
 zinit light zsh-users/zsh-completions
