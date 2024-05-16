@@ -100,12 +100,6 @@ if ! command -v btm &> /dev/null; then # `top` alternative
     zinit light ClementTsang/bottom
 fi
 
-if ! command -v navi &> /dev/null; then
-    zinit ice from'gh-r' id-as as'program' bpick"*$(host_triplet_trivial)*" has'fzf' atclone'
-        ln -svf $PWD/navi $ZPFX/bin'
-    zinit light denisidoro/navi
-fi
-
 if ! command -v vivid &> /dev/null; then
     zinit ice from'gh-r' id-as as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'vivid*/vivid vivid' atclone'
         ln -svf $PWD/vivid $ZPFX/bin'
@@ -129,6 +123,14 @@ if command -v python &> /dev/null || command -v python3 &> /dev/null; then
     if ! [ -d "$ZINIT_HOME/python" ]; then
         uv venv "$ZINIT_HOME/python"
         zinit run uv ln -svf "$ZINIT_HOME/python" .venv
+    fi
+
+    if ! command -v sgpt &> /dev/null; then
+        zinit ice id-as'sgpt' as'null' atclone'
+            source "$ZINIT_HOME/python/bin/activate"
+            uv pip install -e .
+            ln -svf "$ZINIT_HOME/python/bin/sgpt" $ZPFX/bin'
+        zinit light TheR1D/shell_gpt
     fi
 fi
 

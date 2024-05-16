@@ -1,0 +1,113 @@
+#compdef sgpt
+
+# Purpose:
+# This script file `_sgpt` should be placed in your fpath to provide zsh completions functionality for SGPT commands.
+# It utilizes zsh's native completion system by defining specific completion behaviors tailored to SGPT commands.
+
+# Installation:
+# 1. Check your current fpath by executing: `echo $fpath` in your zsh shell.
+# 2. To introduce a new directory to fpath, edit your .zshrc file:
+#    Example: `fpath=($HOME/.zsh-completions $fpath)`
+# 3. Store this script file in the directory you have added to your fpath.
+# 4. For a system-wide installation on Linux:
+#    Download and deploy this script with the following command:
+#    sudo wget -O /usr/share/zsh/site-functions/_sgpt https://gist.githubusercontent.com/obeone/dc66f2ca40b8254edab61ac50cdec0f3/raw/_sgpt.zsh
+
+# Contributions:
+# Principal contributions by:
+# - ChatGPT [ZSH Expert](https://chatgpt.com/g/g-XczdbjXSW-zsh-expert) as the primary creator.
+# - Guidance and revisions by [obeone](https://github.com/obeone).
+
+# Note:
+# - This configuration file presupposes the utilization of Zsh as your primary shell environment.
+# - It is crucial to restart your zsh session subsequent to alterations made to your fpath to ensure the updates are effectively recognized.
+
+
+local model_cache_file="${HOME}/.cache/sgpt_models"
+local sgptrc="${HOME}/.config/shell_gpt/.sgptrc"
+
+# Source configuration if it exists
+[[ -f "$sgptrc" ]] && source "$sgptrc"
+
+_arguments -s \
+  '1:prompt:_files' \
+  '--model[specify the model to use]:model:_sgpt_models' \
+  '--temperature[randomness of generated output]:temperature (range 0.0 to 2.0)' \
+  '--top-p[limits highest probable tokens]:top-p (range 0.0 to 1.0)' \
+  '--md[prettify markdown output]::' \
+  '--no-md[disable prettify markdown output]' \
+  '--editor[open $EDITOR to provide a prompt]::' \
+  '--no-editor[do not open $EDITOR]' \
+  '--cache[cache completion results]::' \
+  '--no-cache[do not cache completion results]' \
+  '--version[show version]' \
+  '--help[show help]' \
+  '--shell[generate and execute shell commands]' \
+  '-s[alias for --shell]' \
+  '--no-interaction[disable interaction for --shell]' \
+  '--interaction[enable interaction for --shell]' \
+  '--describe-shell[describe a shell command]::' \
+  '--code[generate only code]' \
+  '--no-functions[disable function calls]' \
+  '--functions[enable function calls]' \
+  '--chat[follow conversation with id, use "temp" for quick session]:chat id:_sgpt_chats' \
+  '--repl[start a REPL session]:session id:_sgpt_chats' \
+  '--show-chat[show all messages from provided chat id]:chat id:_sgpt_chats' \
+  '--list-chats[list all existing chat ids]' \
+  '--role[set system role for GPT model]:role:_sgpt_roles' \
+  '--create-role[create role]:role name:_invalidate_roles_cache' \
+  '--show-role[show role]:role name:_sgpt_roles' \
+  '--list-roles[list roles]'
+
+function _sgpt_chats {
+    local -a chats
+    local cache_file="${HOME}/.cache/sgpt_chats"
+
+    # Check cache
+    if [[ -f "$cache_file" ]] && (( $(date +%s) - $(stat -c "%Y" "$cache_file" 2>/dev/null || stat -f "%m" "$cache_file" 2>/dev/null) < 43200 )); then
+        chats=("${(@f)$(<"$cache_file")}")
+    else
+        # Fetch chats dynamically and cache results
+        chats=("${(@f)$(sgpt --list-chats | xargs -n 1 basename)}")
+        print -l $chats > "$cache_file"
+    fi
+    _describe -t chats 'available chats' chats
+}
+
+function _sgpt_models {
+    local -a models
+
+    # Fetch OpenAI models if API key is available, exclude blacklisted models
+    if [[ -n "$OPENAI_API_KEY" ]]; then
+        models+=("${(@f)$(curl -s "$OPENAI_BASE_URL/models" -H "Authorization: Bearer $OPENAI_API_KEY" | jq -r '.data[].id | select(test("dall-e.*|text-embedding.*|tts.*|whisper.*") | not)')}")
+    fi
+
+    # Fetch Ollama models directly every time, ensure using the right column and escape colon
+    if [[ "$USE_LITELLM" == "true" ]]; then
+        models+=("${(@f)$(ollama list | awk 'NR > 1 {print "ollama/"$1}' | sed 's/:/\\:/g')}")
+    fi
+
+    _describe -t models 'available models' models
+}
+
+function _sgpt_roles {
+    local -a roles
+    local cache_file="${HOME}/.cache/sgpt_roles"
+
+    # Check cache
+    if [[ -f "$cache_file" ]] && (( $(date +%s) - $(stat -c "%Y" "$cache_file" 2>/dev/null || stat -f "%m" "$cache_file" 2>/dev/null) < 86400 )); then
+        roles=("${(@f)$(<"$cache_file")}")
+    else
+        roles=("${(@f)$(sgpt --list-roles | awk -F/ '{print $NF}' | sed 's/\.json$//')}")
+        print -l $roles > "$cache_file"
+    fi
+    _describe -t roles 'available roles' roles
+}
+
+function _invalidate_roles_cache {
+    local cache_file="${HOME}/.cache/sgpt_roles"
+    rm -f "$cache_file"
+    _sgpt_roles  # Refresh the roles list
+}
+
+# Ensure you place this script under your fpath, commonly at ~/.zsh/completions/
