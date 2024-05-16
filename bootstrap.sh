@@ -4,16 +4,16 @@ export SHELL_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && p
 
 # Setup necessary packages
 if command -v pacman &> /dev/null; then
-    sudo pacman --noconfirm -S wget git tar unzip inetutils
+    sudo pacman --noconfirm -S wget git tar unzip make less inetutils util-linux
 elif command -v apt-get &> /dev/null; then
     sudo apt-get -y update
-    sudo apt-get -y install wget git tar unzip
+    sudo apt-get -y install wget git tar unzip make less bsdmainutils
 elif command -v yum &> /dev/null; then
-    sudo yum -y install wget git tar unzip
+    sudo yum -y install wget git tar unzip make less util-linux
 elif command -v apk &> /dev/null; then
-    sudo apk add -q wget git tar unzip coreutils file zsh-vcs ncurses findutils
+    sudo apk add -q wget git tar unzip make less coreutils file zsh-vcs ncurses findutils util-linux
 elif command -v brew &> /dev/null; then
-    brew install wget coreutils # git tar unzip installed by xcode CLI tools
+    brew install wget coreutils util-linux # git tar unzip installed by xcode CLI tools
     export PATH="$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH"
 else
     echo "Package manager not supported for now"
