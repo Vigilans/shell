@@ -56,7 +56,7 @@ if ! command -v rg &> /dev/null; then # `grep` alternative
     zinit light BurntSushi/ripgrep
 fi
 
-if ! command -v jq &> /dev/null; then
+if ! [ -x "$ZPFX/bin/jq" ]; then # Always use repository managed `jq` to ensure latest features
     zinit ice from'gh-r' id-as as'program' mv'jq* jq' atclone'
         ln -svf $PWD/jq $ZPFX/bin'
     zinit light jqlang/jq
