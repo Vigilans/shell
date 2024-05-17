@@ -112,8 +112,16 @@ if ! command -v lazygit &> /dev/null; then # `git` tui
     zinit light jesseduffield/lazygit
 fi
 
+if ! command -v micromamba &> /dev/null; then # Single binary verseion of `conda` for managing venvs, switch to `uv` after it has support
+    zinit ice from'gh-r' id-as'micromamba' as'program' atpull'%atclone' atclone'
+        mkdir -p $PWD/bin && mv $PWD/micromamba* $PWD/bin/micromamba
+        printf "%s\n" "#!/usr/bin/env bash" "" "MAMBA_ROOT_PREFIX=\${MAMBA_ROOT_PREFIX:-\$HOME/.mamba} exec \$(realpath -m \${BASH_SOURCE:-\$0}/$(realpath --relative-to=$ZPFX/bin/micromamba $PWD/bin/micromamba)) \"\$@\"" > $ZPFX/bin/micromamba
+        chmod +x $ZPFX/bin/micromamba'
+    zinit light mamba-org/micromamba-releases
+fi
+
 # Python programs
-if command -v python &> /dev/null || command -v python3 &> /dev/null; then
+if command -v python &> /dev/null || command -v python3 &> /dev/null || command -v micromamba &> /dev/null; then
     # Python venv manager
     zinit ice from'gh-r' id-as as'program' mv'uv* release' atclone'
         ln -svf $PWD/release/uv $ZPFX/bin'
@@ -121,7 +129,13 @@ if command -v python &> /dev/null || command -v python3 &> /dev/null; then
 
     # Zinit wide venv at "$ZINIT_HOME/python"
     if ! [ -d "$ZINIT_HOME/python" ]; then
-        uv venv "$ZINIT_HOME/python"
+        if command -v micromamba &> /dev/null; then # Use zinit managed python, to keep available across host machines and devcontainers
+            MAMBA_ROOT_PREFIX=$(zinit run micromamba pwd) micromamba run -n base micromamba install -y -c main python
+            MAMBA_ROOT_PREFIX=$(zinit run micromamba pwd) micromamba run -n base uv venv --prompt zinit --seed "$ZINIT_HOME/python"
+            zinit run micromamba rm -rf pkgs # Clean cache
+        else
+            uv venv --prompt zinit --seed "$ZINIT_HOME/python"
+        fi
         zinit run uv ln -svf "$ZINIT_HOME/python" .venv
     fi
 
