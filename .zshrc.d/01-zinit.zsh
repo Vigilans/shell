@@ -122,10 +122,11 @@ fi
 
 # Python programs
 if command -v python &> /dev/null || command -v python3 &> /dev/null || command -v micromamba &> /dev/null; then
-    # Python venv manager
+    if ! command -v uv &> /dev/null; then # Python venv manager
     zinit ice from'gh-r' id-as as'program' mv'uv* release' atclone'
         ln -svf $PWD/release/uv $ZPFX/bin'
     zinit light astral-sh/uv
+    fi
 
     # Zinit wide venv at "$ZINIT_HOME/python"
     if ! [ -d "$ZINIT_HOME/python" ]; then
@@ -243,10 +244,10 @@ zinit light reegnz/jq-zsh-plugin
 zinit ice wait lucid id-as atpull'%atclone' atclone'ln -svf $PWD/bin/git-forgit $ZPFX/bin' atinit'export FORGIT_NO_ALIASES=1'
 zinit light wfxr/forgit
 
-zinit ice wait lucid id-as as'null' atpull'%atclone' atclone'make -C $PWD PREFIX=$ZPFX' atload'zi run tj/git-extras source etc/git-extras-completion.zsh'
+zinit ice wait lucid id-as as'null' atpull'%atclone' atclone'make -C $PWD PREFIX=$ZPFX' atload'zi run git-extras source etc/git-extras-completion.zsh'
 zinit light tj/git-extras
 
-zinit ice wait lucid id-as
+zinit ice wait lucid id-as as'null' atload'export PATH=$PATH:$(zi run git-open pwd)'
 zinit light paulirish/git-open
 
 zinit ice wait lucid id-as as'null' atpull'%atclone' atclone'chmod +x $PWD/git-recall && ln -svf $PWD/git-recall $ZPFX/bin'
