@@ -16,6 +16,12 @@ if [ -z "$PDFVIEWER" ]; then
     fi
 fi
 
+if [ -z "$GPG_TTY" ] && type gpg 1>/dev/null 2>&1; then
+    if [ "$TERM_PROGRAM" = "vscode" ] && [ -n "$VSCODE_IPC_HOOK_CLI" ]; then
+        export GPG_TTY=$(tty)
+    fi
+fi
+
 if [[ "$TERM" = "xterm-kitty" ]]; then
     export TERM="xterm-256color"
 fi
