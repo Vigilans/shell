@@ -123,9 +123,9 @@ fi
 # Python programs
 if command -v python &> /dev/null || command -v python3 &> /dev/null || command -v micromamba &> /dev/null; then
     if ! command -v uv &> /dev/null; then # Python venv manager
-    zinit ice from'gh-r' id-as as'program' mv'uv* release' atclone'
-        ln -svf $PWD/release/uv $ZPFX/bin'
-    zinit light astral-sh/uv
+        zinit ice from'gh-r' id-as as'program' mv'uv* release' atclone'
+            ln -svf $PWD/release/uv $ZPFX/bin'
+        zinit light astral-sh/uv
     fi
 
     # Zinit wide venv at "$ZINIT_HOME/python"
@@ -159,7 +159,7 @@ function zinit_snippet_completion_from_stdin() {
     if ! [ -r "$ZSH_CACHE_DIR/completions/_$command" ]; then
         local completion
         if [ -n "$completion_cmdline" ]; then
-            completion=$(${(z)completion_cmdline})
+            completion=$(sh -c "$completion_cmdline")
         else
             read -d '' -r completion
         fi
@@ -197,6 +197,10 @@ fi
 if command -v conda &> /dev/null; then
     zinit ice wait lucid id-as as'completion' blockf
     zinit light esc/conda-zsh-completion
+fi
+
+if command -v poetry &> /dev/null; then
+    zinit_snippet_completion_from_stdin poetry "poetry completions zsh | head -n -1"
 fi
 
 if command -v bazel &> /dev/null; then
