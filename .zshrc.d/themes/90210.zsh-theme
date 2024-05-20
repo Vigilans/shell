@@ -75,9 +75,11 @@ function prompt_command() {
     PS1+="$prompt_newline" # new line
 
     # Check for virtual env
-	if [[ -n $CONDA_DEFAULT_ENV ]]; then
+	if [[ -n "$VIRTUAL_ENV_PROMPT" ]]; then
+        PS1+="%B%F{black}($VIRTUAL_ENV_PROMPT)%f%b "
+    elif [[ -n "$CONDA_DEFAULT_ENV" ]]; then
 		PS1+="%B%F{black}(${CONDA_DEFAULT_ENV//[$'\t\r\n']})%f%b "
-    elif [[ -n $VIRTUAL_ENV ]]; then
+    elif [[ -n "$VIRTUAL_ENV" ]]; then
         PS1+="%B%F{black}(${VIRTUAL_ENV:t})%f%b "
     fi
 

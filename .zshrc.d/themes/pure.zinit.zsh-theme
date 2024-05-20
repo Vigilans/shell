@@ -85,6 +85,11 @@ prompt_pure_preprompt_render() {
 	fi
 	unset MATCH MBEGIN MEND
 
+    # VIRTUAL_ENV_PROMPT not used by upstream, we detect it here with highest priority
+    if [[ -n "$VIRTUAL_ENV_PROMPT" ]]; then
+        psvar[12]="$VIRTUAL_ENV_PROMPT"
+    fi
+
 	# Construct the new prompt with a clean preprompt.
 	local -ah ps1=(
 		${(j.-.)preprompt_parts}  # Join parts, dash separated.
