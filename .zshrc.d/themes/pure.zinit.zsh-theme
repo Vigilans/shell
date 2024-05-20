@@ -52,6 +52,7 @@ prompt_pure_preprompt_render() {
     preprompt_time_part+=('%F{$prompt_pure_colors[execution_time]}%*%f') # Reuse the execution_time color.
 
     local -a preprompt_user_part
+    [[ -n $WSL_DISTRO_NAME ]] && prompt_pure_state[username]='%F{$prompt_pure_colors[user]}%n%f%F{$prompt_pure_colors[host]}@%m%f' # Always show username in WSL
     [[ -n $SHELL_DOMAIN_NAME ]] && prompt_pure_state[username]="${prompt_pure_state[username]/\%m\%f/%m.$SHELL_DOMAIN_NAME%f}"
     [[ -n $prompt_pure_state[username] ]] && preprompt_user_part+=($prompt_pure_state[username]) # Username and machine, if applicable.
 
