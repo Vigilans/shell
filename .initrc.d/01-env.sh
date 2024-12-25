@@ -19,6 +19,8 @@ fi
 if [ -z "$GPG_TTY" ] && type gpg 1>/dev/null 2>&1; then
     if [ "$TERM_PROGRAM" = "vscode" ] && [ -n "$VSCODE_IPC_HOOK_CLI" ]; then
         export GPG_TTY=$(tty)
+    elif [ -n "$SSH_CONNECTION" ]; then
+        export GPG_TTY=$(tty)
     fi
 fi
 
