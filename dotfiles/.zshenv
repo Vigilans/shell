@@ -12,11 +12,14 @@
 #
 # Order: zshenv, zprofile, zshrc, zlogin
 
-# Set shell config home varibale
-if [ -z "$XDG_CONFIG_HOME" ]; then
-    export XDG_CONFIG_HOME="$HOME/.config"
-fi
-export SHELL_CONFIG_HOME=$XDG_CONFIG_HOME/shell
+# Load profile scripts for non-login shells if not already loaded
+if [ -z "$SHELL_CONFIG_HOME" ] && [[ ! -o login ]]; then
+    if [ -z "$XDG_CONFIG_HOME" ]; then
+        export XDG_CONFIG_HOME="$HOME/.config"
+    fi
+    export SHELL_CONFIG_HOME=$XDG_CONFIG_HOME/shell
 
-# Leave globbing expressions which don't match anything as-is
-setopt +o nomatch
+    if [ -r "$SHELL_CONFIG_HOME/profile.sh" ]; then
+        . $SHELL_CONFIG_HOME/profile.sh
+    fi
+fi
