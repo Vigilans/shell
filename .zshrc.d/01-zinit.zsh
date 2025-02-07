@@ -28,12 +28,19 @@ zinit ice from'gh-r' id-as as'completion' mv'bat* release' atpull'%atclone' atcl
 zinit light sharkdp/bat
 
 # `ls` alternative
-zinit ice from'gh-r' id-as as'completion' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_libc_using_musl)*" atpull'%atclone' atclone'
-    ln -svf $PWD/bin/exa $ZPFX/bin
-    ln -svf $PWD/man/exa.1 $ZPFX/man/man1
-    ln -svf $PWD/man/exa_colors.5 $ZPFX/man/man5
-    ln -svf $PWD/completions/exa.zsh _exa'
-zinit light ogham/exa
+zinit ice from'gh-r' id-as as'completion' bpick'man-*' atpull'%atclone' atclone'
+    VERSION=$(ls target | sed "s/man-//")
+    if [[ "$(uname -s)" = "Darwin"* ]]; then
+        typeset -A ICE=(ver eza-$VERSION)
+        .zinit-get-latest-gh-r-url-part cargo-bins cargo-quickinstall
+    else
+        .zinit-get-latest-gh-r-url-part eza-community eza
+    fi
+    [ -n "$reply" ] && wget https://github.com/$reply -O eza.tar.gz && tar -xzf eza.tar.gz && rm -f eza.tar.gz && ln -svf $PWD/eza $ZPFX/bin
+    wget https://raw.githubusercontent.com/eza-community/eza/main/completions/zsh/_eza -O _eza
+    for man in $PWD/target/*/*.1; do ln -svf $man $ZPFX/man/man1; done
+    for man in $PWD/target/*/*.5; do ln -svf $man $ZPFX/man/man5; done'
+zinit light eza-community/eza
 
 # `diff` alternative
 zinit ice from'gh-r' id-as as'completion' bpick"*$(HOST_LIBC_PREFER_MUSL=1 host_triplet)*" mv'delta* release' atpull'%atclone' atclone'

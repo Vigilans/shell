@@ -1,18 +1,18 @@
-EXA_OPTIONS="--group --color-scale --time-style=iso"
-EXA_TABLE_OPTIONS="--header --icons --classify --group-directories-first"
-EXA_FULL_TABLE_OPTIONS="--git --links --inode --blocks --extended --created --modified --changed --accessed"
+EZA_OPTIONS="--group --color-scale --time-style=iso"
+EZA_TABLE_OPTIONS="--header --icons --classify --group-directories-first"
+EZA_FULL_TABLE_OPTIONS="--git --links --inode --blocks --extended --created --modified --changed --accessed"
 
 # Directories
 alias ls='ls -h --color=auto'
-alias la="exa -a $EXA_OPTIONS"
-alias ll="exa -l $EXA_OPTIONS $EXA_TABLE_OPTIONS"
-alias lla="exa -l -a $EXA_OPTIONS $EXA_TABLE_OPTIONS"
-alias lll="exa -l $EXA_OPTIONS $EXA_TABLE_OPTIONS $EXA_FULL_TABLE_OPTIONS"
-alias llla="exa -l -a $EXA_OPTIONS $EXA_TABLE_OPTIONS $EXA_FULL_TABLE_OPTIONS"
-alias lt="exa --tree $EXA_OPTIONS $EXA_TABLE_OPTIONS"
-alias lta="exa --tree -a $EXA_OPTIONS $EXA_TABLE_OPTIONS"
+alias la="eza -a $EZA_OPTIONS"
+alias ll="eza -l $EZA_OPTIONS $EZA_TABLE_OPTIONS"
+alias lla="eza -l -a $EZA_OPTIONS $EZA_TABLE_OPTIONS"
+alias lll="eza -l $EZA_OPTIONS $EZA_TABLE_OPTIONS $EZA_FULL_TABLE_OPTIONS"
+alias llla="eza -l -a $EZA_OPTIONS $EZA_TABLE_OPTIONS $EZA_FULL_TABLE_OPTIONS"
+alias lt="eza --tree $EZA_OPTIONS $EZA_TABLE_OPTIONS"
+alias lta="eza --tree -a $EZA_OPTIONS $EZA_TABLE_OPTIONS"
 
-unset EXA_OPTIONS EXA_TABLE_OPTIONS EXA_FULL_TABLE_OPTIONS
+unset EZA_OPTIONS EZA_TABLE_OPTIONS EZA_FULL_TABLE_OPTIONS
 
 # Dots
 alias ..='cd ..'

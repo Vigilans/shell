@@ -1,6 +1,6 @@
-# [ctrl-t/alt-c] Preview with exa and tree
-export FZF_CTRL_T_OPTS="--preview '[ -d {} ] && exa -1 -lh --group --no-time --color=always --icons {} || bat --style=numbers --color=always {}'"
-export FZF_ALT_C_OPTS="--preview 'exa --tree {} | head -200'"
+# [ctrl-t/alt-c] Preview with eza and tree
+export FZF_CTRL_T_OPTS="--preview '[ -d {} ] && eza -1 -lh --group --no-time --color=always --icons {} || bat --style=numbers --color=always {}'"
+export FZF_ALT_C_OPTS="--preview 'eza --tree {} | head -200'"
 
 # [fzf-tab] Use Space key to accept, Shift-Left/Right to scroll preview by page, Home/End to scroll preview to top/end
 zstyle ':fzf-tab:*' fzf-bindings 'space:accept' \
@@ -39,9 +39,9 @@ if [[ -n "$word_is_variable" ]]; then
 fi
 '
 
-# [file and directory] Preview with different strategies (e.g. bat (text file) or exa (directory))
+# [file and directory] Preview with different strategies (e.g. bat (text file) or eza (directory))
 zstyle ':fzf-tab:complete:*:*' fzf-preview '
-exa() { command exa -1 -l --group --no-time --color=always --icons $@ }
+eza() { command eza -1 -l --group --no-time --color=always --icons $@ }
 bat() { command bat --style=numbers --color=always $@ }
 if [[ "$group" =~ ^\\[.*(file|directory|path).*\\]$ ]] && [[ -r "$realpath" ]]; then
 	filetype=$(file -L -b "$realpath")
@@ -53,7 +53,7 @@ if [[ "$group" =~ ^\\[.*(file|directory|path).*\\]$ ]] && [[ -r "$realpath" ]]; 
 			"Debian binary package"*)    dpkg  -f    "$realpath" | bat --language yml; print; dpkg -c "$realpath" | bat --language nix;;
 			"ISO-8859 text"*)            printf "%s:\n%s" "$word" "Unsupported encoding." ;;
 			*"text"* | "JSON data")      bat         "$realpath" ;;
-			"directory")                 exa         "$realpath" ;;
+			"directory")                 eza         "$realpath" ;;
 			"empty")                     bat         "$realpath" ;;
 			*)                           printf "%s:\n%s" "$word" "$(echo "$filetype" | xargs -L 1 -d , | sed "s/^ /- /g" | bat --plain --language yaml)" ;;
 		esac ;;
@@ -65,7 +65,7 @@ zstyle ':fzf-tab:complete:*:options' fzf-preview
 zstyle ':fzf-tab:complete:*:argument-1' fzf-preview
 
 # [tree] Preview with directory tree
-zstyle ':fzf-tab:complete:tree:*' fzf-preview 'exa --tree -a $realpath'
+zstyle ':fzf-tab:complete:tree:*' fzf-preview 'eza --tree -a $realpath'
 
 # [du] Preview with file / directory sizes
 zstyle ':fzf-tab:complete:du:*' fzf-preview 'du -h -d 1 $realpath'
