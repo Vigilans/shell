@@ -11,7 +11,7 @@ source "$ZINIT_HOME/zinit.git/zinit.zsh" || return 0
 ###################
 
 # `fzf` fuzzy finder
-zinit ice from'gh-r' id-as as'program' atpull'%atclone' atclone'
+zinit ice from'gh-r' id-as as'completion' atpull'%atclone' atclone'
     ln -svf $PWD/fzf $ZPFX/bin
     wget https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh -O key-bindings.zsh
     wget https://raw.githubusercontent.com/junegunn/fzf/master/man/man1/fzf.1 -O fzf.1
