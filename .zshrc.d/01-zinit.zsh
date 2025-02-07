@@ -29,11 +29,12 @@ zinit light sharkdp/bat
 
 # `ls` alternative
 zinit ice from'gh-r' id-as as'completion' bpick'man-*' atpull'%atclone' atclone'
-    VERSION=$(ls target | sed "s/man-//")
+    local VERSION=$(ls target | sed "s/man-//")
     if [[ "$(uname -s)" = "Darwin"* ]]; then
-        typeset -A ICE=(ver eza-$VERSION)
+        local -A ICE=(ver eza-$VERSION)
         .zinit-get-latest-gh-r-url-part cargo-bins cargo-quickinstall
     else
+        local -A ICE=(bpick "eza*")
         .zinit-get-latest-gh-r-url-part eza-community eza
     fi
     [ -n "$reply" ] && wget https://github.com/$reply -O eza.tar.gz && tar -xzf eza.tar.gz && rm -f eza.tar.gz && ln -svf $PWD/eza $ZPFX/bin
