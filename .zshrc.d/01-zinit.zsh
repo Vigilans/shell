@@ -147,6 +147,14 @@ if command -v python &> /dev/null || command -v python3 &> /dev/null || command 
             ln -svf "$ZINIT_HOME/python/bin/sgpt" $ZPFX/bin'
         zinit light TheR1D/shell_gpt
     fi
+
+    if ! command -v ansible &> /dev/null; then
+        zinit ice id-as'ansible' as'null' atclone'
+            source "$ZINIT_HOME/python/bin/activate"
+            uv pip install ansible-core
+            ln -svf "$ZINIT_HOME/python/bin/ansible"* $ZPFX/bin'
+        zinit light zdharma-continuum/null
+    fi
 fi
 
 # Completions
