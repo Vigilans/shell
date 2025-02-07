@@ -2,7 +2,10 @@
 alias df='df -h'
 alias du='du -h'
 alias free='free -h'
-alias nano='nano -l'
+
+if type nano 1>/dev/null 2>&1 && [ "$(readlink $(which nano))" != "pico" ]; then
+    alias nano='nano -l'
+fi
 
 # Interactive
 alias cp='cp -i'
