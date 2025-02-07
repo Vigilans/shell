@@ -1,6 +1,6 @@
 EZA_OPTIONS="--group --color-scale --time-style=iso"
 EZA_TABLE_OPTIONS="--header --icons --classify --group-directories-first"
-EZA_FULL_TABLE_OPTIONS="--git --links --inode --blocks --extended --created --modified --changed --accessed"
+EZA_FULL_TABLE_OPTIONS="--git --links --inode --extended --created --modified --changed --accessed"
 
 # Directories
 alias ls='ls -h --color=auto'
