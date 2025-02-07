@@ -10,121 +10,111 @@ source "$ZINIT_HOME/zinit.git/zinit.zsh" || return 0
 # Native Programs #
 ###################
 
-if ! command -v fzf &> /dev/null; then
-    zinit ice from'gh-r' id-as as'program' atpull'%atclone' atclone'
-        ln -svf $PWD/fzf $ZPFX/bin
-        wget https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh -O key-bindings.zsh
-        wget https://raw.githubusercontent.com/junegunn/fzf/master/man/man1/fzf.1 -O fzf.1
-        wget https://raw.githubusercontent.com/junegunn/fzf/master/man/man1/fzf-tmux.1 -O fzf-tmux.1
-        ln -svf $PWD/fzf.1 $ZPFX/man/man1
-        ln -svf $PWD/fzf-tmux.1 $ZPFX/man/man1'
-    zinit light junegunn/fzf
-fi
+# `fzf` fuzzy finder
+zinit ice from'gh-r' id-as as'program' atpull'%atclone' atclone'
+    ln -svf $PWD/fzf $ZPFX/bin
+    wget https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh -O key-bindings.zsh
+    wget https://raw.githubusercontent.com/junegunn/fzf/master/man/man1/fzf.1 -O fzf.1
+    wget https://raw.githubusercontent.com/junegunn/fzf/master/man/man1/fzf-tmux.1 -O fzf-tmux.1
+    ln -svf $PWD/fzf.1 $ZPFX/man/man1
+    ln -svf $PWD/fzf-tmux.1 $ZPFX/man/man1'
+zinit light junegunn/fzf
 
-if ! command -v bat &> /dev/null; then # `cat` alternative
-    zinit ice from'gh-r' id-as as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'bat* release' atpull'%atclone' atclone'
-        ln -svf $PWD/release/bat $ZPFX/bin
-        ln -svf $PWD/release/bat.1 $ZPFX/man/man1
-        ln -svf $PWD/release/autocomplete/bat.zsh _bat'
-    zinit light sharkdp/bat
-fi
+# `cat` alternative
+zinit ice from'gh-r' id-as as'completion' mv'bat* release' atpull'%atclone' atclone'
+    ln -svf $PWD/release/bat $ZPFX/bin
+    ln -svf $PWD/release/bat.1 $ZPFX/man/man1
+    bat --completion zsh > _bat'
+zinit light sharkdp/bat
 
-if ! command -v exa &> /dev/null; then # `ls` alternative
-    zinit ice from'gh-r' id-as as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_libc_using_musl)*" atpull'%atclone' atclone'
-        ln -svf $PWD/bin/exa $ZPFX/bin
-        ln -svf $PWD/man/exa.1 $ZPFX/man/man1
-        ln -svf $PWD/man/exa_colors.5 $ZPFX/man/man5
-        ln -svf $PWD/completions/exa.zsh _exa'
-    zinit light ogham/exa
-fi
+# `ls` alternative
+zinit ice from'gh-r' id-as as'completion' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_libc_using_musl)*" atpull'%atclone' atclone'
+    ln -svf $PWD/bin/exa $ZPFX/bin
+    ln -svf $PWD/man/exa.1 $ZPFX/man/man1
+    ln -svf $PWD/man/exa_colors.5 $ZPFX/man/man5
+    ln -svf $PWD/completions/exa.zsh _exa'
+zinit light ogham/exa
 
-if ! command -v delta &> /dev/null; then # `diff` alternative
-    zinit ice from'gh-r' id-as as'program' bpick"*$(HOST_LIBC_PREFER_MUSL=1 host_triplet)*" mv'delta* release' atpull'%atclone' atclone'
-        ln -svf $PWD/release/delta $ZPFX/bin
-        wget https://raw.githubusercontent.com/dandavison/delta/master/etc/completion/completion.zsh -O _delta'
-    zinit light dandavison/delta
-fi
+# `diff` alternative
+zinit ice from'gh-r' id-as as'completion' bpick"*$(HOST_LIBC_PREFER_MUSL=1 host_triplet)*" mv'delta* release' atpull'%atclone' atclone'
+    ln -svf $PWD/release/delta $ZPFX/bin
+    delta --generate-completion zsh > _delta'
+zinit light dandavison/delta
 
-if ! command -v fd &> /dev/null; then # `find` alternative
-    zinit ice from'gh-r' id-as as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'fd* release' atpull'%atclone' atclone'
-        ln -svf $PWD/release/fd $ZPFX/bin
-        ln -svf $PWD/release/fd.1 $ZPFX/man/man1'
-    zinit light sharkdp/fd
-fi
+# `find` alternative
+zinit ice from'gh-r' id-as as'completion' mv'fd* release' atpull'%atclone' atclone'
+    ln -svf $PWD/release/fd $ZPFX/bin
+    ln -svf $PWD/release/fd.1 $ZPFX/man/man1
+    fd --gen-completions zsh > _fd'
+zinit light sharkdp/fd
 
-if ! command -v rg &> /dev/null; then # `grep` alternative
-    zinit ice from'gh-r' id-as as'program' bpick"ripgrep-*" mv'ripgrep* release' atpull'%atclone' atclone'
-        ln -svf $PWD/release/rg $ZPFX/bin
-        ln -svf $PWD/release/doc/rg.1 $ZPFX/man/man1'
-    zinit light BurntSushi/ripgrep
-fi
+# `grep` alternative
+zinit ice from'gh-r' id-as as'completion' bpick"ripgrep-*" mv'ripgrep* release' atpull'%atclone' atclone'
+    ln -svf $PWD/release/rg $ZPFX/bin
+    ln -svf $PWD/release/doc/rg.1 $ZPFX/man/man1
+    rg --generate=complete-zsh > _rg'
+zinit light BurntSushi/ripgrep
 
-if ! [ -x "$ZPFX/bin/jq" ]; then # Always use repository managed `jq` to ensure latest features
-    zinit ice from'gh-r' id-as as'program' mv'jq* jq' atpull'%atclone' atclone'
-        ln -svf $PWD/jq $ZPFX/bin'
-    zinit light jqlang/jq
-fi
+# Always use repository managed `jq` to ensure latest features
+zinit ice from'gh-r' id-as as'null' mv'jq* jq' atpull'%atclone' atclone'
+    ln -svf $PWD/jq $ZPFX/bin'
+zinit light jqlang/jq
 
-if ! command -v yq &> /dev/null; then
-    zinit ice from'gh-r' id-as as'program' mv'yq* yq' atpull'%atclone' atclone'
-        ln -svf $PWD/yq $ZPFX/bin'
-    zinit light mikefarah/yq
-fi
+# `yq` yaml cli
+zinit ice from'gh-r' id-as as'completion' mv'yq* yq' atpull'%atclone' atclone'
+    ln -svf $PWD/yq $ZPFX/bin
+    yq completion zsh > _yq'
+zinit light mikefarah/yq
 
-if ! command -v fx &> /dev/null; then # json tui viewer
-    zinit ice from'gh-r' id-as as'program' mv'fx* fx' atpull'%atclone' atclone'
-        ln -svf $PWD/fx $ZPFX/bin'
-    zinit light antonmedv/fx
-fi
+# `fx` json tui viewer
+zinit ice from'gh-r' id-as as'completion' mv'fx* fx' atpull'%atclone' atclone'
+    ln -svf $PWD/fx $ZPFX/bin
+    fx --comp zsh > _fx'
+zinit light antonmedv/fx
 
-if ! command -v hexyl &> /dev/null; then # `xxd` and `hexdump` alternative
-    zinit ice from'gh-r' id-as as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'hexyl* release' atpull'%atclone' atclone'
-        ln -svf $PWD/release/hexyl $ZPFX/bin
-        ln -svf $PWD/release/hexyl.1 $ZPFX/man/man1'
-    zinit light sharkdp/hexyl
-fi
+# `xxd` and `hexdump` alternative
+zinit ice from'gh-r' id-as as'null' mv'hexyl* release' atpull'%atclone' atclone'
+    ln -svf $PWD/release/hexyl $ZPFX/bin
+    ln -svf $PWD/release/hexyl.1 $ZPFX/man/man1'
+zinit light sharkdp/hexyl
 
-if ! command -v dust &> /dev/null; then # `du` alternative
-    zinit ice from'gh-r' id-as as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'dust* release' atpull'%atclone' atclone'
-        ln -svf $PWD/release/dust $ZPFX/bin'
-    zinit light bootandy/dust
-fi
+# `du` alternative
+zinit ice from'gh-r' id-as as'completion' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'dust* release' atpull'%atclone' atclone'
+    ln -svf $PWD/release/dust $ZPFX/bin
+    wget https://raw.githubusercontent.com/bootandy/dust/master/completions/_dust -O _dust'
+zinit light bootandy/dust
 
-if ! command -v procs &> /dev/null && [[ "$(uname -m)" = "x86_64" ]]; then # `ps` alternative
-    zinit ice from'gh-r' id-as as'program' atpull'%atclone' atclone'
-        ln -svf $PWD/procs $ZPFX/bin'
-    zinit light dalance/procs
-fi
+# `ps` alternative
+zinit ice from'gh-r' id-as as'completion' atpull'%atclone' atclone'
+    ln -svf $PWD/procs $ZPFX/bin
+    procs --gen-completion-out zsh > _procs'
+zinit light dalance/procs
 
-if ! command -v btm &> /dev/null; then # `top` alternative
-    zinit ice from'gh-r' id-as as'program' bpick"*$(host_triplet)*" atpull'%atclone' atclone'
-        ln -svf $PWD/btm $ZPFX/bin
-        ln -svf $PWD/completion/_btm _btm'
-    zinit light ClementTsang/bottom
-fi
+# `top` alternative
+zinit ice from'gh-r' id-as as'completion' bpick"*$(host_triplet)*" atpull'%atclone' atclone'
+    ln -svf $PWD/btm $ZPFX/bin
+    ln -svf $PWD/completion/_btm _btm'
+zinit light ClementTsang/bottom
 
-if ! command -v vivid &> /dev/null; then
-    zinit ice from'gh-r' id-as as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'vivid*/vivid vivid' atpull'%atclone' atclone'
-        ln -svf $PWD/vivid $ZPFX/bin'
-    zinit load sharkdp/vivid
-fi
+# `vivid` colorizes output of commands
+zinit ice from'gh-r' id-as as'null' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'vivid*/vivid vivid' atpull'%atclone' atclone'
+    ln -svf $PWD/vivid $ZPFX/bin'
+zinit load sharkdp/vivid
 
-if ! command -v lazygit &> /dev/null; then # `git` tui
-    zinit ice from'gh-r' id-as as'program' atpull'%atclone' atclone'
-        ln -svf $PWD/lazygit $ZPFX/bin'
-    zinit light jesseduffield/lazygit
-fi
+# `git` tui
+zinit ice from'gh-r' id-as as'null' atpull'%atclone' atclone'
+    ln -svf $PWD/lazygit $ZPFX/bin'
+zinit light jesseduffield/lazygit
 
 ###################
 # Python Programs #
 ###################
 
-if ! command -v uv &> /dev/null; then # Python venv manager
-    zinit ice from'gh-r' id-as as'program' mv'uv* release' atpull'%atclone' atclone'
-        ln -svf $PWD/release/uv $ZPFX/bin
-        uv generate-shell-completion zsh > _uv'
-    zinit light astral-sh/uv
-fi
+# Python venv manager
+zinit ice from'gh-r' id-as as'completion' mv'uv* release' atpull'%atclone' atclone'
+    ln -svf $PWD/release/uv $ZPFX/bin
+    uv generate-shell-completion zsh > _uv'
+zinit light astral-sh/uv
 
 # Zinit wide venv at "$ZINIT_HOME/plugins/python"
 # Use zinit managed python, to keep available across host machines and devcontainers
@@ -134,62 +124,45 @@ zinit ice id-as'python' as'null' atload'export PATH=$PATH:$(zi run python pwd)/b
     uv venv --prompt zinit --python 3.13 --python-preference only-managed --seed --allow-existing $PWD'
 zinit light zdharma-continuum/null
 
-if ! command -v sgpt &> /dev/null; then
-    zinit ice id-as'sgpt' as'null' atpull'%atclone' atclone'
-        source "$ZINIT_HOME/plugins/python/bin/activate"
-        uv pip install -e .'
-    zinit light TheR1D/shell_gpt
-fi
+zinit ice id-as'sgpt' as'completion' atpull'%atclone' atclone'
+    source "$ZINIT_HOME/plugins/python/bin/activate"
+    uv pip install -e .
+    wget https://gist.githubusercontent.com/obeone/dc66f2ca40b8254edab61ac50cdec0f3/raw/_sgpt.zsh -O _sgpt'
+zinit light TheR1D/shell_gpt
 
-if ! command -v ansible &> /dev/null; then
-    zinit ice id-as'ansible' as'null' atpull'%atclone' atclone'
-        source "$ZINIT_HOME/plugins/python/bin/activate"
-        uv pip install ansible-core'
-    zinit light zdharma-continuum/null
-fi
+zinit ice id-as'ansible' as'null' atpull'%atclone' atclone'
+    source "$ZINIT_HOME/plugins/python/bin/activate"
+    uv pip install ansible-core'
+zinit light zdharma-continuum/null
 
 ###############
 # Completions #
 ###############
 
-zinit ice wait lucid as'completion' blockf
+zinit ice wait lucid id-as as'completion' blockf
 zinit light zsh-users/zsh-completions
 
 function zinit_snippet_completion_from_stdin() {
     local command=$1
     local completion_cmdline=$2
-    if ! [ -r "$ZSH_CACHE_DIR/completions/_$command" ]; then
-        local completion
-        if [ -n "$completion_cmdline" ]; then
-            completion=$(sh -c "$completion_cmdline")
-        else
-            read -d '' -r completion
-        fi
-        if [ -z "$completion" ]; then
-            return 1
-        fi
-        echo "$completion" > "$ZSH_CACHE_DIR/completions/_$command"
-    fi
-    zinit ice wait lucid id-as as'completion' blockf
-    zinit snippet "$ZSH_CACHE_DIR/completions/_$command"
+    zinit ice wait lucid id-as"_$command" as'completion' blockf atpull!'%atclone' atclone"
+        $completion_cmdline > _$command"
+    zinit snippet /dev/null
 }
 
+for command in kubectl helm kind; do
+    command -v $command &> /dev/null && zinit_snippet_completion_from_stdin $command "$command completion zsh"
+done
+unset command
+
 if command -v docker &> /dev/null; then
-    if ! zinit_snippet_completion_from_stdin docker 'docker completion zsh'; then
-        zinit ice wait lucid id-as as'completion' blockf
-        zinit snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
-    fi
+    zinit_snippet_completion_from_stdin docker 'docker completion zsh || curl -sSL https://raw.githubusercontent.com/docker/cli/master/contrib/completion/zsh/_docker'
 fi
 
 if command -v docker-compose &> /dev/null; then
     zinit ice wait lucid id-as as'completion' blockf
     zinit snippet https://github.com/docker/compose/blob/1.29.2/contrib/completion/zsh/_docker-compose # Last version that has the completion script
 fi
-
-for command in kubectl helm kind; do
-    command -v $command &> /dev/null && zinit_snippet_completion_from_stdin $command "$command completion zsh"
-done
-unset command
 
 if command -v brew &> /dev/null; then
     zinit ice wait lucid id-as as'completion' blockf
@@ -274,7 +247,7 @@ zinit ice wait lucid id-as atload'_zsh_autosuggest_start'
 zinit light zsh-users/zsh-autosuggestions
 
 # Plugins using `compdef` need to run after `compinit`
-zinit ice from'gh-r' wait lucid as'null' has'bat' atpull'%atclone' atclone'
+zinit ice from'gh-r' wait lucid id-as as'null' has'bat' atpull'%atclone' atclone'
     for sh in $PWD/bin/*; do ln -svf $sh $ZPFX/bin; done
     for sh in $PWD/man/*; do ln -svf $sh $ZPFX/man/man1; done' atload'
     compdef _man batman
