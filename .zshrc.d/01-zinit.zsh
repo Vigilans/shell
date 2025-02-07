@@ -19,7 +19,7 @@ if ! command -v fzf &> /dev/null; then
 fi
 
 if ! command -v bat &> /dev/null; then # `cat` alternative
-    zinit ice from'gh-r' id-as as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'bat* release' atclone'
+    zinit ice from'gh-r' id-as as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'bat* release' atpull'%atclone' atclone'
         ln -svf $PWD/release/bat $ZPFX/bin
         ln -svf $PWD/release/bat.1 $ZPFX/man/man1
         ln -svf $PWD/release/autocomplete/bat.zsh _bat'
@@ -27,7 +27,7 @@ if ! command -v bat &> /dev/null; then # `cat` alternative
 fi
 
 if ! command -v exa &> /dev/null; then # `ls` alternative
-    zinit ice from'gh-r' id-as as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_libc_using_musl)*" atclone'
+    zinit ice from'gh-r' id-as as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_libc_using_musl)*" atpull'%atclone' atclone'
         ln -svf $PWD/bin/exa $ZPFX/bin
         ln -svf $PWD/man/exa.1 $ZPFX/man/man1
         ln -svf $PWD/man/exa_colors.5 $ZPFX/man/man5
@@ -43,65 +43,65 @@ if ! command -v delta &> /dev/null; then # `diff` alternative
 fi
 
 if ! command -v fd &> /dev/null; then # `find` alternative
-    zinit ice from'gh-r' id-as as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'fd* release' atclone'
+    zinit ice from'gh-r' id-as as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'fd* release' atpull'%atclone' atclone'
         ln -svf $PWD/release/fd $ZPFX/bin
         ln -svf $PWD/release/fd.1 $ZPFX/man/man1'
     zinit light sharkdp/fd
 fi
 
 if ! command -v rg &> /dev/null; then # `grep` alternative
-    zinit ice from'gh-r' id-as as'program' bpick"ripgrep-*" mv'ripgrep* release' atclone'
+    zinit ice from'gh-r' id-as as'program' bpick"ripgrep-*" mv'ripgrep* release' atpull'%atclone' atclone'
         ln -svf $PWD/release/rg $ZPFX/bin
         ln -svf $PWD/release/doc/rg.1 $ZPFX/man/man1'
     zinit light BurntSushi/ripgrep
 fi
 
 if ! [ -x "$ZPFX/bin/jq" ]; then # Always use repository managed `jq` to ensure latest features
-    zinit ice from'gh-r' id-as as'program' mv'jq* jq' atclone'
+    zinit ice from'gh-r' id-as as'program' mv'jq* jq' atpull'%atclone' atclone'
         ln -svf $PWD/jq $ZPFX/bin'
     zinit light jqlang/jq
 fi
 
 if ! command -v yq &> /dev/null; then
-    zinit ice from'gh-r' id-as as'program' mv'yq* yq' atclone'
+    zinit ice from'gh-r' id-as as'program' mv'yq* yq' atpull'%atclone' atclone'
         ln -svf $PWD/yq $ZPFX/bin'
     zinit light mikefarah/yq
 fi
 
 if ! command -v fx &> /dev/null; then # json tui viewer
-    zinit ice from'gh-r' id-as as'program' mv'**/fx* fx' atclone'
+    zinit ice from'gh-r' id-as as'program' mv'fx* fx' atpull'%atclone' atclone'
         ln -svf $PWD/fx $ZPFX/bin'
     zinit light antonmedv/fx
 fi
 
 if ! command -v hexyl &> /dev/null; then # `xxd` and `hexdump` alternative
-    zinit ice from'gh-r' id-as as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'hexyl* release' atclone'
+    zinit ice from'gh-r' id-as as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'hexyl* release' atpull'%atclone' atclone'
         ln -svf $PWD/release/hexyl $ZPFX/bin
         ln -svf $PWD/release/hexyl.1 $ZPFX/man/man1'
     zinit light sharkdp/hexyl
 fi
 
 if ! command -v dust &> /dev/null; then # `du` alternative
-    zinit ice from'gh-r' id-as as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'dust* release' atclone'
+    zinit ice from'gh-r' id-as as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'dust* release' atpull'%atclone' atclone'
         ln -svf $PWD/release/dust $ZPFX/bin'
     zinit light bootandy/dust
 fi
 
 if ! command -v procs &> /dev/null && [[ "$(uname -m)" = "x86_64" ]]; then # `ps` alternative
-    zinit ice from'gh-r' id-as as'program' atclone'
+    zinit ice from'gh-r' id-as as'program' atpull'%atclone' atclone'
         ln -svf $PWD/procs $ZPFX/bin'
     zinit light dalance/procs
 fi
 
 if ! command -v btm &> /dev/null; then # `top` alternative
-    zinit ice from'gh-r' id-as as'program' bpick"*$(host_triplet)*" atclone'
+    zinit ice from'gh-r' id-as as'program' bpick"*$(host_triplet)*" atpull'%atclone' atclone'
         ln -svf $PWD/btm $ZPFX/bin
         ln -svf $PWD/completion/_btm _btm'
     zinit light ClementTsang/bottom
 fi
 
 if ! command -v vivid &> /dev/null; then
-    zinit ice from'gh-r' id-as as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'vivid*/vivid vivid' atclone'
+    zinit ice from'gh-r' id-as as'program' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'vivid*/vivid vivid' atpull'%atclone' atclone'
         ln -svf $PWD/vivid $ZPFX/bin'
     zinit load sharkdp/vivid
 fi
@@ -123,7 +123,7 @@ fi
 # Python programs
 if command -v python &> /dev/null || command -v python3 &> /dev/null || command -v micromamba &> /dev/null; then
     if ! command -v uv &> /dev/null; then # Python venv manager
-        zinit ice from'gh-r' id-as as'program' mv'uv* release' atclone'
+        zinit ice from'gh-r' id-as as'program' mv'uv* release' atpull'%atclone' atclone'
             ln -svf $PWD/release/uv $ZPFX/bin'
         zinit light astral-sh/uv
     fi
@@ -141,7 +141,7 @@ if command -v python &> /dev/null || command -v python3 &> /dev/null || command 
     fi
 
     if ! command -v sgpt &> /dev/null; then
-        zinit ice id-as'sgpt' as'null' atclone'
+        zinit ice id-as'sgpt' as'null' atpull'%atclone' atclone'
             source "$ZINIT_HOME/python/bin/activate"
             uv pip install -e .
             ln -svf "$ZINIT_HOME/python/bin/sgpt" $ZPFX/bin'
