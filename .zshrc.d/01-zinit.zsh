@@ -112,49 +112,34 @@ if ! command -v lazygit &> /dev/null; then # `git` tui
     zinit light jesseduffield/lazygit
 fi
 
-if ! command -v micromamba &> /dev/null; then # Single binary verseion of `conda` for managing venvs, switch to `uv` after it has support
-    zinit ice from'gh-r' id-as'micromamba' as'program' atpull'%atclone' atclone'
-        mkdir -p $PWD/bin && mv $PWD/micromamba* $PWD/bin/micromamba
-        printf "%s\n" "#!/usr/bin/env bash" "" "MAMBA_ROOT_PREFIX=\${MAMBA_ROOT_PREFIX:-\$HOME/.mamba} exec \$(realpath -m \${BASH_SOURCE:-\$0}/$(realpath --relative-to=$ZPFX/bin/micromamba $PWD/bin/micromamba)) \"\$@\"" > $ZPFX/bin/micromamba
-        chmod +x $ZPFX/bin/micromamba'
-    zinit light mamba-org/micromamba-releases
-fi
-
 # Python programs
-if command -v python &> /dev/null || command -v python3 &> /dev/null || command -v micromamba &> /dev/null; then
     if ! command -v uv &> /dev/null; then # Python venv manager
         zinit ice from'gh-r' id-as as'program' mv'uv* release' atpull'%atclone' atclone'
-            ln -svf $PWD/release/uv $ZPFX/bin'
+        ln -svf $PWD/release/uv $ZPFX/bin
+        uv generate-shell-completion zsh > _uv'
         zinit light astral-sh/uv
     fi
 
-    # Zinit wide venv at "$ZINIT_HOME/python"
-    if ! [ -d "$ZINIT_HOME/python" ]; then
-        if command -v micromamba &> /dev/null; then # Use zinit managed python, to keep available across host machines and devcontainers
-            MAMBA_ROOT_PREFIX=$(zinit run micromamba pwd) micromamba run -n base micromamba install -y -c main python
-            MAMBA_ROOT_PREFIX=$(zinit run micromamba pwd) micromamba run -n base uv venv --prompt zinit --seed "$ZINIT_HOME/python"
-            zinit run micromamba rm -rf pkgs # Clean cache
-        else
-            uv venv --prompt zinit --seed "$ZINIT_HOME/python"
-        fi
-        zinit run uv ln -svf "$ZINIT_HOME/python" .venv
-    fi
+# Zinit wide venv at "$ZINIT_HOME/plugins/python"
+# Use zinit managed python, to keep available across host machines and devcontainers
+# Exported to the back of PATH, provided if any other python is not available
+zinit ice id-as'python' as'null' atload'export PATH=$PATH:$(zi run python pwd)/bin' run-atpull'%atclone' atclone'rm -f *.md
+    uv python install --reinstall 3.13
+    uv venv --prompt zinit --python 3.13 --python-preference only-managed --seed --allow-existing $PWD'
+zinit light zdharma-continuum/null
 
     if ! command -v sgpt &> /dev/null; then
         zinit ice id-as'sgpt' as'null' atpull'%atclone' atclone'
-            source "$ZINIT_HOME/python/bin/activate"
-            uv pip install -e .
-            ln -svf "$ZINIT_HOME/python/bin/sgpt" $ZPFX/bin'
+        source "$ZINIT_HOME/plugins/python/bin/activate"
+        uv pip install -e .'
         zinit light TheR1D/shell_gpt
     fi
 
     if ! command -v ansible &> /dev/null; then
-        zinit ice id-as'ansible' as'null' atclone'
-            source "$ZINIT_HOME/python/bin/activate"
-            uv pip install ansible-core
-            ln -svf "$ZINIT_HOME/python/bin/ansible"* $ZPFX/bin'
+    zinit ice id-as'ansible' as'null' atpull'%atclone' atclone'
+        source "$ZINIT_HOME/plugins/python/bin/activate"
+        uv pip install ansible-core'
         zinit light zdharma-continuum/null
-    fi
 fi
 
 # Completions
