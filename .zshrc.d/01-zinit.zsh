@@ -6,13 +6,16 @@ source "$ZINIT_HOME/zinit.git/zinit.zsh" || return 0
 [ -e "$ZSH_CACHE_DIR/completions" ] || mkdir -p "$ZSH_CACHE_DIR/completions"
 [[ ":$PATH:" != *":$ZPFX/bin:"* ]] && export PATH="$ZPFX/bin:$PATH"
 
-# Programs
+###################
+# Native Programs #
+###################
+
 if ! command -v fzf &> /dev/null; then
     zinit ice from'gh-r' id-as as'program' atpull'%atclone' atclone'
         ln -svf $PWD/fzf $ZPFX/bin
-        wget https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh
-        wget https://raw.githubusercontent.com/junegunn/fzf/master/man/man1/fzf.1
-        wget https://raw.githubusercontent.com/junegunn/fzf/master/man/man1/fzf-tmux.1
+        wget https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh -O key-bindings.zsh
+        wget https://raw.githubusercontent.com/junegunn/fzf/master/man/man1/fzf.1 -O fzf.1
+        wget https://raw.githubusercontent.com/junegunn/fzf/master/man/man1/fzf-tmux.1 -O fzf-tmux.1
         ln -svf $PWD/fzf.1 $ZPFX/man/man1
         ln -svf $PWD/fzf-tmux.1 $ZPFX/man/man1'
     zinit light junegunn/fzf
@@ -112,13 +115,16 @@ if ! command -v lazygit &> /dev/null; then # `git` tui
     zinit light jesseduffield/lazygit
 fi
 
-# Python programs
-    if ! command -v uv &> /dev/null; then # Python venv manager
-        zinit ice from'gh-r' id-as as'program' mv'uv* release' atpull'%atclone' atclone'
+###################
+# Python Programs #
+###################
+
+if ! command -v uv &> /dev/null; then # Python venv manager
+    zinit ice from'gh-r' id-as as'program' mv'uv* release' atpull'%atclone' atclone'
         ln -svf $PWD/release/uv $ZPFX/bin
         uv generate-shell-completion zsh > _uv'
-        zinit light astral-sh/uv
-    fi
+    zinit light astral-sh/uv
+fi
 
 # Zinit wide venv at "$ZINIT_HOME/plugins/python"
 # Use zinit managed python, to keep available across host machines and devcontainers
@@ -128,21 +134,24 @@ zinit ice id-as'python' as'null' atload'export PATH=$PATH:$(zi run python pwd)/b
     uv venv --prompt zinit --python 3.13 --python-preference only-managed --seed --allow-existing $PWD'
 zinit light zdharma-continuum/null
 
-    if ! command -v sgpt &> /dev/null; then
-        zinit ice id-as'sgpt' as'null' atpull'%atclone' atclone'
+if ! command -v sgpt &> /dev/null; then
+    zinit ice id-as'sgpt' as'null' atpull'%atclone' atclone'
         source "$ZINIT_HOME/plugins/python/bin/activate"
         uv pip install -e .'
-        zinit light TheR1D/shell_gpt
-    fi
+    zinit light TheR1D/shell_gpt
+fi
 
-    if ! command -v ansible &> /dev/null; then
+if ! command -v ansible &> /dev/null; then
     zinit ice id-as'ansible' as'null' atpull'%atclone' atclone'
         source "$ZINIT_HOME/plugins/python/bin/activate"
         uv pip install ansible-core'
-        zinit light zdharma-continuum/null
+    zinit light zdharma-continuum/null
 fi
 
-# Completions
+###############
+# Completions #
+###############
+
 zinit ice wait lucid as'completion' blockf
 zinit light zsh-users/zsh-completions
 
@@ -216,10 +225,10 @@ unset completion
 
 if command -v alacritty &> /dev/null; then # Terminal gui
     zinit ice wait lucid id-as as'completion' blockf atpull'%atclone' atclone'
-        wget https://github.com/alacritty/alacritty/releases/latest/download/alacritty.1.gz
-        wget https://github.com/alacritty/alacritty/releases/latest/download/alacritty-msg.1.gz
-        wget https://github.com/alacritty/alacritty/releases/latest/download/Alacritty.desktop
-        wget https://github.com/alacritty/alacritty/releases/latest/download/Alacritty.svg
+        wget https://github.com/alacritty/alacritty/releases/latest/download/alacritty.1.gz -O alacritty.1.gz
+        wget https://github.com/alacritty/alacritty/releases/latest/download/alacritty-msg.1.gz -O alacritty-message.1.gz
+        wget https://github.com/alacritty/alacritty/releases/latest/download/Alacritty.desktop -O Alacritty.desktop
+        wget https://github.com/alacritty/alacritty/releases/latest/download/Alacritty.svg -O Alacritty.svg
         mkdir -p $HOME/.local/share/applications $HOME/.local/share/icons/hicolor/scalable/apps
         ln -svf $PWD/alacritty.1.gz $ZPFX/man/man1
         ln -svf $PWD/alacritty-message.1.gz $ZPFX/man/man1
@@ -228,7 +237,10 @@ if command -v alacritty &> /dev/null; then # Terminal gui
     zinit snippet https://github.com/alacritty/alacritty/blob/master/extra/completions/_alacritty
 fi
 
-# Plugins
+###########
+# Plugins #
+###########
+
 zinit ice wait lucid id-as
 zinit light zsh-users/zsh-history-substring-search
 
