@@ -11,7 +11,7 @@ source "$ZINIT_HOME/zinit.git/zinit.zsh" || return 0
 ###################
 
 # `fzf` fuzzy finder
-zinit ice from'gh-r' id-as as'completion' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'completion' atpull'%atclone' atclone'
     ln -svf $PWD/fzf $ZPFX/bin
     wget https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh -O key-bindings.zsh
     wget https://raw.githubusercontent.com/junegunn/fzf/master/man/man1/fzf.1 -O fzf.1
@@ -21,14 +21,14 @@ zinit ice from'gh-r' id-as as'completion' atpull'%atclone' atclone'
 zinit light junegunn/fzf
 
 # `cat` alternative
-zinit ice from'gh-r' id-as as'completion' mv'bat* release' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'completion' mv'bat* release' atpull'%atclone' atclone'
     ln -svf $PWD/release/bat $ZPFX/bin
     ln -svf $PWD/release/bat.1 $ZPFX/man/man1
     bat --completion zsh > _bat'
 zinit light sharkdp/bat
 
 # `ls` alternative
-zinit ice from'gh-r' id-as as'completion' bpick'man-*' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'completion' bpick'man-*' atpull'%atclone' atclone'
     local VERSION=$(ls target | sed "s/man-//")
     if [[ "$(uname -s)" = "Darwin"* ]]; then
         local -A ICE=(ver eza-$VERSION)
@@ -44,73 +44,73 @@ zinit ice from'gh-r' id-as as'completion' bpick'man-*' atpull'%atclone' atclone'
 zinit light eza-community/eza
 
 # `diff` alternative
-zinit ice from'gh-r' id-as as'completion' bpick"*$(HOST_LIBC_PREFER_MUSL=1 host_triplet)*" mv'delta* release' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'completion' bpick"*$(HOST_LIBC_PREFER_MUSL=1 host_triplet)*" mv'delta* release' atpull'%atclone' atclone'
     ln -svf $PWD/release/delta $ZPFX/bin
     delta --generate-completion zsh > _delta'
 zinit light dandavison/delta
 
 # `find` alternative
-zinit ice from'gh-r' id-as as'completion' mv'fd* release' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'completion' mv'fd* release' atpull'%atclone' atclone'
     ln -svf $PWD/release/fd $ZPFX/bin
     ln -svf $PWD/release/fd.1 $ZPFX/man/man1
     fd --gen-completions zsh > _fd'
 zinit light sharkdp/fd
 
 # `grep` alternative
-zinit ice from'gh-r' id-as as'completion' bpick"ripgrep-*" mv'ripgrep* release' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'completion' bpick"ripgrep-*" mv'ripgrep* release' atpull'%atclone' atclone'
     ln -svf $PWD/release/rg $ZPFX/bin
     ln -svf $PWD/release/doc/rg.1 $ZPFX/man/man1
     rg --generate=complete-zsh > _rg'
 zinit light BurntSushi/ripgrep
 
 # Always use repository managed `jq` to ensure latest features
-zinit ice from'gh-r' id-as as'null' mv'jq* jq' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'null' mv'jq* jq' atpull'%atclone' atclone'
     ln -svf $PWD/jq $ZPFX/bin'
 zinit light jqlang/jq
 
 # `yq` yaml cli
-zinit ice from'gh-r' id-as as'completion' mv'yq* yq' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'completion' mv'yq* yq' atpull'%atclone' atclone'
     ln -svf $PWD/yq $ZPFX/bin
     yq completion zsh > _yq'
 zinit light mikefarah/yq
 
 # `fx` json tui viewer
-zinit ice from'gh-r' id-as as'completion' mv'fx* fx' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'completion' mv'fx* fx' atpull'%atclone' atclone'
     ln -svf $PWD/fx $ZPFX/bin
     fx --comp zsh > _fx'
 zinit light antonmedv/fx
 
 # `xxd` and `hexdump` alternative
-zinit ice from'gh-r' id-as as'null' mv'hexyl* release' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'null' mv'hexyl* release' atpull'%atclone' atclone'
     ln -svf $PWD/release/hexyl $ZPFX/bin
     ln -svf $PWD/release/hexyl.1 $ZPFX/man/man1'
 zinit light sharkdp/hexyl
 
 # `du` alternative
-zinit ice from'gh-r' id-as as'completion' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'dust* release' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'completion' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'dust* release' atpull'%atclone' atclone'
     ln -svf $PWD/release/dust $ZPFX/bin
     wget https://raw.githubusercontent.com/bootandy/dust/master/completions/_dust -O _dust'
 zinit light bootandy/dust
 
 # `ps` alternative
-zinit ice from'gh-r' id-as as'completion' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'completion' atpull'%atclone' atclone'
     ln -svf $PWD/procs $ZPFX/bin
     procs --gen-completion-out zsh > _procs'
 zinit light dalance/procs
 
 # `top` alternative
-zinit ice from'gh-r' id-as as'completion' bpick"*$(host_triplet)*" atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'completion' bpick"*$(host_triplet)*" atpull'%atclone' atclone'
     ln -svf $PWD/btm $ZPFX/bin
     ln -svf $PWD/completion/_btm _btm'
 zinit light ClementTsang/bottom
 
 # `vivid` colorizes output of commands
-zinit ice from'gh-r' id-as as'null' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'vivid*/vivid vivid' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'null' bpick"*$(HOST_TRIPLET_APPLE_USE_INTEL=1 host_triplet)*" mv'vivid*/vivid vivid' atpull'%atclone' atclone'
     ln -svf $PWD/vivid $ZPFX/bin'
 zinit load sharkdp/vivid
 
 # `git` tui
-zinit ice from'gh-r' id-as as'null' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'null' atpull'%atclone' atclone'
     ln -svf $PWD/lazygit $ZPFX/bin'
 zinit light jesseduffield/lazygit
 
@@ -119,7 +119,7 @@ zinit light jesseduffield/lazygit
 ###################
 
 # Python venv manager
-zinit ice from'gh-r' id-as as'completion' mv'uv* release' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'completion' mv'uv* release' atpull'%atclone' atclone'
     ln -svf $PWD/release/uv $ZPFX/bin
     uv generate-shell-completion zsh > _uv'
 zinit light astral-sh/uv
@@ -127,18 +127,18 @@ zinit light astral-sh/uv
 # Zinit wide venv at "$ZINIT_HOME/plugins/python"
 # Use zinit managed python, to keep available across host machines and devcontainers
 # Exported to the back of PATH, provided if any other python is not available
-zinit ice id-as'python' as'null' atload'export PATH=$PATH:$(zi run python pwd)/bin' run-atpull'%atclone' atclone'rm -f *.md
+zinit ice wait lucid id-as'python' as'null' atload'export PATH=$PATH:$(zi run python pwd)/bin' run-atpull'%atclone' atclone'rm -f *.md
     uv python install --reinstall 3.13
     uv venv --prompt zinit --python 3.13 --python-preference only-managed --seed --allow-existing $PWD'
 zinit light zdharma-continuum/null
 
-zinit ice id-as'sgpt' as'completion' atpull'%atclone' atclone'
+zinit ice wait lucid id-as'sgpt' as'completion' atpull'%atclone' atclone'
     source "$ZINIT_HOME/plugins/python/bin/activate"
     uv pip install -e .
     wget https://gist.githubusercontent.com/obeone/dc66f2ca40b8254edab61ac50cdec0f3/raw/_sgpt.zsh -O _sgpt'
 zinit light TheR1D/shell_gpt
 
-zinit ice id-as'ansible' as'null' atpull'%atclone' atclone'
+zinit ice wait lucid id-as'ansible' as'null' atpull'%atclone' atclone'
     source "$ZINIT_HOME/plugins/python/bin/activate"
     uv pip install ansible-core'
 zinit light zdharma-continuum/null
