@@ -127,7 +127,7 @@ zinit light astral-sh/uv
 # Zinit wide venv at "$ZINIT_HOME/plugins/python"
 # Use zinit managed python, to keep available across host machines and devcontainers
 # Exported to the back of PATH, provided if any other python is not available
-zinit ice wait lucid id-as'python' as'null' atload'export PATH=$PATH:$(zi run python pwd)/bin' run-atpull'%atclone' atclone'rm -f *.md
+zinit ice wait lucid id-as'python' as'null' atload'export PATH=$PATH:$(zi run python pwd)/bin' run-atpull atpull'%atclone' atclone'rm -f *.md
     uv python install --reinstall 3.13
     uv venv --prompt zinit --python 3.13 --python-preference only-managed --seed --allow-existing $PWD'
 zinit light zdharma-continuum/null
@@ -141,6 +141,26 @@ zinit light TheR1D/shell_gpt
 zinit ice wait lucid id-as'ansible' as'null' atpull'%atclone' atclone'
     source "$ZINIT_HOME/plugins/python/bin/activate"
     uv pip install ansible-core'
+zinit light zdharma-continuum/null
+
+###################
+# NodeJS Programs #
+###################
+
+# Multi language version manager (NodeJS, Ruby, etc.)
+zinit ice from'gh-r' id-as as'completion' mv'mise* mise' atpull'%atclone' atclone'
+    ln -svf $PWD/mise $ZPFX/bin
+    mise completion zsh > _mise'
+zinit light jdx/mise
+
+# Zinit managed nodejs at "$ZINIT_HOME/plugins/node"
+zinit ice id-as'node' as'null' atload'export PATH=$PATH:$(zi run node pwd)/bin' run-atpull atpull'%atclone' atclone'rm -f *.md
+    mv $PWD $ZINIT_HOME/plugins/mise-tmp
+    MISE_NODE_COREPACK=true mise install-into node@latest $ZINIT_HOME/plugins/node
+    mv -nv $ZINIT_HOME/plugins/mise-tmp/.* $PWD
+    mv -nv $ZINIT_HOME/plugins/mise-tmp/bin/* $PWD/bin 2>/dev/null
+    mv -nv $ZINIT_HOME/plugins/mise-tmp/lib/node_modules/* $PWD/lib/node_modules 2>/dev/null
+    rm -rf $ZINIT_HOME/plugins/mise-tmp'
 zinit light zdharma-continuum/null
 
 ###############
