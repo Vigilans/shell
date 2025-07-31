@@ -3,7 +3,7 @@ EZA_TABLE_OPTIONS="--header --icons --classify --group-directories-first"
 EZA_FULL_TABLE_OPTIONS="--git --links --inode --extended --created --modified --changed --accessed"
 
 # Directories
-alias ls='ls -h --color=auto'
+alias ls='eza -h'
 alias la="eza -a $EZA_OPTIONS"
 alias ll="eza -l $EZA_OPTIONS $EZA_TABLE_OPTIONS"
 alias lla="eza -l -a $EZA_OPTIONS $EZA_TABLE_OPTIONS"
