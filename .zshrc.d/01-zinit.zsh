@@ -156,7 +156,7 @@ zinit light jdx/mise
 # Zinit managed nodejs at "$ZINIT_HOME/plugins/node"
 zinit ice id-as'node' as'null' atload'export PATH=$PATH:$(zi run node pwd)/bin' run-atpull atpull'%atclone' atclone'rm -f *.md
     mv $PWD $ZINIT_HOME/plugins/mise-tmp
-    MISE_NODE_COREPACK=true mise install-into node@latest $ZINIT_HOME/plugins/node
+    MISE_NODE_COREPACK=true MISE_GPG_VERIFY=false mise install-into node@latest $ZINIT_HOME/plugins/node
     mv -nv $ZINIT_HOME/plugins/mise-tmp/.* $PWD
     mv -nv $ZINIT_HOME/plugins/mise-tmp/bin/* $PWD/bin 2>/dev/null
     mv -nv $ZINIT_HOME/plugins/mise-tmp/lib/node_modules/* $PWD/lib/node_modules 2>/dev/null
