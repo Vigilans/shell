@@ -4,12 +4,12 @@ export SHELL_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && p
 
 # Setup necessary packages
 if command -v pacman &> /dev/null; then
-    sudo pacman --noconfirm -S wget git tar unzip make less inetutils util-linux
+    sudo pacman --noconfirm -S wget git tar unzip make less inetutils util-linux file
 elif command -v apt-get &> /dev/null; then
     sudo apt-get -y update
-    sudo apt-get -y install wget git tar unzip make less bsdmainutils
+    sudo apt-get -y install wget git tar unzip make less bsdmainutils file
 elif command -v yum &> /dev/null; then
-    sudo yum -y install wget git tar unzip make less util-linux
+    sudo yum -y install wget git tar unzip make less util-linux file
 elif command -v apk &> /dev/null; then
     sudo apk add -q wget git tar unzip make less coreutils file zsh-vcs ncurses findutils util-linux
 elif command -v brew &> /dev/null; then
