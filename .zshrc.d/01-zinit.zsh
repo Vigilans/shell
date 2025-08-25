@@ -132,17 +132,6 @@ zinit ice wait lucid id-as'python' as'null' atload'export PATH=$PATH:$(zi run py
     uv venv --prompt zinit --python 3.13 --python-preference only-managed --seed --allow-existing $PWD'
 zinit light zdharma-continuum/null
 
-zinit ice wait lucid id-as'sgpt' as'completion' atpull'%atclone' atclone'
-    source "$ZINIT_HOME/plugins/python/bin/activate"
-    uv pip install -e .
-    wget https://gist.githubusercontent.com/obeone/dc66f2ca40b8254edab61ac50cdec0f3/raw/_sgpt.zsh -O _sgpt'
-zinit light TheR1D/shell_gpt
-
-zinit ice wait lucid id-as'ansible' as'null' atpull'%atclone' atclone'
-    source "$ZINIT_HOME/plugins/python/bin/activate"
-    uv pip install ansible-core'
-zinit light zdharma-continuum/null
-
 ###################
 # NodeJS Programs #
 ###################
