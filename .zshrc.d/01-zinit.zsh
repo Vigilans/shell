@@ -109,6 +109,13 @@ zinit ice wait lucid from'gh-r' id-as as'null' bpick"*$(HOST_TRIPLET_APPLE_USE_I
     ln -svf $PWD/vivid $ZPFX/bin'
 zinit load sharkdp/vivid
 
+# `gh` github cli
+zinit ice wait lucid from'gh-r' id-as'gh' as'completion' bpick"gh_*.tar.gz" mv'gh* release' atpull'%atclone' atclone'
+    ln -svf $PWD/release/bin/gh $ZPFX/bin
+    ln -svf $PWD/release/share/man/man1/* $ZPFX/man/man1
+    gh completion -s zsh > _gh'
+zinit light cli/cli
+
 # `git` tui
 zinit ice wait lucid from'gh-r' id-as as'null' atpull'%atclone' atclone'
     ln -svf $PWD/lazygit $ZPFX/bin'
