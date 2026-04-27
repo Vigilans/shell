@@ -53,6 +53,8 @@ prompt_pure_preprompt_render() {
 
     local -a preprompt_user_part
     [[ -n $WSL_DISTRO_NAME ]] && prompt_pure_state[username]='%F{$prompt_pure_colors[user]}%n%f%F{$prompt_pure_colors[host]}@%m%f' # Always show username in WSL
+    # New upstream (>=1.27.0) no longer populates prompt_pure_state[username]; prompt_pure_state[user_color] is set by upstream when user@host should display (SSH/container/root).
+    [[ -z $prompt_pure_state[username] ]] && [[ -n $prompt_pure_state[user_color] ]] && prompt_pure_state[username]='%F{$prompt_pure_colors['"${prompt_pure_state[user_color]}"']}%n%f%F{$prompt_pure_colors[host]}@%m%f'
     [[ -n $SHELL_DOMAIN_NAME ]] && prompt_pure_state[username]="${prompt_pure_state[username]/\%m\%f/%m.$SHELL_DOMAIN_NAME%f}"
     [[ -n $prompt_pure_state[username] ]] && preprompt_user_part+=($prompt_pure_state[username]) # Username and machine, if applicable.
 
@@ -78,23 +80,32 @@ prompt_pure_preprompt_render() {
     [[ ${#preprompt_git_part}  -gt 0 ]] && preprompt_parts+=("[${(j. .)preprompt_git_part}]")
     [[ ${#preprompt_misc_part} -gt 0 ]] && preprompt_parts+=("${(j. .)preprompt_misc_part}")
 
-    # Extract the prompt part at second line
+    # Extract the prompt part at second line.
+    # Feature-detect upstream's PROMPT separator format:
+    #   - pure >=1.27.0 (PR #706): PROMPT is built once at setup with literal ${prompt_newline} text, expanded by prompt_subst at render time.
+    #   - older pure: PROMPT is rebuilt each render with the actual newline character spliced in.
 	local ps1_prompt=$PROMPT
+	local newline_sep=$prompt_newline
 	local -H MATCH MBEGIN MEND
-	if [[ $PROMPT = *$prompt_newline* ]]; then
-		ps1_prompt=${PROMPT##*${prompt_newline}} # Remove everything from the prompt until the newline. This removes the preprompt and only the original PROMPT remains.
+	if [[ $PROMPT = *'${prompt_newline}'* ]]; then
+		ps1_prompt=${PROMPT##*'${prompt_newline}'}
+		newline_sep='${prompt_newline}'
+	elif [[ $PROMPT = *$prompt_newline* ]]; then
+		ps1_prompt=${PROMPT##*${prompt_newline}}
 	fi
 	unset MATCH MBEGIN MEND
 
-    # VIRTUAL_ENV_PROMPT not used by upstream, we detect it here with highest priority
-    if [[ -n "$VIRTUAL_ENV_PROMPT" ]]; then
-        psvar[12]="$VIRTUAL_ENV_PROMPT"
+    # VIRTUAL_ENV_PROMPT not used by upstream, we detect it here with highest priority.
+    # The slot upstream reserves for virtualenv is version-dependent (12 in old, 20 in >=1.27.0).
+    # $VIRTUAL_ENV_DISABLE_PROMPT carries the slot number — use it for version-agnostic dispatch.
+    if [[ -n "$VIRTUAL_ENV_PROMPT" ]] && [[ -n "$VIRTUAL_ENV_DISABLE_PROMPT" ]]; then
+        psvar[$VIRTUAL_ENV_DISABLE_PROMPT]="$VIRTUAL_ENV_PROMPT"
     fi
 
 	# Construct the new prompt with a clean preprompt.
 	local -ah ps1=(
 		${(j.-.)preprompt_parts}  # Join parts, dash separated.
-		$prompt_newline           # Separate preprompt and prompt.
+		$newline_sep              # Separate preprompt and prompt (matches upstream's format).
 		$ps1_prompt               # Prompt part at the command input line
 	)
 	PROMPT="${(j..)ps1}"
@@ -111,7 +122,7 @@ precmd_pipestatus() {
     if ! [[ "$exitcodes" =~ ^[0\|]+$ ]]; then
         RPROMPT="%F{$prompt_pure_colors[prompt:error]}[$exitcodes]%f"
     elif [[ -z "$SHELL_LOW_COLOR" ]]; then
-        RPROMPT="$(printf %b '\u200b')" # Use zero width space to prevent a weird backspace bug in VSCode Remote SSH Terminal
+        RPROMPT="%{$(printf %b '\u200b')%}" # Use zero width space to prevent a weird backspace bug in VSCode Remote SSH Terminal; %{%} marks it as zero-width so zsh doesn't reserve a column (which Windows ssh clients render by trimming PROMPT's trailing space).
     fi
 }
 add-zsh-hook precmd precmd_pipestatus
