@@ -67,6 +67,12 @@ zstyle ':fzf-tab:complete:*:argument-1' fzf-preview
 # [tree] Preview with directory tree
 zstyle ':fzf-tab:complete:tree:*' fzf-preview 'eza --tree -a $realpath'
 
+# [cd] Preview destination as a shallow tree
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza --tree --color=always --icons --level=2 $realpath'
+
+# [editors] Preview file content for nvim/vim arguments
+zstyle ':fzf-tab:complete:(nvim|vim):*' fzf-preview 'bat --style=numbers --color=always $realpath'
+
 # [du] Preview with file / directory sizes
 zstyle ':fzf-tab:complete:du:*' fzf-preview 'du -h -d 1 $realpath'
 
@@ -81,7 +87,7 @@ zstyle ':fzf-tab:complete:(\\|*/|)batman:*' fzf-preview 'command man $word | bat
 
 # [kill/ps] Preview of full commandline arguments
 zstyle ':completion:*:*:*:*:processes' command "ps -ef"
-zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-preview '[[ $group == "[process ID]" ]] && ps --pid=$word -o cmd --no-headers -w -w'
+zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-preview '[[ $group == "[process ID]" ]] && ps -p $word -o command='
 zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-flags --preview-window=down:3:wrap
 
 # [systemd] Preview systemd unit status
@@ -90,6 +96,7 @@ zstyle ':fzf-tab:complete:systemctl-*:*' fzf-preview 'SYSTEMD_COLORS=1 systemctl
 # [git]
 zstyle ':fzf-tab:complete:git-(add|diff|restore):*' fzf-preview 'git diff $word | delta'
 zstyle ':fzf-tab:complete:git-log:*' fzf-preview 'git log --color=always $word'
+zstyle ':fzf-tab:complete:git-(branch|switch):*' fzf-preview 'git log --color=always $word'
 zstyle ':fzf-tab:complete:git-help:*' fzf-preview 'git help $word | bat -plman --color=always'
 zstyle ':fzf-tab:complete:git-show:*' fzf-preview \
 'case "$group" in
