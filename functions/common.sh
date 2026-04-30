@@ -1,16 +1,6 @@
 #  ---------------------------------------------------------------------------
-#  Description:  This file holds simple wrappers of existing system commands.
-#
-#  Sections:
-#  1.   Filesystem opereation
-#  2.   Searching
-#  4.   Process Management
-#  6.   System Operations & Information
+#  Wrappers around common system commands.
 #  ---------------------------------------------------------------------------
-
-#   -----------------------------
-#   1.  Filesystem operation
-#   -----------------------------
 
 #   mkcd: Makes new Dir and jumps inside
 #         Usage: mkcd FOLDER
@@ -19,7 +9,7 @@ function mkcd() {
     mkdir -p -- $@ ; cd -- $@ || exit ;
 }
 
-#   trash：Move file to trashbin
+#   trash: Move file to trashbin
 #          Usage: trash FILES...
 #   --------------------------------------------------------------------
 function trash() {
@@ -81,30 +71,18 @@ function archive() {
     esac
 }
 
-#   -----------------------------
-#   2.  Searching
-#   -----------------------------
-
-#   lsgrep: Search through directory contents with grep.
-#           Usage: lsgrep [LS-OPTION] PATTERN
+#   dufind: Find the largest entries under a directory.
+#           Usage: dufind DIRECTORY
 #   --------------------------------------------------------------------
 function dufind() {
-  if [[ $# -lt 1 ]]; then
-    echo_warn "Usage: dufind DIRECTORY"
-    return
-  fi
-  du -a "$1" | sort -n -r | head -n 10
+    if [[ $# -lt 1 ]]; then
+        echo_warn "Usage: dufind DIRECTORY"
+        return
+    fi
+    du -a "$1" | sort -n -r | head -n 10
 }
 
-#   -----------------------------
-#   3.  Editing
-#   -----------------------------
-
-#   -----------------------------
-#   4.  System information
-#   -----------------------------
-
-#   history_stats：Visualize the usage frequency of commands in history
+#   history_stats: Visualize the usage frequency of commands in history
 #   --------------------------------------------------------------------
 function history_stats() {
     fc -l 1 | awk '{ CMD[$2]++;count++; } END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a; }' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl | head -n 20
