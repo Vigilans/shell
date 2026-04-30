@@ -193,11 +193,6 @@ if command -v brew &> /dev/null; then
     zinit snippet $(brew --prefix)/share/zsh/site-functions/_brew
 fi
 
-if command -v conda &> /dev/null; then
-    zinit ice wait lucid id-as as'completion' blockf
-    zinit light esc/conda-zsh-completion
-fi
-
 if command -v poetry &> /dev/null; then
     zinit_snippet_completion_from_stdin poetry "poetry completions zsh | head -n -1"
 fi
@@ -205,11 +200,6 @@ fi
 if command -v bazel &> /dev/null; then
     zinit ice wait lucid id-as as'completion' blockf
     zinit snippet https://github.com/bazelbuild/bazel/blob/master/scripts/zsh_completion/_bazel
-fi
-
-if [ -r "$HOME/.local/lib/kw/_kw" ]; then
-    zinit ice wait lucid id-as as'completion' blockf
-    zinit snippet "$HOME/.local/lib/kw/_kw"
 fi
 
 for completion in $SHELL_RC_HOME/vendors/completions/_*; do
@@ -265,7 +255,7 @@ zinit ice wait lucid id-as atinit'zpcompinit; zpcdreplay'
 zinit light Aloxaf/fzf-tab
 
 zinit ice wait lucid id-as
-zinit light zdharma/fast-syntax-highlighting
+zinit light zdharma-continuum/fast-syntax-highlighting
 
 zinit ice wait lucid id-as atload'_zsh_autosuggest_start'
 zinit light zsh-users/zsh-autosuggestions
