@@ -15,18 +15,6 @@ envcat() {
     xargs -0 -L1 -a $@
 }
 
-pathadd() {
-    newelement=${1%/}
-    if [ -d "$1" ] && ! echo $PATH | grep -E -q "(^|:)$newelement($|:)" ; then
-        if [ "$2" = "after" ] ; then
-            PATH="$PATH:$newelement"
-        else
-            PATH="$newelement:$PATH"
-        fi
-    fi
-    unset newelement
-}
-
 function path_append () {
     case ":$PATH:" in
         *:"$1":*)

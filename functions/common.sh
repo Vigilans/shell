@@ -70,21 +70,6 @@ function archive() {
 #   lsgrep: Search through directory contents with grep.
 #           Usage: lsgrep [LS-OPTION] PATTERN
 #   --------------------------------------------------------------------
-function lsgrep() {
-    ls ${@:1:$#-1} | grep ${@: -1}
-}
-
-#   mangrep: Search manpage given in agument '1' for term given in argument '2' (case insensitive)
-#            displays paginated result with colored search terms and two lines surrounding each hit.
-#            Example: mangrep mplayer codec
-#   --------------------------------------------------------------------
-function mangrep() {
-    man "$1" | grep -iC2 --color=always ${@:2} | less
-}
-
-#   lsgrep: Search through directory contents with grep.
-#           Usage: lsgrep [LS-OPTION] PATTERN
-#   --------------------------------------------------------------------
 function dufind() {
   if [[ $# -lt 1 ]]; then
     echo_warn "Usage: dufind DIRECTORY"
@@ -92,14 +77,6 @@ function dufind() {
   fi
   du -a "$1" | sort -n -r | head -n 10
 }
-
-#   lsgrep: Greps alias
-#   --------------------------------------------------------------------
-alias ps_efgrep='ps -ef | grep'
-alias ps_auxgrep='ps -aux | grep'
-alias lsof_igrep='lsof -i | grep'
-alias netstat_lgrep='netstat -tunlp | grep'
-alias netstat_agrep='netstat -nap | grep'
 
 #   -----------------------------
 #   3.  Editing

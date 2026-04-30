@@ -1,15 +1,3 @@
-
-# Install a shell command into $HOME/.local/bin
-# so it can be invoked from non-interactive shell
-function command_install() {
-    echo "not implemented"
-}
-
-# Uninstall a command from $HOME/.local/bin
-function command_uninstall() {
-    echo "not implemented"
-}
-
 #
 # Get the value of an alias.
 #
