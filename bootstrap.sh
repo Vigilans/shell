@@ -3,8 +3,9 @@
 # framework can drive them in its own lifecycle. `bash bootstrap.sh` with no
 # args runs the full standalone bootstrap (the original behavior).
 #
-#   prepare      install OS packages + clone zinit
-#   install      copy entry dotfiles (.zshrc / .bashrc / ...) into $HOME
+#   prepare      install OS packages + clone zinit (when $SHELL is zsh)
+#   install      copy entry dotfiles into $HOME + warm zinit (zsh users)
+#   upgrade      zinit self-update + plugin update (zsh users)
 #   bootstrap    prepare + ~/.config/shell symlink + install (standalone path)
 
 set -eu
@@ -31,9 +32,11 @@ prepare() {
     fi
 
     # Setup Zinit
-    local ZINIT_HOME="${XDG_DATA_HOME:-"$HOME/.local/share"}/zinit/zinit.git"
-    [ -d "$ZINIT_HOME" ] || mkdir -p "$(dirname "$ZINIT_HOME")"
-    [ -d "$ZINIT_HOME/.git" ] || git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+    if [ "$(basename "$SHELL")" = "zsh" ]; then
+        local ZINIT_HOME="${XDG_DATA_HOME:-"$HOME/.local/share"}/zinit/zinit.git"
+        [ -d "$ZINIT_HOME" ] || mkdir -p "$(dirname "$ZINIT_HOME")"
+        [ -d "$ZINIT_HOME/.git" ] || git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+    fi
 }
 
 # Copy entry dotfiles into $HOME instead of symlinking, so lines installers like
@@ -64,6 +67,18 @@ install() {
         cp "$src" "$dst"
     done
     shopt -u dotglob nullglob
+
+    # Warm zinit so gh-r binaries download here instead of on the user's
+    # first interactive prompt. `@zinit-scheduler burst` flushes the wait queue.
+    if [ "$(basename "$SHELL")" = "zsh" ]; then
+        zsh -ic '@zinit-scheduler burst'
+    fi
+}
+
+upgrade() {
+    if [ "$(basename "$SHELL")" = "zsh" ]; then
+        zsh -ic 'zi self-update && zi update'
+    fi
 }
 
 bootstrap() {
