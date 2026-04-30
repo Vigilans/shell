@@ -8,7 +8,7 @@ case $- in
       *) return;;
 esac
 
-if [ -n "$SHELL_THEME" ]; then
+if [ -z "$SHELL_THEME" ]; then
     export SHELL_THEME="90210"
 fi
 
@@ -20,3 +20,4 @@ if [ -f "$SHELL_CONFIG_HOME/initrc.sh" ]; then
 else
     echo "Shell init script not found, environment not setup correctly."
 fi
+
