@@ -71,13 +71,13 @@ install() {
     # Warm zinit so gh-r binaries download here instead of on the user's
     # first interactive prompt. `@zinit-scheduler burst` flushes the wait queue.
     if [ "$(basename "$SHELL")" = "zsh" ]; then
-        zsh -ic '@zinit-scheduler burst'
+        TERM="${TERM:-dumb}" zsh -ic '@zinit-scheduler burst'
     fi
 }
 
 upgrade() {
     if [ "$(basename "$SHELL")" = "zsh" ]; then
-        zsh -ic 'zi self-update && zi update'
+        TERM="${TERM:-dumb}" zsh -ic 'zi self-update && zi update'
     fi
 }
 
