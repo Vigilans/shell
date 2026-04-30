@@ -56,11 +56,29 @@ function extract() {
     fi
 }
 
-#   archive: Create most known archives with one command
-#            Usage: archive [FOLDER] ARCHIVE
+#   archive: Create an archive from one or more paths.
+#            Format inferred from the output extension.
+#            Usage: archive ARCHIVE FILES...
+#            Examples:
+#              archive backup.tar.gz mydir
+#              archive code.zip src/ docs/
 #   --------------------------------------------------------------------
 function archive() {
-    echo "not implemented yet"
+    if [ $# -lt 2 ]; then
+        echo "Usage: archive ARCHIVE FILES..." >&2
+        return 1
+    fi
+    local out="$1"; shift
+    case "$out" in
+        *.tar.bz2|*.tbz2)  tar cjf "$out" "$@" ;;
+        *.tar.gz|*.tgz)    tar czf "$out" "$@" ;;
+        *.tar.xz|*.txz)    tar cJf "$out" "$@" ;;
+        *.tar.zst|*.tzst)  tar --zstd -cf "$out" "$@" ;;
+        *.tar)             tar cf  "$out" "$@" ;;
+        *.zip)             zip -r  "$out" "$@" ;;
+        *.7z)              7z a    "$out" "$@" ;;
+        *) echo "'$out' format not supported by archive()" >&2; return 1 ;;
+    esac
 }
 
 #   -----------------------------
