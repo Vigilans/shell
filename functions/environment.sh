@@ -28,6 +28,7 @@ function path_remove() {
     PATH="$(echo $PATH | sed -e "s;\(^\|:\)${1%/}\(:\|\$\);\1\2;g" -e 's;^:\|:$;;g' -e 's;::;:;g')"
 }
 
-function path_reload() {
-    echo "pathreload, user, system"
+function profile_reload() {
+    unset _SHELL_PROFILE_LOCAL_LOADED _SHELL_PROFILE_SYSTEM_LOADED _SHELL_PROFILE_USER_LOADED
+    . "$SHELL_CONFIG_HOME/profile.sh"
 }

@@ -4,7 +4,7 @@ export SHELL_PROFILE_HOME
 if [ -n "$SHELL_CONFIG_HOME" ]; then
     SHELL_PROFILE_HOME=$SHELL_CONFIG_HOME/profiles
 else
-    SHELL_PROFILE_HOME=$(pwd)
+    SHELL_PROFILE_HOME=$PWD
 fi
 
 # Ensure initial system binary paths exist
@@ -69,3 +69,22 @@ fi
 
 # Export final PATH variable
 export PATH
+
+# Record loaded profile revision
+if [ -r "$SHELL_CONFIG_HOME/.git" ]; then
+    git_dir="$SHELL_CONFIG_HOME/.git"
+    if [ -f "$git_dir" ]; then # submodule .git is a pointer file
+        IFS= read -r git_dir_ref < "$git_dir"
+        git_dir="$SHELL_CONFIG_HOME/${git_dir_ref#gitdir: }"
+    fi
+
+    if [ -r "$git_dir/HEAD" ]; then
+        IFS= read -r profile_rev < "$git_dir/HEAD"
+        case "$profile_rev" in # branch HEAD stores a ref; detached HEAD stores an oid
+            "ref: "*) IFS= read -r SHELL_PROFILE_REV < "$git_dir/${profile_rev#ref: }" ;;
+            *) SHELL_PROFILE_REV=$profile_rev ;;
+        esac
+        export SHELL_PROFILE_REV
+    fi
+    unset git_dir git_dir_ref profile_rev
+fi
