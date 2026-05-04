@@ -12,6 +12,9 @@
 #
 # Order: zshenv, zprofile, zshrc, zlogin
 
+# Leave globbing expressions which don't match anything as-is
+setopt +o nomatch
+
 # Load profile scripts for non-login shells if not already loaded
 if [ -z "$SHELL_CONFIG_HOME" ] && [[ ! -o login ]]; then
     if [ -z "$XDG_CONFIG_HOME" ]; then
