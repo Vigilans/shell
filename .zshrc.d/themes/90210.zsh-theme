@@ -8,12 +8,12 @@ if [[ "$TERM" = "linux" ]] || [[ "$TERM" != "xterm-kitty" ]] && [[ "$(tput color
     SHELL_LOW_COLOR=1
 fi
 
-# If domain name non empty and not local/localdomain, show its full FQDN
-SHELL_DOMAIN_NAME=$(hostname -d)
-case "$(hostname -d)" in
-    local)       ;&
-    localdomain) ;&
-    "")          unset SHELL_DOMAIN_NAME ;;
+# If FQDN has a real domain (not local/localdomain), show hostname as full FQDN
+SHELL_DOMAIN_NAME=$(hostname -f)
+case "$SHELL_DOMAIN_NAME" in
+    *.local|*.localdomain) unset SHELL_DOMAIN_NAME ;; # Local domain
+    *.*)                   SHELL_DOMAIN_NAME=${SHELL_DOMAIN_NAME#*.} ;; # Extract domain name
+    *)                     unset SHELL_DOMAIN_NAME ;; # Dotless hostname
 esac
 
 # Nicely formatted terminal prompt

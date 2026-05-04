@@ -24,13 +24,12 @@ if [[ "$TERM" = "linux" ]] || [[ "$TERM" != "xterm-kitty" ]] && [[ "$(tput color
     zstyle ':prompt:pure:suspended_jobs' color 'magenta'
 fi
 
-# If domain name non empty and not local/localdomain, show its full FQDN
-SHELL_DOMAIN_NAME=$(hostname -d)
+# If FQDN has a real domain (not local/localdomain), show hostname as full FQDN
+SHELL_DOMAIN_NAME=$(hostname -f)
 case "$SHELL_DOMAIN_NAME" in
-    local)       ;&
-    localdomain) ;&
-    "(none)")    unset SHELL_DOMAIN_NAME ;;
-    "")          unset SHELL_DOMAIN_NAME ;;
+    *.local|*.localdomain) unset SHELL_DOMAIN_NAME ;; # Local domain
+    *.*)                   SHELL_DOMAIN_NAME=${SHELL_DOMAIN_NAME#*.} ;; # Extract domain name
+    *)                     unset SHELL_DOMAIN_NAME ;; # Dotless hostname
 esac
 
 # Enable only certain async tasks of small cost
@@ -103,7 +102,7 @@ if [[ $PROMPT = *'${prompt_newline}'* ]]; then
         # always populated first by upstream's serial async worker, so the bracket
         # gating on branch never hides a present extra in practice.
         PROMPT='[%F{$prompt_pure_colors[execution_time]}%*%f]'
-        PROMPT+='%(13V.-['"${prompt_pure_user_host}"'].)'
+        PROMPT+='%(13V|-['"${prompt_pure_user_host}"']|)'
         PROMPT+='-[%F{${prompt_pure_colors[path]}}%~%f]'
         PROMPT+='%(14V.-[%F{${prompt_pure_git_branch_color}}%14v%(15V.%F{$prompt_pure_colors[git:dirty]}%15v.)%f%(16V. %F{$prompt_pure_colors[git:action]}%16v%f.)%(17V. %F{$prompt_pure_colors[git:arrow]}%17v%f.)%(18V. %F{$prompt_pure_colors[git:stash]}${PURE_GIT_STASH_SYMBOL:-≡}%f.)].)'
         PROMPT+='%(12V.-%F{$prompt_pure_colors[suspended_jobs]}%12v%f.)'
