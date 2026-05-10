@@ -65,17 +65,20 @@ zinit light BurntSushi/ripgrep
 
 # Always use repository managed `jq` to ensure latest features
 zinit ice wait lucid from'gh-r' id-as as'null' mv'jq* jq' atpull'%atclone' atclone'
+    chmod +x $PWD/jq
     ln -svf $PWD/jq $ZPFX/bin'
 zinit light jqlang/jq
 
 # `yq` yaml cli
 zinit ice wait lucid from'gh-r' id-as as'completion' mv'yq* yq' atpull'%atclone' atclone'
+    chmod +x $PWD/yq
     ln -svf $PWD/yq $ZPFX/bin
     yq completion zsh > _yq'
 zinit light mikefarah/yq
 
 # `fx` json tui viewer
 zinit ice wait lucid from'gh-r' id-as as'completion' mv'fx* fx' atpull'%atclone' atclone'
+    chmod +x $PWD/fx
     ln -svf $PWD/fx $ZPFX/bin
     fx --comp zsh > _fx'
 zinit light antonmedv/fx
@@ -145,6 +148,7 @@ zinit light zdharma-continuum/null
 
 # Multi language version manager (NodeJS, Ruby, etc.)
 zinit ice from'gh-r' id-as as'completion' mv'mise* mise' atpull'%atclone' atclone'
+    chmod +x $PWD/mise
     ln -svf $PWD/mise $ZPFX/bin
     mise completion zsh > _mise'
 zinit light jdx/mise
