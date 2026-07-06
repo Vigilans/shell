@@ -13,22 +13,44 @@ set -eu
 export SHELL_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"; cd "$SHELL_HOME"
 
 prepare() {
+    # Ask whether to switch default shell to zsh
+    local use_zsh=0
+    if [ "$(basename "$SHELL")" = "zsh" ]; then
+        use_zsh=1
+    elif [ -t 0 ]; then
+        printf '[shell] Use zsh as default shell? [Y/n] '
+        read -r ans </dev/tty
+        case "$ans" in [nN]*) ;; *) use_zsh=1 ;; esac
+    fi
+
     # Setup necessary packages
     if command -v pacman &> /dev/null; then
-        sudo pacman --noconfirm -S wget git tar unzip make less inetutils util-linux file
+        sudo pacman --noconfirm -S wget git tar unzip make less inetutils util-linux file ${use_zsh:+zsh}
     elif command -v apt-get &> /dev/null; then
         sudo apt-get -y update
-        sudo apt-get -y install wget git tar unzip make less bsdmainutils file
+        sudo apt-get -y install wget git tar unzip make less bsdmainutils file ${use_zsh:+zsh}
     elif command -v yum &> /dev/null; then
-        sudo yum -y install wget git tar unzip make less util-linux file
+        sudo yum -y install wget git tar unzip make less util-linux file ${use_zsh:+zsh}
     elif command -v apk &> /dev/null; then
-        sudo apk add -q wget git tar unzip make less coreutils file zsh-vcs ncurses findutils util-linux
+        sudo apk add -q wget git tar unzip make less coreutils file zsh-vcs ncurses findutils util-linux ${use_zsh:+zsh}
     elif command -v brew &> /dev/null; then
-        brew install wget coreutils util-linux # git tar unzip installed by xcode CLI tools
+        brew install wget coreutils util-linux ${use_zsh:+zsh}
         export PATH="$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH"
     else
         echo "[shell] package manager not supported" >&2
         return 1
+    fi
+
+    # Change login shell to zsh
+    if [ "$use_zsh" = 1 ] && [ "$(basename "$SHELL")" != "zsh" ]; then
+        local zsh_path
+        zsh_path=$(command -v zsh)
+        if [ -n "$zsh_path" ]; then
+            grep -qxF "$zsh_path" /etc/shells 2>/dev/null || sudo sh -c "echo '$zsh_path' >> /etc/shells"
+            chsh -s "$zsh_path"
+            export SHELL="$zsh_path"
+            echo "[shell] default shell changed to $zsh_path"
+        fi
     fi
 
     # Setup Zinit
