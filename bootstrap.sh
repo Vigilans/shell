@@ -48,13 +48,12 @@ prepare() {
         if [ -n "$zsh_path" ]; then
             grep -qxF "$zsh_path" /etc/shells 2>/dev/null || sudo sh -c "echo '$zsh_path' >> /etc/shells"
             chsh -s "$zsh_path"
-            export SHELL="$zsh_path"
             echo "[shell] default shell changed to $zsh_path"
         fi
     fi
 
     # Setup Zinit
-    if [ "$(basename "$SHELL")" = "zsh" ]; then
+    if [ "$use_zsh" = 1 ]; then
         local ZINIT_HOME="${XDG_DATA_HOME:-"$HOME/.local/share"}/zinit/zinit.git"
         [ -d "$ZINIT_HOME" ] || mkdir -p "$(dirname "$ZINIT_HOME")"
         [ -d "$ZINIT_HOME/.git" ] || git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
@@ -92,13 +91,15 @@ install() {
 
     # Warm zinit so gh-r binaries download here instead of on the user's
     # first interactive prompt. `@zinit-scheduler burst` flushes the wait queue.
-    if [ "$(basename "$SHELL")" = "zsh" ]; then
+    local ZINIT_HOME="${XDG_DATA_HOME:-"$HOME/.local/share"}/zinit/zinit.git"
+    if [ -d "$ZINIT_HOME/.git" ]; then
         TERM="${TERM:-dumb}" zsh -ic '@zinit-scheduler burst'
     fi
 }
 
 upgrade() {
-    if [ "$(basename "$SHELL")" = "zsh" ]; then
+    local ZINIT_HOME="${XDG_DATA_HOME:-"$HOME/.local/share"}/zinit/zinit.git"
+    if [ -d "$ZINIT_HOME/.git" ]; then
         TERM="${TERM:-dumb}" zsh -ic 'zi self-update && zi update'
     fi
 }
