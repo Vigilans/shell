@@ -5,7 +5,7 @@
 #
 #   prepare      install OS packages + clone zinit (when $SHELL is zsh)
 #   install      copy entry dotfiles into $HOME + warm zinit (zsh users)
-#   upgrade      zinit self-update + plugin update (zsh users)
+#   upgrade      zinit/plugin update + completion cleanup (zsh users)
 #   bootstrap    prepare + ~/.config/shell symlink + install (standalone path)
 
 set -eu
@@ -100,7 +100,7 @@ install() {
 upgrade() {
     local ZINIT_HOME="${XDG_DATA_HOME:-"$HOME/.local/share"}/zinit/zinit.git"
     if [ -d "$ZINIT_HOME/.git" ]; then
-        TERM="${TERM:-dumb}" zsh -ic 'zi self-update && zi update'
+        TERM="${TERM:-dumb}" zsh -ic 'zi self-update && zi update && zi cclear && zi compinit'
     fi
 }
 
