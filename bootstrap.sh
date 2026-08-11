@@ -93,14 +93,22 @@ install() {
     # first interactive prompt. `@zinit-scheduler burst` flushes the wait queue.
     local ZINIT_HOME="${XDG_DATA_HOME:-"$HOME/.local/share"}/zinit/zinit.git"
     if [ -d "$ZINIT_HOME/.git" ]; then
-        TERM="${TERM:-dumb}" zsh -ic '@zinit-scheduler burst'
+        TERM="${TERM:-dumb}" zsh -sic '@zinit-scheduler burst'
     fi
 }
 
 upgrade() {
     local ZINIT_HOME="${XDG_DATA_HOME:-"$HOME/.local/share"}/zinit/zinit.git"
     if [ -d "$ZINIT_HOME/.git" ]; then
-        TERM="${TERM:-dumb}" zsh -ic 'zi self-update && zi update && zi cclear && zi compinit'
+        TERM="${TERM:-dumb}" zsh -sic '
+            ZINIT[NO_PAGER]=1
+            zi self-update || exit $?
+            zi update
+            rc=$?
+            zi cclear || rc=$?
+            zi compinit || rc=$?
+            exit $rc
+        '
     fi
 }
 
