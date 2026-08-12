@@ -28,17 +28,15 @@ zinit ice wait lucid from'gh-r' id-as as'completion' mv'bat* release' atpull'%at
 zinit light sharkdp/bat
 
 # `ls` alternative
-zinit ice wait lucid from'gh-r' id-as as'completion' bpick'man-*' atpull'%atclone' atclone'
-    local VERSION=$(ls target | sed "s/man-//")
-    if [[ "$(uname -s)" = "Darwin"* ]]; then
+zinit ice wait lucid from'gh-r' id-as as'completion' bpick"${${OSTYPE:#darwin*}:+eza*;}man-*;completions-*" atpull'%atclone' atclone'
+    if [[ "$OSTYPE" = darwin* ]]; then
+        local VERSION=$(ls -d target/man-* | sed "s|.*/man-||")
         local -A ICE=(ver eza-$VERSION)
         .zinit-get-latest-gh-r-url-part cargo-bins cargo-quickinstall
+        [ -n "$reply" ] && wget https://github.com/$reply -O eza.tar.gz && tar -xzf eza.tar.gz && rm -f eza.tar.gz && ln -svf $PWD/eza $ZPFX/bin
     else
-        local -A ICE=(bpick "eza*")
-        .zinit-get-latest-gh-r-url-part eza-community eza
+        ln -svf $PWD/eza $ZPFX/bin
     fi
-    [ -n "$reply" ] && wget https://github.com/$reply -O eza.tar.gz && tar -xzf eza.tar.gz && rm -f eza.tar.gz && ln -svf $PWD/eza $ZPFX/bin
-    wget https://raw.githubusercontent.com/eza-community/eza/main/completions/zsh/_eza -O _eza
     for man in $PWD/target/*/*.1; do ln -svf $man $ZPFX/man/man1; done
     for man in $PWD/target/*/*.5; do ln -svf $man $ZPFX/man/man5; done'
 zinit light eza-community/eza
