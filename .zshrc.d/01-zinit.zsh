@@ -145,7 +145,7 @@ zinit light zdharma-continuum/null
 ###################
 
 # Multi language version manager (NodeJS, Ruby, etc.)
-zinit ice from'gh-r' id-as as'completion' mv'mise* mise' atpull'%atclone' atclone'
+zinit ice from'gh-r' id-as as'completion' bpick'*.tar.gz' mv'mise* mise' atpull'%atclone' atclone'
     chmod +x $PWD/mise
     ln -svf $PWD/mise $ZPFX/bin
     mise completion zsh > _mise'
