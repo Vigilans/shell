@@ -105,6 +105,7 @@ upgrade() {
             zi self-update || exit $?
             builtin source "${ZINIT[BIN_DIR]}/zinit-install.zsh"
             functions[.zinit-forget-completion]=${functions[.zinit-forget-completion]//builtin print -Prn \"/builtin print -Prn -- \"}
+            @zinit-scheduler burst
             zi update
             rc=$?
             zi cclear || rc=$?
