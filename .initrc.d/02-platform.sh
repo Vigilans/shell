@@ -27,7 +27,7 @@ host_libc_using_musl() {
         echo "musl"
     elif command -v otool >/dev/null && command otool -L /bin/ls | grep -qs "musl"; then
         echo "musl"
-    elif [ -n "$HOST_LIBC_PREFER_MUSL" ] && [ "$(uname -s)" = "Linux" ]; then
+    elif [ "$(uname -s)" = "Linux" ] && { [ "$HOST_LIBC_PREFER_MUSL" = 1 ] || [ "$HOST_LIBC_PREFER_MUSL" = "$(uname -m)" ]; }; then
         echo "musl"
     else
         echo ""

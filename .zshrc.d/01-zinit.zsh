@@ -44,7 +44,7 @@ zinit ice wait lucid from'gh-r' id-as as'completion' bpick'man-*' atpull'%atclon
 zinit light eza-community/eza
 
 # `diff` alternative
-zinit ice wait lucid from'gh-r' id-as as'completion' bpick"*$(HOST_LIBC_PREFER_MUSL=1 host_triplet)*" mv'delta* release' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'completion' bpick"*$(HOST_LIBC_PREFER_MUSL=x86_64 host_triplet)*" mv'delta* release' atpull'%atclone' atclone'
     ln -svf $PWD/release/delta $ZPFX/bin
     delta --generate-completion zsh > _delta'
 zinit light dandavison/delta
