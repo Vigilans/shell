@@ -145,9 +145,9 @@ zinit light zdharma-continuum/null
 ###################
 
 # Multi language version manager (NodeJS, Ruby, etc.)
-zinit ice from'gh-r' id-as as'completion' bpick'*.tar.gz' atpull'%atclone' atclone'
+zinit ice from'gh-r' id-as as'completion' bpick'*.tar.gz' mv'' atpull'%atclone' atclone'
     chmod +x $PWD/mise/bin/mise
-    ln -svf $PWD/mise/bin/mise $ZPFX/bin/mise
+    ln -svfn $PWD/mise/bin/mise $ZPFX/bin/mise
     $PWD/mise/bin/mise completion zsh > _mise'
 zinit light jdx/mise
 
@@ -171,6 +171,8 @@ zinit light zsh-users/zsh-completions
 function zinit_snippet_completion_from_stdin() {
     local command=$1
     local completion_cmdline=$2
+    local atpull="${ZINIT[SNIPPETS_DIR]}/_$command/._zinit/atpull"
+    [[ -f "$atpull" && "$(<$atpull)" = '!%atclone' ]] && print -r -- '%atclone' >! "$atpull"
     zinit ice wait lucid id-as"_$command" as'completion' blockf atpull'%atclone' atclone"
         { $completion_cmdline } > _$command"
     zinit snippet /dev/null
