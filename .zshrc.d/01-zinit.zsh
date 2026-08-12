@@ -145,10 +145,10 @@ zinit light zdharma-continuum/null
 ###################
 
 # Multi language version manager (NodeJS, Ruby, etc.)
-zinit ice from'gh-r' id-as as'completion' bpick'*.tar.gz' mv'mise* mise' atpull'%atclone' atclone'
-    chmod +x $PWD/mise
-    ln -svf $PWD/mise $ZPFX/bin
-    mise completion zsh > _mise'
+zinit ice from'gh-r' id-as as'completion' bpick'*.tar.gz' atpull'%atclone' atclone'
+    chmod +x $PWD/mise/bin/mise
+    ln -svf $PWD/mise/bin/mise $ZPFX/bin/mise
+    $PWD/mise/bin/mise completion zsh > _mise'
 zinit light jdx/mise
 
 # Zinit managed nodejs at "$ZINIT_HOME/plugins/node"
