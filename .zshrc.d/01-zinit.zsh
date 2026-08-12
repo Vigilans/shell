@@ -171,7 +171,7 @@ zinit light zsh-users/zsh-completions
 function zinit_snippet_completion_from_stdin() {
     local command=$1
     local completion_cmdline=$2
-    zinit ice wait lucid id-as"_$command" as'completion' blockf atpull!'%atclone' atclone"
+    zinit ice wait lucid id-as"_$command" as'completion' blockf atpull'%atclone' atclone"
         { $completion_cmdline } > _$command"
     zinit snippet /dev/null
 }
