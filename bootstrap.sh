@@ -103,6 +103,8 @@ upgrade() {
         TERM="${TERM:-dumb}" zsh -sic '
             ZINIT[NO_PAGER]=1
             zi self-update || exit $?
+            builtin source "${ZINIT[BIN_DIR]}/zinit-install.zsh"
+            functions[.zinit-forget-completion]=${functions[.zinit-forget-completion]//builtin print -Prn \"/builtin print -Prn -- \"}
             zi update
             rc=$?
             zi cclear || rc=$?
