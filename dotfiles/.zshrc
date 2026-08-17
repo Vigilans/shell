@@ -3,7 +3,7 @@
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
-      *) return;;
+      *) [ -n "$_INITRC_SH_FORCE_LOAD" ] || return;;
 esac
 
 # Determine default theme according to systemd distro
