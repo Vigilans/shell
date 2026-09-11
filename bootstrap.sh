@@ -29,6 +29,8 @@ prepare() {
     elif command -v apt-get &> /dev/null; then
         sudo apt-get -y update
         sudo apt-get -y install wget git tar unzip make less bsdmainutils file ${use_zsh:+zsh}
+    elif command -v dnf &> /dev/null; then
+        sudo dnf -y install wget git tar unzip make less util-linux file ${use_zsh:+zsh}
     elif command -v yum &> /dev/null; then
         sudo yum -y install wget git tar unzip make less util-linux file ${use_zsh:+zsh}
     elif command -v apk &> /dev/null; then
