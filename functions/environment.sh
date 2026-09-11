@@ -1,10 +1,5 @@
 #  ---------------------------------------------------------------------------
-#  Description: This file holds networking related functions.
-#
-#  Sections:
-#  1.   IP functions
-#  2.   HTTP wrappers
-#  3.   SSH wrappers
+#  Environment and PATH helpers.
 #  ---------------------------------------------------------------------------
 
 # /proc/[pid]/environ
