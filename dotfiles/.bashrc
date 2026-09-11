@@ -9,7 +9,10 @@ case $- in
 esac
 
 if [ -z "$SHELL_THEME" ]; then
-    export SHELL_THEME="90210"
+    case "$(uname -s)" in
+        CYGWIN*|MINGW*|MSYS*) export SHELL_THEME="git-bash";;
+        *) export SHELL_THEME="90210";;
+    esac
 fi
 
 source ~/.profile

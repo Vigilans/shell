@@ -86,8 +86,9 @@ tools and plugins. [Completion previews](.zshrc.d/03-fzf.zsh) and
 
 ### Prompt
 
-Set `SHELL_THEME` to choose a prompt. Bash includes `90210`. Zsh offers `90210`,
-a customized `pure`, and `starship`.
+Set `SHELL_THEME` to choose a prompt. Bash includes `90210` and `git-bash`, the
+Git for Windows prompt with a clock, which is the default on Windows. Zsh offers
+`90210`, a customized `pure`, and `starship`.
 
 ## License
 
