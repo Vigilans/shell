@@ -254,9 +254,6 @@ zinit light reegnz/jq-zsh-plugin
 zinit ice wait lucid id-as atpull'%atclone' atclone'ln -svf $PWD/bin/git-forgit $ZPFX/bin' atinit'export FORGIT_NO_ALIASES=1'
 zinit light wfxr/forgit
 
-zinit ice wait lucid id-as as'null' atpull'%atclone' atclone'make -C $PWD PREFIX=$ZPFX' atload'zi run git-extras source etc/git-extras-completion.zsh'
-zinit light tj/git-extras
-
 zinit ice wait lucid id-as as'null' atload'export PATH=$PATH:$(zi run git-open pwd)'
 zinit light paulirish/git-open
 
