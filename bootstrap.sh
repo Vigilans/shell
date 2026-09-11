@@ -13,6 +13,12 @@ set -eu
 export SHELL_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"; cd "$SHELL_HOME"
 
 prepare() {
+    # Git for Windows ships what the bash layer needs and has no package
+    # manager or chsh; zsh, wget and make are not available there.
+    case "$(uname -s)" in
+        CYGWIN*|MINGW*|MSYS*) return 0;;
+    esac
+
     # Ask whether to switch default shell to zsh
     local use_zsh=0
     if [ "$(basename "$SHELL")" = "zsh" ]; then
@@ -120,6 +126,10 @@ upgrade() {
 bootstrap() {
     prepare
     mkdir -p "$HOME/.config"
+    # MSYS `ln -s` copies the target unless native symlinks are requested.
+    case "$(uname -s)" in
+        CYGWIN*|MINGW*|MSYS*) export MSYS="${MSYS:+$MSYS }winsymlinks:nativestrict";;
+    esac
     ln -snf "$(realpath --relative-to="$HOME/.config" "$SHELL_HOME")" "$HOME/.config/shell"
     install "$@"
 }
