@@ -1,10 +1,4 @@
-# if [ -z "$GOROOT" ] || [ -z "$GOPATH" ]; then
-#     if command -v go &> /dev/null; then
-#         export GOROOT="$(go env GOROOT)"
-#         export GOPATH="$(go env GOPATH)"
-#     fi
-# fi
-
-if [ -n "$GOPATH" ]; then
-    export PATH=$GOPATH/bin:$PATH
-fi
+# Keep GOPATH out of $HOME and put `go install` binaries beside the other
+# user binaries.
+export GOPATH="${GOPATH:-${XDG_DATA_HOME:-$HOME/.local/share}/go}"
+export GOBIN="${GOBIN:-$HOME/.local/bin}"
