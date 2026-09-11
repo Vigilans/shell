@@ -113,7 +113,9 @@ if [[ $PROMPT = *'${prompt_newline}'* ]]; then
 
 else
     # ----- Old pure (<1.27.0): override prompt_pure_preprompt_render -----
-    # Compose prompt and render
+    # Compose prompt and render. Adapted from prompt_pure_preprompt_render in
+    # pure <https://github.com/sindresorhus/pure>, MIT License, see LICENSE
+    # for the text: Copyright (c) Sindre Sorhus <sindresorhus@gmail.com>
     prompt_pure_preprompt_render() {
         setopt localoptions noshwordsplit
         unset prompt_pure_async_render_requested

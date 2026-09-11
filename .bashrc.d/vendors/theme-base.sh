@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+# Vendored from oh-my-bash <https://github.com/ohmybash/oh-my-bash>
+# (themes/base.theme.sh), which carries it over from Bash-it
+# <https://github.com/Bash-it/bash-it>. MIT License, see LICENSE for the text:
+#   Copyright (c) 2009-2017 Robby Russell and contributors
+#   Copyright (c) 2017-2020 Toan Nguyen and contributors
+#   Copyright (c) 2020-2021 Bash-it
 
 CLOCK_CHAR_THEME_PROMPT_PREFIX=''
 CLOCK_CHAR_THEME_PROMPT_SUFFIX=''
