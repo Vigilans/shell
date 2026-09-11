@@ -71,17 +71,6 @@ function archive() {
     esac
 }
 
-#   dufind: Find the largest entries under a directory.
-#           Usage: dufind DIRECTORY
-#   --------------------------------------------------------------------
-function dufind() {
-    if [[ $# -lt 1 ]]; then
-        echo_warn "Usage: dufind DIRECTORY"
-        return
-    fi
-    du -a "$1" | sort -n -r | head -n 10
-}
-
 #   history_stats: Visualize the usage frequency of commands in history
 #   --------------------------------------------------------------------
 function history_stats() {
