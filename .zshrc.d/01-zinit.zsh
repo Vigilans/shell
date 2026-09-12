@@ -6,6 +6,13 @@ source "$ZINIT_HOME/zinit.git/zinit.zsh" || return 0
 [ -e "$ZSH_CACHE_DIR/completions" ] || mkdir -p "$ZSH_CACHE_DIR/completions"
 [[ ":$PATH:" != *":$ZPFX/bin:"* ]] && export PATH="$ZPFX/bin:$PATH"
 
+# Git for Windows checks plugins out with CRLF, which zcompile cannot read
+if [[ $OSTYPE = cygwin* ]]; then
+    zinit ice id-as cloneopts'--recursive --config core.autocrlf=false'
+    zinit light zdharma-continuum/zinit-annex-default-ice
+    zinit default-ice -q cloneopts'--recursive --config core.autocrlf=false'
+fi
+
 ###################
 # Native Programs #
 ###################
