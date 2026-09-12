@@ -70,6 +70,16 @@ fi
 # Export final PATH variable
 export PATH
 
+# MSYS `ln -s` copies the target unless native symlinks are requested.
+case "$(uname -s)" in
+    CYGWIN*|MINGW*|MSYS*)
+        case "${MSYS:-}" in
+            *winsymlinks*) ;;
+            "") export MSYS="winsymlinks:nativestrict" ;;
+            *)  export MSYS="$MSYS winsymlinks:nativestrict" ;;
+        esac;;
+esac
+
 # Record loaded profile revision
 if [ -r "$SHELL_CONFIG_HOME/.git" ]; then
     git_dir="$SHELL_CONFIG_HOME/.git"
