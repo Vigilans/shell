@@ -25,7 +25,10 @@ if [[ "$TERM" = "linux" ]] || [[ "$TERM" != "xterm-kitty" ]] && [[ "$(tput color
 fi
 
 # If FQDN has a real domain (not local/localdomain), show hostname as full FQDN
-SHELL_DOMAIN_NAME=$(hostname -f)
+case "$OSTYPE" in
+    cygwin*) SHELL_DOMAIN_NAME=${USERDNSDOMAIN:+$HOST.$USERDNSDOMAIN} ;; # Git Bash's hostname has no -f; Windows sets USERDNSDOMAIN on domain-joined machines
+    *)       SHELL_DOMAIN_NAME=$(hostname -f) ;;
+esac
 case "$SHELL_DOMAIN_NAME" in
     *.local|*.localdomain) unset SHELL_DOMAIN_NAME ;; # Local domain
     *.*)                   SHELL_DOMAIN_NAME=${SHELL_DOMAIN_NAME#*.} ;; # Extract domain name
