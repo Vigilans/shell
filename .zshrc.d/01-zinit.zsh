@@ -135,15 +135,17 @@ zinit light jesseduffield/lazygit
 ###################
 
 # Python venv manager
-zinit ice wait lucid from'gh-r' id-as as'completion' mv'uv* release' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'completion' bpick"*$(host_triplet)*" ${${OSTYPE:#cygwin*}:+mv'uv* release'} atpull'%atclone' atclone'
+    [[ $OSTYPE = cygwin* ]] && { mkdir release && mv uv* release; } # Windows zip has no top-level directory
     ln -svf $PWD/release/uv $ZPFX/bin
     ln -svf $PWD/release/uvx $ZPFX/bin
     uv generate-shell-completion zsh > _uv
-    local receipt_dir=${XDG_CONFIG_HOME:-$HOME/.config}/uv uv_version=$($PWD/release/uv --version | cut -d" " -f2)
+    local receipt_dir=${XDG_CONFIG_HOME:-$HOME/.config}/uv uv_version=$($PWD/release/uv --version | cut -d" " -f2) install_prefix=$PWD/release
+    [[ $OSTYPE = cygwin* ]] && install_prefix=$(cygpath -m $install_prefix) # uv is a Windows program and matches the prefix against its own path
     mkdir -p $receipt_dir
     {
         printf "{\"binaries\":[\"uv\",\"uvx\"],\"binary_aliases\":{},\"cdylibs\":[],\"cstaticlibs\":[],"
-        printf "\"install_layout\":\"flat\",\"install_prefix\":\"%s\",\"modify_path\":false," $PWD/release
+        printf "\"install_layout\":\"flat\",\"install_prefix\":\"%s\",\"modify_path\":false," $install_prefix
         printf "\"provider\":{\"source\":\"cargo-dist\",\"version\":\"%s\"}," $uv_version
         printf "\"source\":{\"app_name\":\"uv\",\"name\":\"uv\",\"owner\":\"astral-sh\",\"release_type\":\"github\"},"
         printf "\"version\":\"%s\"}\n" $uv_version
