@@ -118,9 +118,10 @@ zinit ice wait lucid from'gh-r' id-as as'null' bpick"*$(HOST_TRIPLET_APPLE_USE_I
 zinit load sharkdp/vivid
 
 # `gh` github cli
-zinit ice wait lucid from'gh-r' id-as'gh' as'completion' mv'gh* release' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as'gh' as'completion' bpick"*${$(host_os)/darwin/macOS}_$(host_arch go).(zip|tar.gz)" ${${OSTYPE:#cygwin*}:+mv'gh* release'} atpull'%atclone' atclone'
+    [[ $OSTYPE = cygwin* ]] && { mkdir release && mv bin LICENSE release; } # Windows zip has no top-level directory
     ln -svf $PWD/release/bin/gh $ZPFX/bin
-    ln -svf $PWD/release/share/man/man1/* $ZPFX/man/man1
+    [[ -d release/share ]] && ln -svf $PWD/release/share/man/man1/* $ZPFX/man/man1 # Windows zip has no man pages
     gh completion -s zsh > _gh'
 zinit light cli/cli
 
