@@ -26,6 +26,7 @@ prepare() {
     # Setup necessary packages
     if [ "$(uname -o)" = Msys ]; then # In Git for Windows
         _msys2_install libnettle wget zsh # wget links a newer nettle than Git ships
+        grep -q '^export MSYSTEM=' /etc/zsh/zshenv || _windows_sudo sed -i '1i export MSYSTEM="${MSYSTEM:-MINGW64}"' /etc/zsh/zshenv # Only Git's bash launcher sets MSYSTEM; default it for zsh before /etc/zsh/zprofile hands it to /etc/profile
     elif command -v pacman &> /dev/null; then
         sudo pacman --noconfirm -S wget git tar unzip make less inetutils util-linux file ${use_zsh:+zsh}
     elif command -v apt-get &> /dev/null; then
