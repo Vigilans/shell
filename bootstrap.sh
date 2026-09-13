@@ -13,12 +13,6 @@ set -eu
 export SHELL_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"; cd "$SHELL_HOME"
 
 prepare() {
-    # Git for Windows ships what the bash layer needs and has no package
-    # manager or chsh; zsh, wget and make are not available there.
-    case "$(uname -s)" in
-        CYGWIN*|MINGW*|MSYS*) return 0;;
-    esac
-
     # Ask whether to switch default shell to zsh
     local use_zsh=0
     if [ "$(basename "$SHELL")" = "zsh" ]; then
@@ -30,7 +24,9 @@ prepare() {
     fi
 
     # Setup necessary packages
-    if command -v pacman &> /dev/null; then
+    if [ "$(uname -o)" = Msys ]; then # In Git for Windows
+        _msys2_install libnettle wget zsh # wget links a newer nettle than Git ships
+    elif command -v pacman &> /dev/null; then
         sudo pacman --noconfirm -S wget git tar unzip make less inetutils util-linux file ${use_zsh:+zsh}
     elif command -v apt-get &> /dev/null; then
         sudo apt-get -y update
@@ -53,7 +49,9 @@ prepare() {
     if [ "$use_zsh" = 1 ] && [ "$(basename "$SHELL")" != "zsh" ]; then
         local zsh_path
         zsh_path=$(command -v zsh)
-        if [ -n "$zsh_path" ]; then
+        if [ "$(uname -o)" = Msys ]; then # no chsh; the terminal profile picks the shell
+            echo "[shell] start zsh from your terminal as: \"$(cygpath -w "$zsh_path.exe")\" -l"
+        elif [ -n "$zsh_path" ]; then
             grep -qxF "$zsh_path" /etc/shells 2>/dev/null || sudo sh -c "echo '$zsh_path' >> /etc/shells"
             chsh -s "$zsh_path"
             echo "[shell] default shell changed to $zsh_path"
@@ -132,6 +130,36 @@ bootstrap() {
     esac
     ln -snf "$(realpath --relative-to="$HOME/.config" "$SHELL_HOME")" "$HOME/.config/shell"
     install "$@"
+}
+
+# In Git for Windows, unpack the current MSYS2 build of the given packages into its root,
+# leaving the files Git ships untouched.
+_msys2_install() (
+    local repo=https://repo.msys2.org/msys/x86_64 bsdtar root db pkg file
+    bsdtar="$(cygpath -S)/tar.exe" # Windows' own tar reads zstd; Git's does not
+    root=$(cygpath -w /)
+    db=$(mktemp -d); trap 'rm -rf "$db"' EXIT
+    curl -fsSL "$repo/msys.files" | "$bsdtar" -xf - -C "$db"
+    for pkg in "$@"; do
+        [ -d "$db/$pkg"-[0-9]* ] || { echo "[shell] $pkg not found in $repo" >&2; return 1; }
+        file=$(sed -n '/^%FILENAME%$/{n;p;}' "$db/$pkg"-[0-9]*/desc)
+        awk '/^%FILES%$/{p=1;next} p && NF && !/\/$/' "$db/$pkg"-[0-9]*/files | while read -r f; do [ -e "$root/$f" ] || exit 1; done && continue # every file the package ships is in place
+        echo "[shell] unpacking $file into $root"
+        curl -fsSL "$repo/$file" -o "$db/$file" # sudo relays stdin only in its inline mode
+        _windows_sudo "$bsdtar" -xkf "$db/$file" -C "$root" --exclude='.[A-Z]*' # Skip pacman's own .PKGINFO, .MTREE and friends
+    done
+)
+
+# Run a command as administrator on Windows: as is from an elevated shell, else through its sudo
+_windows_sudo() {
+    if "$(cygpath -S)/whoami.exe" //groups | grep -q S-1-16-12288; then # High integrity label = elevated token (// keeps MSYS off the switch)
+        "$@"
+    elif command -v sudo &> /dev/null; then
+        sudo "$@"
+    else
+        echo "[shell] no way to elevate: enable Windows sudo (Settings > System > Advanced) or rerun from an elevated Git Bash" >&2
+        return 1
+    fi
 }
 
 if [ "$0" = "$BASH_SOURCE" ]; then
