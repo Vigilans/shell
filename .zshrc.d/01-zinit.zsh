@@ -6,11 +6,29 @@ source "$ZINIT_HOME/zinit.git/zinit.zsh" || return 0
 [ -e "$ZSH_CACHE_DIR/completions" ] || mkdir -p "$ZSH_CACHE_DIR/completions"
 [[ ":$PATH:" != *":$ZPFX/bin:"* ]] && export PATH="$ZPFX/bin:$PATH"
 
-# Git for Windows checks plugins out with CRLF, which zcompile cannot read
 if [[ $OSTYPE = cygwin* ]]; then
+    # Git for Windows checks plugins out with CRLF, which zcompile cannot read
     zinit ice id-as cloneopts'--recursive --config core.autocrlf=false'
     zinit light zdharma-continuum/zinit-annex-default-ice
     zinit default-ice -q cloneopts'--recursive --config core.autocrlf=false'
+
+    # Zinit runs every .exe release asset as an NSIS installer (zdharma-continuum/zinit#306). Before a
+    # release is installed or updated, wrap ziextract to drop the suffix of a plain program, so the
+    # file is kept instead of executed
+    zinit_keep_bare_exe() {
+        [[ $7 = load && -d ${ZINIT[PLUGINS_DIR]}/${4//\//---} ]] && return 0 # nothing to install
+        (( ${+functions[.zinit-setup-plugin-dir]} )) || source "$ZINIT_HOME/zinit.git/zinit-install.zsh"
+        [[ $functions[ziextract] = *zinit_ziextract* ]] && return 0 # already wrapped
+        functions -c ziextract zinit_ziextract
+        ziextract() {
+            if [[ $1 = (#i)*.exe && "$(file -b -- $1)" != (#i)*(installer|self-extracting)* ]]; then
+                mv -f -- $1 ${1%.*} && set -- ${1%.*} "${@[2,-1]}"
+            fi
+            zinit_ziextract "$@"
+        }
+    }
+    @zinit-register-hook keep-bare-exe hook:preinit-pre zinit_keep_bare_exe
+    @zinit-register-hook keep-bare-exe 'hook:e-!atpull-pre' zinit_keep_bare_exe
 fi
 
 ###################
@@ -69,20 +87,20 @@ zinit ice wait lucid from'gh-r' id-as as'completion' bpick"*$(HOST_LIBC_PREFER_M
 zinit light BurntSushi/ripgrep
 
 # Always use repository managed `jq` to ensure latest features
-zinit ice wait lucid from'gh-r' id-as as'null' mv'jq* jq' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'null' bpick"*${$(host_os)/darwin/macos}-$(host_arch go)(|.exe)" mv"jq* jq${${(M)OSTYPE:#cygwin*}:+.exe}" atpull'%atclone' atclone'
     chmod +x $PWD/jq
     ln -svf $PWD/jq $ZPFX/bin'
 zinit light jqlang/jq
 
 # `yq` yaml cli
-zinit ice wait lucid from'gh-r' id-as as'completion' mv'yq* yq' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'completion' bpick"*$(host_os)_$(host_arch go)(|.zip)" mv"yq* yq${${(M)OSTYPE:#cygwin*}:+.exe}" atpull'%atclone' atclone'
     chmod +x $PWD/yq
     ln -svf $PWD/yq $ZPFX/bin
     yq completion zsh > _yq'
 zinit light mikefarah/yq
 
 # `fx` json tui viewer
-zinit ice wait lucid from'gh-r' id-as as'completion' mv'fx* fx' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'completion' bpick"*$(host_os)_$(host_arch go)(|.exe)" mv"fx* fx${${(M)OSTYPE:#cygwin*}:+.exe}" atpull'%atclone' atclone'
     chmod +x $PWD/fx
     ln -svf $PWD/fx $ZPFX/bin
     fx --comp zsh > _fx'
