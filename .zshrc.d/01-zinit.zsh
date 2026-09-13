@@ -29,6 +29,18 @@ if [[ $OSTYPE = cygwin* ]]; then
     }
     @zinit-register-hook keep-bare-exe hook:preinit-pre zinit_keep_bare_exe
     @zinit-register-hook keep-bare-exe 'hook:e-!atpull-pre' zinit_keep_bare_exe
+
+    # PowerShell and cmd only run names carrying a PATHEXT suffix; once an atclone or atpull has
+    # linked programs into $ZPFX/bin, give every link an .exe suffix too
+    zinit_exe_links() {
+        local link
+        for link in $ZPFX/bin/*(@N); do
+            [[ $link != *.exe && $link:A = *.exe ]] && mv -f -- $link $link.exe
+        done
+        return 0
+    }
+    @zinit-register-hook exe-links hook:atclone-post zinit_exe_links
+    @zinit-register-hook exe-links hook:atpull-post zinit_exe_links
 fi
 
 ###################
