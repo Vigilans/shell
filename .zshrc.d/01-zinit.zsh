@@ -28,7 +28,7 @@ zinit ice wait lucid from'gh-r' id-as as'completion' atpull'%atclone' atclone'
 zinit light junegunn/fzf
 
 # `cat` alternative
-zinit ice wait lucid from'gh-r' id-as as'completion' mv'bat* release' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'completion' bpick"*$(host_triplet)*" mv'bat* release' atpull'%atclone' atclone'
     ln -svf $PWD/release/bat $ZPFX/bin
     ln -svf $PWD/release/bat.1 $ZPFX/man/man1
     bat --completion zsh > _bat'
@@ -55,14 +55,14 @@ zinit ice wait lucid from'gh-r' id-as as'completion' bpick"*$(HOST_LIBC_PREFER_M
 zinit light dandavison/delta
 
 # `find` alternative
-zinit ice wait lucid from'gh-r' id-as as'completion' mv'fd* release' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'completion' bpick"*$(host_triplet)*" mv'fd* release' atpull'%atclone' atclone'
     ln -svf $PWD/release/fd $ZPFX/bin
     ln -svf $PWD/release/fd.1 $ZPFX/man/man1
     fd --gen-completions zsh > _fd'
 zinit light sharkdp/fd
 
 # `grep` alternative
-zinit ice wait lucid from'gh-r' id-as as'completion' bpick"ripgrep-*" mv'ripgrep* release' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'completion' bpick"*$(HOST_LIBC_PREFER_MUSL=x86_64 host_triplet)*" mv'ripgrep* release' atpull'%atclone' atclone'
     ln -svf $PWD/release/rg $ZPFX/bin
     ln -svf $PWD/release/doc/rg.1 $ZPFX/man/man1
     rg --generate=complete-zsh > _rg'
@@ -89,7 +89,7 @@ zinit ice wait lucid from'gh-r' id-as as'completion' mv'fx* fx' atpull'%atclone'
 zinit light antonmedv/fx
 
 # `xxd` and `hexdump` alternative
-zinit ice wait lucid from'gh-r' id-as as'null' mv'hexyl* release' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'null' bpick"*$(host_triplet)*" mv'hexyl* release' atpull'%atclone' atclone'
     ln -svf $PWD/release/hexyl $ZPFX/bin
     ln -svf $PWD/release/hexyl.1 $ZPFX/man/man1'
 zinit light sharkdp/hexyl
