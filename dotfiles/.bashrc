@@ -10,8 +10,8 @@ esac
 
 if [ -z "$SHELL_THEME" ]; then
     case "$(uname -s)" in
-        CYGWIN*|MINGW*|MSYS*) export SHELL_THEME="git-bash";;
-        *) export SHELL_THEME="90210";;
+        CYGWIN*|MINGW*|MSYS*) SHELL_THEME="git-bash";;
+        *) SHELL_THEME="90210";;
     esac
 fi
 
