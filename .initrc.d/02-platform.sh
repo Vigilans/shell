@@ -8,8 +8,7 @@ host_triplet_trivial() {
     case $(uname -s) in
         Linux*)  vendor="unknown"; os="linux";;
         Darwin*) vendor="apple"; os="darwin";;
-        CYGWIN*) vendor="pc"; os="windows";;
-        MINGW*)  vendor="pc"; os="windows";;
+        CYGWIN*|MINGW*|MSYS*) vendor="pc"; os="windows";;
     esac
     if [ "$os" = "darwin" ] && [ "$machine" = "arm64" ]; then
         if [ -n "$HOST_TRIPLET_APPLE_USE_INTEL" ]; then # Some repositories may not have apple m1 arm64 binaries
@@ -42,8 +41,7 @@ host_libc() {
         case $(uname -s) in
             Linux*)  echo "gnu";;
             Darwin*) echo "";;
-            CYGWIN*) echo "msvc";;
-            MINGW*)  echo "gnu";;
+            CYGWIN*|MINGW*|MSYS*) echo "msvc";;
         esac
     fi
 }
