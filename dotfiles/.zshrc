@@ -12,6 +12,8 @@ if [ -z "$SHELL_THEME" ]; then
         SHELL_THEME="pure"  # Use pure theme for archlinux based distros
     elif command -v brew &> /dev/null; then
         SHELL_THEME="pure"  # Use pure theme for macos
+    elif [[ $OSTYPE = cygwin* ]]; then
+        SHELL_THEME="pure"  # Use pure theme for Git for Windows
     elif command -v dpkg &> /dev/null; then
         SHELL_THEME="90210" # Use 90210 theme for debian based distros
     else
