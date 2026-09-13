@@ -56,3 +56,29 @@ host_triplet() {
         echo "$triplet"
     fi
 }
+
+# Get host OS as spelled by Go's GOOS (linux, darwin, windows)
+host_os() {
+    case $(uname -s) in
+        Linux*)  echo "linux";;
+        Darwin*) echo "darwin";;
+        CYGWIN*|MINGW*|MSYS*) echo "windows";;
+    esac
+}
+
+# Get host CPU as spelled by a naming convention: go (amd64/arm64), gnu (x86_64/aarch64), apple (x86_64/arm64), msft (x64/arm64)
+host_arch() {
+    case $(uname -m) in
+        x86_64|amd64)
+            case $1 in
+                go) echo "amd64";;
+                gnu|apple) echo "x86_64";;
+                msft) echo "x64";;
+            esac;;
+        aarch64|arm64)
+            case $1 in
+                gnu) echo "aarch64";;
+                go|apple|msft) echo "arm64";;
+            esac;;
+    esac
+}

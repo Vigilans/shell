@@ -18,7 +18,7 @@ fi
 ###################
 
 # `fzf` fuzzy finder
-zinit ice wait lucid from'gh-r' id-as as'completion' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'completion' bpick"*$(host_os)_$(host_arch go).(zip|tar.gz)" atpull'%atclone' atclone'
     ln -svf $PWD/fzf $ZPFX/bin
     wget https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh -O key-bindings.zsh
     wget https://raw.githubusercontent.com/junegunn/fzf/master/man/man1/fzf.1 -O fzf.1
@@ -101,7 +101,7 @@ zinit ice wait lucid from'gh-r' id-as as'completion' bpick"*$(HOST_TRIPLET_APPLE
 zinit light bootandy/dust
 
 # `ps` alternative
-zinit ice wait lucid from'gh-r' id-as as'completion' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'completion' bpick"*$(host_arch gnu)-${$(host_os)/darwin/mac}.(zip|tar.gz)" atpull'%atclone' atclone'
     ln -svf $PWD/procs $ZPFX/bin
     procs --gen-completion-out zsh > _procs'
 zinit light dalance/procs
@@ -125,7 +125,7 @@ zinit ice wait lucid from'gh-r' id-as'gh' as'completion' mv'gh* release' atpull'
 zinit light cli/cli
 
 # `git` tui
-zinit ice wait lucid from'gh-r' id-as as'null' atpull'%atclone' atclone'
+zinit ice wait lucid from'gh-r' id-as as'null' bpick"*$(host_os)_$(host_arch apple).(zip|tar.gz)" atpull'%atclone' atclone'
     ln -svf $PWD/lazygit $ZPFX/bin'
 zinit light jesseduffield/lazygit
 
@@ -162,7 +162,7 @@ zinit light zdharma-continuum/null
 ###################
 
 # Multi language version manager (NodeJS, Ruby, etc.)
-zinit ice from'gh-r' id-as as'completion' bpick'*.tar.gz' mv'' atpull'%atclone' atclone'
+zinit ice from'gh-r' id-as as'completion' bpick"*${$(host_os)/darwin/macos}-$(host_arch msft)*.(zip|tar.gz)" mv'' atpull'%atclone' atclone'
     chmod +x $PWD/mise/bin/mise
     ln -svfn $PWD/mise/bin/mise $ZPFX/bin/mise
     $PWD/mise/bin/mise completion zsh > _mise'
