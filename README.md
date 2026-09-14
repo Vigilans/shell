@@ -16,23 +16,26 @@ share configuration across shells, and keep machine-specific additions local.
 
 ## Install
 
-On Linux or macOS, back up your existing shell startup files, then run:
+Back up your existing shell startup files, then run the commands below. On Windows, use Git Bash and follow the [Windows prerequisites](#windows-git-for-windows).
 
 ```bash
 git clone https://github.com/Vigilans/shell.git ~/shell
 bash ~/shell/bootstrap.sh
 ```
 
-The installer links the checkout at `~/.config/shell` and offers to make zsh
-your login shell. If it reports skipped startup files, merge the corresponding
-files from [dotfiles/](dotfiles/) with your existing configuration. Start a new
-shell after installation.
+The installer links the checkout at `~/.config/shell` and asks whether to use zsh. If it reports skipped startup files, merge the corresponding files from [dotfiles/](dotfiles/) with your existing configuration. Start a new shell after installation.
 
 To update the managed tools, plugins, and completions:
 
 ```bash
 bash ~/.config/shell/bootstrap.sh upgrade
 ```
+
+### Windows (Git for Windows)
+
+Use x86-64 [Git for Windows](https://gitforwindows.org/) and run bootstrap from Git Bash. Enable Windows Developer Mode so the configuration and plugin links can be created as native symlinks.
+
+Bootstrap installs MSYS2 builds of zsh, wget, and libnettle into the Git installation. This step needs administrator privileges: enable Windows sudo or run Git Bash as administrator.
 
 ## Features
 
@@ -86,9 +89,7 @@ tools and plugins. [Completion previews](.zshrc.d/03-fzf.zsh) and
 
 ### Prompt
 
-Set `SHELL_THEME` to choose a prompt. Bash includes `90210` and `git-bash`, the
-Git for Windows prompt with a clock, which is the default on Windows. Zsh offers
-`90210`, a customized `pure`, and `starship`.
+Set `SHELL_THEME` to choose a prompt. Bash includes `90210` and `git-bash` (default Git for Windows theme with a clock). Zsh offers `90210`, a customized `pure`, and `starship`.
 
 ## License
 
