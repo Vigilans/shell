@@ -78,10 +78,17 @@ install() {
     [ "${1:-}" = "--force" ] && force=1
 
     local src dst
-    shopt -s dotglob nullglob
-    for src in "$SHELL_HOME/dotfiles"/*; do
+    shopt -s nullglob
+    for src in "$SHELL_HOME/dotfiles"/.* "$SHELL_HOME/dotfiles/profile.ps1"; do
         [ -f "$src" ] || continue
-        dst="$HOME/$(basename "$src")"
+        case $src in
+            *.ps1) # pwsh keeps its profile under Documents, not $HOME
+                command -v pwsh &> /dev/null || continue
+                dst=$(pwsh -NoProfile -Command '$PROFILE.CurrentUserAllHosts' | tr -d '\r')
+                [ "$(uname -o)" = Msys ] && dst=$(cygpath -u "$dst")
+                mkdir -p "$(dirname "$dst")" ;;
+            *) dst="$HOME/$(basename "$src")" ;;
+        esac
         if [ -L "$dst" ]; then
             # Old install left a symlink — replace with a real copy so future
             # installer writes go to $HOME, not back through the link to source.
@@ -95,7 +102,7 @@ install() {
         fi
         cp "$src" "$dst"
     done
-    shopt -u dotglob nullglob
+    shopt -u nullglob
 
     # Warm zinit so gh-r binaries download here instead of on the user's
     # first interactive prompt. `@zinit-scheduler burst` flushes the wait queue.
