@@ -8,5 +8,7 @@ if type nano 1>/dev/null 2>&1 && [ "$(readlink $(which nano))" != "pico" ]; then
 fi
 
 # Interactive
-alias cp='cp -i'
-# alias rm='rm -i'
+if [ -z "$CLAUDECODE" ]; then # Do not enable in Claude Code shell snapshot
+    alias cp='cp -i'
+    # alias rm='rm -i'
+fi
