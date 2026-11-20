@@ -26,6 +26,7 @@ setopt +o nomatch                                               # Will leave glo
 
 # Miscellaneous
 setopt rcexpandparam                                            # Array expansions of the form ‘foo${xx}bar’, where the parameter xx is set to (a b c), are substituted with ‘fooabar foobbar foocbar’ instead of the default ‘fooa b cbar’. Note that an empty array will therefore cause all arguments to be removed.
+setopt shwordsplit                                              # Split unquoted parameter expansions on IFS, as in bash.
 setopt nocheckjobs                                              # Don't warn about running processes when exiting
 setopt nobeep                                                   # No beep
 # setopt correct                                                  # Auto correct mistakes
